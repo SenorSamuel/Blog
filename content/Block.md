@@ -99,7 +99,7 @@ TypeName blockName = ^returnType(parameters) {...};
 ## Chapter 5 Blocks Implementation
 
 > 总结:  
-> block只要捕获的是一个对象,那么必须是在block被copy到堆区的时候进行捕获:`1.3`,`1.4`,`1.5`  
+> 当一个对象在block中被使用时(`1.3`,`1.4`,`1.5`),如果block没有被copy(栈block或者全局block)的话,那么block不会拥有该对象的ownerShip,只是拷贝了指针引用而已,该对象能否访问与block无关;只有block被copy的时候,block拷贝到了堆区,才会对使用到的对象进行内存管理;一般来说,block如果需要被正确引用('保存一段代码,在适合的时机调用'),在ARC下都避免不了被拷贝到堆区  
 > 1.3和1.5的区别在于当`__block`和`__strong`同时修饰的一个对象,`1.5`会先调用`__Block_byref_id_object_copy_131`  
 > **对象不一定存在堆区: 只是由于栈区小,堆区在无内存警告时大,一般的对象都在堆区;存在栈区的对象在`{ }`作用域除了之后就销毁了**
  
