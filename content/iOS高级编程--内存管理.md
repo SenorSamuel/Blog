@@ -109,13 +109,12 @@ id obj = [[NSObject alloc] init];
 // Obtain an object without creating it yourself or having ownership
 id obj = [NSMutableArray array];
 // The obtained object exists and you don’t have ownership of it.
-[obj retain];
-// Now you have ownership of the object.
+[obj retain]; // Now you have ownership of the object.
 [obj release];
 // The object is relinquished.You can’t access the object anymore.
 ```
 
-**how a method return a created object?**
+**how a method return a created object?**  
 1. alloc/new/copy/muteableCopy : **If a method returns an object of which the methodhasownership,ownership is passed to the caller**
 
 ```objc
@@ -127,7 +126,7 @@ id obj = [NSMutableArray array];
 }
 ```
 
-2. [NSMutableArray array] : Returning a New Object Without Ownership.**By calling autorelease, you can return the created object without ownership** 可以返回,而不是为什么要返回没有ownership的(means by design)
+2.[NSMutableArray array] : Returning a New Object Without Ownership.**By calling autorelease, you can return the created object without ownership** 可以返回,而不是为什么要返回没有ownership的(means by design)
 
 ```objc
 - (id)object {
@@ -370,10 +369,13 @@ class AutoreleasePoolPage {
   }
 
   id *add(id obj) {
-    /* add the obj to an internal array; */ }
-    void releaseAll() {
-      /* calls release for all the objects in the internal array */
-    }
+    /* add the obj to an internal array; */ 
+  }
+    
+  void releaseAll() {
+    /* calls release for all the objects in the internal array */
+    
+  }
 };
 
 void *objc_autoreleasePoolPush(void) {
@@ -919,9 +921,9 @@ struct SideTable {
 
 SideTable 结构体重定了几个非常重要的变量。
 // The order of these bits is important.
-#define SIDE_TABLE_WEAKLY_REFERENCED (1UL<<0)    
-#define SIDE_TABLE_DEALLOCATING      (1UL<<1)  // MSB-ward of weak bit
-#define SIDE_TABLE_RC_ONE            (1UL<<2)  // MSB-ward of deallocating bit
+#define SIDE_TABLE_WEAKLY_REFERENCED (1UL<<0)  // MSB-ward of weak bit  
+#define SIDE_TABLE_DEALLOCATING      (1UL<<1)  // MSB-ward of deallocating bit
+#define SIDE_TABLE_RC_ONE            (1UL<<2)  
 #define SIDE_TABLE_RC_PINNED         (1UL<<(WORD_BITS-1))//最高位字节为0
 #define SIDE_TABLE_RC_SHIFT 2
 #define SIDE_TABLE_FLAG_MASK (SIDE_TABLE_RC_ONE-1)
@@ -1085,7 +1087,7 @@ calloc
 
 ![SamuelChan/20170717194341.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170717194341.png)
 
-- 释放时刻:根据哨兵位置进行pop释放池,每当进行一次objc_autoreleasePoolPush调用时，runtime向当前的AutoreleasePoolPage中add进一个哨兵对象，值为0（也就是个nil）
+- 释放时刻:根据哨兵位置进行pop释放池,每当进行一次objc_autoreleasePoolPush调用时，runtime向当前的AutoreleasePoolPage中add进一个哨兵对象，值为0（也就是个nil）,对个
 ![SamuelChan/20170717194612.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170717194612.png)
 
 ```objc
