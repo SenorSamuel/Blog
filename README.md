@@ -13,5 +13,5 @@ Project        | Version           | Article     |
 ### 错误
 如果在文章中发现了问题，欢迎提交 PR 或者 提issue
 
-### Feel free to star！
+### Feel free to star if it helps somehow~~😊
 
