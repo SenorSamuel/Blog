@@ -38,9 +38,9 @@ C和Objective-c中:Block;	C++:introduced in C++11
 [指针函数和函数指针](http://yulingtianxia.com/blog/2014/04/17/han-shu-zhi-zhen-yu-zhi-zhen-han-shu/)
 > int *pfun(int, int);    
 
-> int *(pfun(int, int)); //函数指针:返回值是一个指针的函数pfun();   
+> int *(pfun(int, int)); //指针函数:返回值是一个指针的函数pfun();   
 
-> int (*pfun)(int, int); //指针函数:指向函数的一个指针;
+> int (*pfun)(int, int); //函数指针:指向函数的一个指针;
 
 
 ```objc
@@ -110,47 +110,101 @@ TypeName blockName = ^returnType(parameters) {...};
 > clang -rewrite-objc file_name_of_the_source_code
 
 ```objc
-int main(){	void (^blk)(void) = ^{printf("Block\n");}; 
-	blk();	return 0;}
+int main()
+{
+	void (^blk)(void) = ^{printf("Block\n");}; 
+	blk();
+	return 0;
+}
 ```
 转换之后
 
 ```c
 struct __block_impl { 
-	void *isa;	int Flags;	int Reserved; 
-	void *FuncPtr;};
-struct __main_block_impl_0 {	struct __block_impl impl;	struct __main_block_desc_0* Desc;
-	//构造函数	__main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int flags=0) { 
-		impl.isa = &_NSConcreteStackBlock;//栈block		impl.Flags = flags;		impl.FuncPtr = fp;		Desc = desc; 
-	}};
-static void __main_block_func_0(struct __main_block_impl_0 *__cself){	printf("Block\n");}
-static struct __main_block_desc_0{	unsigned long reserved; 
-	unsigned long Block_size;} __main_block_desc_0_DATA = { 0,sizeof(struct __main_block_impl_0) };
-int main() {	void (*blk)(void) = (void (*)(void))&__main_block_impl_0((void *)__main_block_func_0, &__main_block_desc_0_DATA);   ((void (*)(struct __block_impl *))((struct __block_impl *)blk)->FuncPtr)((struct __block_impl *)blk);	return 0; 
+	void *isa;
+	int Flags;
+	int Reserved; 
+	void *FuncPtr;
+};
+
+struct __main_block_impl_0 {
+	struct __block_impl impl;
+	struct __main_block_desc_0* Desc;
+	//构造函数
+	__main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int flags=0) { 
+		impl.isa = &_NSConcreteStackBlock;//栈block
+		impl.Flags = flags;
+		impl.FuncPtr = fp;
+		Desc = desc; 
+	}
+};
+
+static void __main_block_func_0(struct __main_block_impl_0 *__cself)
+{
+	printf("Block\n");
+}
+
+static struct __main_block_desc_0
+{
+	unsigned long reserved; 
+	unsigned long Block_size;
+} __main_block_desc_0_DATA = { 0,sizeof(struct __main_block_impl_0) };
+
+int main() {
+	void (*blk)(void) = (void (*)(void))&__main_block_impl_0((void *)__main_block_func_0, &__main_block_desc_0_DATA);
+
+   ((void (*)(struct __block_impl *))((struct __block_impl *)blk)->FuncPtr)((struct __block_impl *)blk);
+
+	return 0; 
 }
 ```
 
 #### 1.2 捕获自动变量的block实现
 
 ```c
-int main() {	int dmy = 256;	int val = 10;	const char *fmt = "val = %d\n";	void (^blk)(void) = ^{
+int main() {
+	int dmy = 256;
+	int val = 10;
+	const char *fmt = "val = %d\n";
+	void (^blk)(void) = ^{
 		printf(fmt, val);
 	}; 
-	return 0;}
+	return 0;
+}
 ```
 
 ```c++
-struct __main_block_impl_0 {	struct __block_impl impl;	struct __main_block_desc_0* Desc; 
-	const char *fmt;	int val;	__main_block_impl_0(void *fp, struct __main_block_desc_0 *desc,const char *_fmt, int _val, int flags=0) : fmt(_fmt), val(_val) {		impl.isa = &_NSConcreteStackBlock; 
-		impl.Flags = flags;		impl.FuncPtr = fp;		Desc = desc;	} 
+struct __main_block_impl_0 {
+	struct __block_impl impl;
+	struct __main_block_desc_0* Desc; 
+	const char *fmt;
+	int val;
+	__main_block_impl_0(void *fp, struct __main_block_desc_0 *desc,const char *_fmt, int _val, int flags=0) : fmt(_fmt), val(_val) {
+		impl.isa = &_NSConcreteStackBlock; 
+		impl.Flags = flags;
+		impl.FuncPtr = fp;
+		Desc = desc;
+	} 
 };
-static void __main_block_func_0(struct __main_block_impl_0 *__cself){	const char *fmt = __cself->fmt; 		
+
+static void __main_block_func_0(struct __main_block_impl_0 *__cself)
+{
+	const char *fmt = __cself->fmt; 		
 	int val = __cself->val; 
-	printf(fmt, val);}
-static struct __main_block_desc_0 { 
+	printf(fmt, val);
+}
+
+static struct __main_block_desc_0 { 
 	unsigned long reserved; 
-	unsigned long Block_size;} __main_block_desc_0_DATA = { 0,sizeof(struct __main_block_impl_0) };
-int main() {	int dmy = 256;	int val = 10;	const char *fmt = "val = %d\n";	void (*blk)(void) = &__main_block_impl_0(	__main_block_func_0, &__main_block_desc_0_DATA, fmt, val);
+	unsigned long Block_size;
+} __main_block_desc_0_DATA = { 0,sizeof(struct __main_block_impl_0) };
+
+int main() {
+	int dmy = 256;
+	int val = 10;
+	const char *fmt = "val = %d\n";
+	void (*blk)(void) = &__main_block_impl_0(
+	__main_block_func_0, &__main_block_desc_0_DATA, fmt, val);
   	return 0; 
  }
 ```
@@ -159,29 +213,66 @@ struct __main_block_impl_0 {	struct __block_impl impl;	struct __main_block_des
 
 ```objc
 __block int val = 10;
-void (^blk)(void) = ^{val = 1;};
+
+void (^blk)(void) = ^{val = 1;};
 
 ```
 
 ```c++
 struct __Block_byref_val_0 { 
-	void *__isa;	__Block_byref_val_0 *__forwarding; 
-	int __flags;	int __size;	int val;};
-struct __main_block_impl_0 {	struct __block_impl impl;	struct __main_block_desc_0* Desc;	__Block_byref_val_0 *val;	__main_block_impl_0(void *fp, struct __main_block_desc_0 *desc,__Block_byref_val_0 *_val, int flags=0) : val(_val->__forwarding) { 
-		impl.isa = &_NSConcreteStackBlock;		impl.Flags = flags;		impl.FuncPtr = fp;		Desc = desc; 
-	}};
-static void __main_block_func_0(struct __main_block_impl_0 *__cself){	__Block_byref_val_0 *val = __cself->val;
+	void *__isa;
+	__Block_byref_val_0 *__forwarding; 
+	int __flags;
+	int __size;
+	int val;
+};
+
+struct __main_block_impl_0 {
+	struct __block_impl impl;
+	struct __main_block_desc_0* Desc;
+	__Block_byref_val_0 *val;
+	__main_block_impl_0(void *fp, struct __main_block_desc_0 *desc,__Block_byref_val_0 *_val, int flags=0) : val(_val->__forwarding) { 
+		impl.isa = &_NSConcreteStackBlock;
+		impl.Flags = flags;
+		impl.FuncPtr = fp;
+		Desc = desc; 
+	}
+};
+
+static void __main_block_func_0(struct __main_block_impl_0 *__cself)
+{
+	__Block_byref_val_0 *val = __cself->val;
 	//当block被拷贝到堆区时,__block变量也会被拷贝到堆区,block会持有这个__block变量
-	//为了保证无论__block变量在栈区或者堆区都能访问的是堆区的__block变量,使用了这种机制	(val->__forwarding->val) = 1; 
+	//为了保证无论__block变量在栈区或者堆区都能访问的是堆区的__block变量,使用了这种机制
+	(val->__forwarding->val) = 1; 
 }
-static void __main_block_copy_0( struct __main_block_impl_0*dst,struct __main_block_impl_0*src){	_Block_object_assign(&dst->val, src->val, BLOCK_FIELD_IS_BYREF);}
-static void __main_block_dispose_0(struct __main_block_impl_0*src) {	_Block_object_dispose(src->val, BLOCK_FIELD_IS_BYREF); }	static struct __main_block_desc_0 {		unsigned long reserved;		unsigned long Block_size;		void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*); 
-		void (*dispose)(struct __main_block_impl_0*);} __main_block_desc_0_DATA = {0,sizeof(struct __main_block_impl_0),__main_block_copy_0, __main_block_dispose_0};
-int main(){
-	//__block修饰的变量转换成了一个结构体	__Block_byref_val_0 val = {
-		0,		&val,		0, 
-		sizeof(__Block_byref_val_0), 10	};	
-	blk = &__main_block_impl_0(__main_block_func_0, &__main_block_desc_0_DATA, &val, 0x22000000);	return 0; 
+
+static void __main_block_copy_0( struct __main_block_impl_0*dst,struct __main_block_impl_0*src)
+{
+	_Block_object_assign(&dst->val, src->val, BLOCK_FIELD_IS_BYREF);
+}
+
+static void __main_block_dispose_0(struct __main_block_impl_0*src) {
+	_Block_object_dispose(src->val, BLOCK_FIELD_IS_BYREF); }
+	static struct __main_block_desc_0 {
+		unsigned long reserved;
+		unsigned long Block_size;
+		void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*); 
+		void (*dispose)(struct __main_block_impl_0*);
+} __main_block_desc_0_DATA = {0,sizeof(struct __main_block_impl_0),__main_block_copy_0, __main_block_dispose_0};
+
+int main()
+{
+	//__block修饰的变量转换成了一个结构体
+	__Block_byref_val_0 val = {
+		0,
+		&val,
+		0, 
+		sizeof(__Block_byref_val_0), 10
+	};
+	
+	blk = &__main_block_impl_0(__main_block_func_0, &__main_block_desc_0_DATA, &val, 0x22000000);
+	return 0; 
 }
 
 ```
@@ -190,29 +281,71 @@ struct __Block_byref_val_0 {
 #### 1.4 捕获对象的实现(没__block修饰)
 
 ```c++
-blk_t blk;{	id array = [[NSMutableArray alloc] init]; 
-	blk = [^(id obj) {		[array addObject:obj];		NSLog(@"array count = %ld", [array count]); } copy];
+blk_t blk;
+{
+	id array = [[NSMutableArray alloc] init]; 
+	blk = [^(id obj) {
+		[array addObject:obj];
+		NSLog(@"array count = %ld", [array count]); } copy];
 }
 
 blk([[NSObject alloc] init]); 
-blk([[NSObject alloc] init]);blk([[NSObject alloc] init]);
+blk([[NSObject alloc] init]);
+blk([[NSObject alloc] init]);
 
 //输出
-array count = 1array count = 2array count = 3
+array count = 1
+array count = 2
+array count = 3
 ```
 
 底层实现  
 
 ```c++
-Listing 5–8. Converted source code of Listing 5–7/* a struct for the Block and some functions */struct __main_block_impl_0 {	struct __block_impl impl;	struct __main_block_desc_0* Desc;	id __strong array;//如果array是__weak修饰的话,那么这里就是__weak,不是__strong	__main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, id __strong _array, int flags=0) : array(_array) {	impl.isa = &_NSConcreteStackBlock; impl.Flags = flags;	impl.FuncPtr = fp;	Desc = desc;} };
-static void __main_block_func_0(struct __main_block_impl_0 *__cself, id obj){	id __strong array = __cself->array;	[array addObject:obj];	NSLog(@"array count = %ld", [array count]);}
-static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src){	_Block_object_assign(&dst->array, src->array,BLOCK_FIELD_IS_OBJECT);//Block持有对象}
-static void __main_block_dispose_0(struct __main_block_impl_0 *src){	_Block_object_dispose(src->array, BLOCK_FIELD_IS_OBJECT);//Block被释放时调用}
-static struct __main_block_desc_0 {	unsigned long reserved;	unsigned long Block_size;	void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*); void (*dispose)(struct __main_block_impl_0*);
- } __main_block_desc_0_DATA = {0,sizeof(struct __main_block_impl_0), __main_block_copy_0, __main_block_dispose_0};
-/* Block literal and executing the Block */blk_t blk;{	id __strong array = [[NSMutableArray alloc] init];	blk = &__main_block_impl_0(__main_block_func_0,&__main_block_desc_0_DATA, array, 0x22000000);	blk = [blk copy]; 
+Listing 5–8. Converted source code of Listing 5–7
+/* a struct for the Block and some functions */
+struct __main_block_impl_0 {
+	struct __block_impl impl;
+	struct __main_block_desc_0* Desc;
+	id __strong array;//如果array是__weak修饰的话,那么这里就是__weak,不是__strong
+	__main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, id __strong _array, int flags=0) : array(_array) {
+	impl.isa = &_NSConcreteStackBlock; impl.Flags = flags;
+	impl.FuncPtr = fp;
+	Desc = desc;
+} };
+
+static void __main_block_func_0(struct __main_block_impl_0 *__cself, id obj)
+{
+	id __strong array = __cself->array;
+	[array addObject:obj];
+	NSLog(@"array count = %ld", [array count]);
 }
-(*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]); 
+
+static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
+{
+	_Block_object_assign(&dst->array, src->array,BLOCK_FIELD_IS_OBJECT);//Block持有对象
+}
+
+static void __main_block_dispose_0(struct __main_block_impl_0 *src)
+{
+	_Block_object_dispose(src->array, BLOCK_FIELD_IS_OBJECT);//Block被释放时调用
+}
+
+static struct __main_block_desc_0 {
+	unsigned long reserved;
+	unsigned long Block_size;
+	void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*); void (*dispose)(struct __main_block_impl_0*);
+ } __main_block_desc_0_DATA = {0,sizeof(struct __main_block_impl_0), __main_block_copy_0, __main_block_dispose_0};
+
+/* Block literal and executing the Block */
+blk_t blk;
+{
+	id __strong array = [[NSMutableArray alloc] init];
+	blk = &__main_block_impl_0(__main_block_func_0,&__main_block_desc_0_DATA, array, 0x22000000);
+	blk = [blk copy]; 
+}
+
+(*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]); 
 (*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]); 
 (*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]);
 ```
@@ -226,23 +359,37 @@ __block id __strong obj = [[NSObject alloc] init];
 
 ```c++
 struct __Block_byref_obj_0 { 
-	void *__isa;	__Block_byref_obj_0 *__forwarding;	int __flags;	int __size;	void (*__Block_byref_id_object_copy)(void*, void*); void 	(*__Block_byref_id_object_dispose)(void*); 
-	__strong id obj;};
+	void *__isa;
+	__Block_byref_obj_0 *__forwarding;
+	int __flags;
+	int __size;
+	void (*__Block_byref_id_object_copy)(void*, void*); void 	(*__Block_byref_id_object_dispose)(void*); 
+	__strong id obj;
+};
 
 /*
   1.跟捕获非__block对象的区别: __Block_byref_id_object_copy_131和__Block_byref_id_object_dispose_131;当obj由__strong修饰时,就调用了__Block_byref_id_object_copy_131;
   2.obj是一个包着[[NSObject alloc] init]的对象,内存管理由__strong修饰,
   3.新增的两个方法用来对[[NSObject alloc] init]进行内存管理
 */
-static void __Block_byref_id_object_copy_131(void *dst, void *src) {
-	_Block_object_assign((char*)dst + 40, *(void * *) ((char*)src + 40), 131);}
-static void __Block_byref_id_object_dispose_131(void *src) {	_Block_object_dispose(*(void * *) ((char*)src + 40), 131); 
+
+static void __Block_byref_id_object_copy_131(void *dst, void *src) {
+	_Block_object_assign((char*)dst + 40, *(void * *) ((char*)src + 40), 131);
 }
-/* __block variable declaration */__Block_byref_obj_0 obj = { 0,	&obj,	0x2000000, 
+
+static void __Block_byref_id_object_dispose_131(void *src) {
+	_Block_object_dispose(*(void * *) ((char*)src + 40), 131); 
+}
+
+/* __block variable declaration */
+__Block_byref_obj_0 obj = { 0,
+	&obj,
+	0x2000000, 
 	sizeof(__Block_byref_obj_0), 
 	__Block_byref_id_object_copy_131, 	
 	__Block_byref_id_object_dispose_131, 
-	[[NSObject alloc] init]};
+	[[NSObject alloc] init]
+};
 ```
 
 > 接下来讨论的两个问题: 1. Block是如何内存分配? 2.为什么需要__forwarding?
@@ -274,26 +421,44 @@ _NSConcreteGlobalBlock:储存在数据区,全局只有一个满足两个条件�
 1.在ARC下,大部分情况下面,编译器都会自动copy block到堆区:函数的返回参数
 
 ```objc
-typedef int (^blk_t)(int);blk_t func(int rate){	return ^(int count){return rate * count;};}
+typedef int (^blk_t)(int);
+blk_t func(int rate)
+{
+	return ^(int count){return rate * count;};
+}
 ```
 
 ```objc
-blk_t func(int rate){	blk_t tmp = &__func_block_impl_0(__func_block_func_0, &__func_block_desc_0_DATA, rate);	tmp = objc_retainBlock(tmp);//相当于_Block_copy	return objc_autoreleaseReturnValue(tmp);
+blk_t func(int rate)
+{
+	blk_t tmp = &__func_block_impl_0(__func_block_func_0, &__func_block_desc_0_DATA, rate);
+	tmp = objc_retainBlock(tmp);//相当于_Block_copy
+	return objc_autoreleaseReturnValue(tmp);
 }
 ```
 2.需要手动copy block:block作为方法参数(除了Grand Central Dispatch API,Cocoa框架usingBlock开头的方法名)
 
 ```objc
-- (id) getBlockArray{	int val = 10;	return [[NSArray alloc] initWithObjects: ^{NSLog(@"blk0:%d", val);}, ^{NSLog(@"blk1:%d", val);}, nil];}
+- (id) getBlockArray
+{
+	int val = 10;
+	return [[NSArray alloc] initWithObjects: ^{NSLog(@"blk0:%d", val);}, ^{NSLog(@"blk1:%d", val);}, nil];
+}
 
 //原因:从栈区复制到堆区消耗的性能过大,所以编译器不会将所有block都拷贝到堆区,这种情况下需要手动调用copy
 
 //错误
-id obj = getBlockArray();typedef void (^blk_t)(void);blk_t blk = (blk_t)[obj objectAtIndex:0]; 
+id obj = getBlockArray();
+typedef void (^blk_t)(void);
+blk_t blk = (blk_t)[obj objectAtIndex:0]; 
 blk();//栈block销毁,野指针
 
 //正确
-- (id) getBlockArray{	int val = 10;	return [[NSArray alloc] initWithObjects: [^{NSLog(@"blk0:%d", val);} copy], [^{NSLog(@"blk1:%d", val);} copy], nil];}
+- (id) getBlockArray
+{
+	int val = 10;
+	return [[NSArray alloc] initWithObjects: [^{NSLog(@"blk0:%d", val);} copy], [^{NSLog(@"blk1:%d", val);} copy], nil];
+}
 ```
 
 #### 2.4 __block变量的内存分析
