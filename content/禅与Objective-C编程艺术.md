@@ -164,10 +164,11 @@ NSString * const ZOCFooDidBecomeBarNotification = @"ZOCFooDidBecomeBarNotificati
 @end
 
 9.代理优化:从面向对象到面向协议,只需要遵守ZOCFeedParserProtocol.h的对象
-- (instancetype)initWithFeedParser:(id<ZOCFeedParserProtocol>)feedParser;
-
+(0) Java中的接口在Apple中几乎只在代理委托中使用,但是许多知名iOS开源库都使用了抽象接口
+(1) @synthesize的作用是: setter,getter声明和实现, 并默认生成带下划线变量;可以自定义生成属性的名字,例如 @synthesize age = _nianlin;getter,setter会读取和设置_nianlin的值
+(2) @protocol中可以有@property属性,但是编译不会自动合成,需要手动声明
+(3) 最好是不要在protocol中使用属性, AFNetworking和SDWebImage都只有method,没有property
 @protocol ZOCFeedParserDelegate;
-
 @protocol ZOCFeedParserProtocol <NSObject>
 @property (nonatomic, weak) id <ZOCFeedParserDelegate> delegate;
 @property (nonatomic, strong) NSURL *url;
@@ -184,6 +185,7 @@ NSString * const ZOCFooDidBecomeBarNotification = @"ZOCFooDidBecomeBarNotificati
 - (void)feedParserDidFinish:(id<ZOCFeedParserProtocol>)parser;
 - (void)feedParser:(id<ZOCFeedParserProtocol>)parser didFailWithError:(NSError *)error;
 
+- (instancetype)initWithFeedParser:(id<ZOCFeedParserProtocol>)feedParser;
 
 ```
 ![SamuelChan/20170630192229.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170630192229.png)
