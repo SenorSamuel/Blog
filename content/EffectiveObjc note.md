@@ -111,11 +111,11 @@ typedef NS_OPTIONS(NSUInteger, EOCPermittedDirection) {
 	
 	线程安全: 当我们讨论多线程安全的时候，其实是在讨论多个线程同时访问一个内存区域的安全问题
 	
-	简书上大部分的线程安全都说的非常片面,推荐Mr_Peak老师这篇文章,深入浅出解释[iOS多线程到底不安全在哪里?](http://mrpeak.cn/blog/ios-thread-safety/)
+	大部分关于线程安全的文章都说的非常片面,**推荐Mr_Peak老师这篇文章,深入浅出解释**[iOS多线程到底不安全在哪里?](http://mrpeak.cn/blog/ios-thread-safety/)
 
 
 #### Item7 在对象内部尽量直接访问实例变量
-- 读取数据时,通过实例变量来读,而写入数据时,则应通过属性来写
+- ~~读取数据时,通过实例变量来读,而写入数据时,则应通过属性来写~~
 - 初始化方法移动通过实例变量来读写数据
 - 懒加载时,一定通过属性来getter数据
 
@@ -163,22 +163,100 @@ Person: `firstName` `lastName` `age`
 
 #### Item9 使用"类簇默认"隐藏实现细节
 
+#### Item10 关联对象的使用
+- 使用场景: 1.为分类添加属性  2.防止方法多次重入
+- 为分类添加属性: .h中@property声明一个属性后,运行会报错:找不到selector,这是因为category不会为为该属性自动合成,
+- 语法:
+
+```objc
+enum {
+        OBJC_ASSOCIATION_ASSIGN = 0,          // 等价于 @property (assign) 或 @property (unsafe_unretained)
+        OBJC_ASSOCIATION_RETAIN_NONATOMIC = 1,// 等价于 @property (nonatomic, strong)
+        OBJC_ASSOCIATION_COPY_NONATOMIC = 3,  // 等价于 @property (nonatomic, copy)
+        OBJC_ASSOCIATION_RETAIN = 01401,      // 等价于 @property (atomic, strong)
+        OBJC_ASSOCIATION_COPY = 01403         // 等价于 @property (atomic, copy)
+};
+// 用key将object和value关联起来
+// key: 一般使用@selector(属性名)作为key, @selector返回hash方法名的c字符串
+void objc_setAssociatedObject(id object, void *key, id value,objc_AssociationPolicy policy)
+id objc_getAssociatedObject(id object, void *key)
+// 移除对象object的所有关联对象
+void objc_removeAssociatedObjects(id object)
+
+//例子
+.h
+@interface NSObject (secretary)
+@property (nonatomic, copy) NSString *secretaryName;
+@end
+.m
+#import <objc/runtime.h>
+@implementation NSObject (secretary)
+-(void)setSecretaryName:(NSString *)secretaryName {
+    objc_setAssociatedObject(self, @selector(secretaryName), secretaryName, OBJC_ASSOCIATION_COPY);
+}
+
+- (NSString *)secretaryName {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+//防止多次调入同一个方法
+@interface Engine : NSObject
+
+@end
+
+@implementation Engine
+
+- (void)launch {
+     // 在对象生命周期内, 不增加 flag 属性的情况下, 放置多次调进这个方法
+     if (objc_getAssociatedObject(self, _cmd)) return;
+     else objc_setAssociatedObject(self, _cmd, @"Launched", OBJC_ASSOCIATION_RETAIN);
+
+     NSLog(@"launch only once");
+}
+@end
+```
+[Objective-C Runtime Programming Guide](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtInteracting.html#//apple_ref/doc/uid/TP40008048-CH103-SW1)
+
+[Associated Objects by Mattt](http://nshipster.cn/associated-objects/)
+
+[关联对象 AssociatedObject 完全解析 by Draveness](https://draveness.me/ao#关联对象的实现)
 
 
+### Item11 理解objc_msgSend作用
+- Objective-c的动态性:对象接受到消息之后,究竟该调用哪一个方法完全于运行期决定,甚至可以在程序运行时改变
+- objc_msgSend
 
+```objc
+//原型:
+/** 
+ * Sends a message with a simple return value to an instance of a class.
+ * 
+ * @param self A pointer to the instance of the class that is to receive the message.
+ * @param op The selector of the method that handles the message.
+ * @param ... 
+ *   A variable argument list containing the arguments to the method.
+ * 
+ * @return The return value of the method.
+ * 
+ * @note When it encounters a method call, the compiler generates a call to one of the
+ *  functions \c objc_msgSend, \c objc_msgSend_stret, \c objc_msgSendSuper, or \c objc_msgSendSuper_stret.
+ *  Messages sent to an object’s superclass (using the \c super keyword) are sent using \c objc_msgSendSuper; 
+ *  other messages are sent using \c objc_msgSend. Methods that have data structures as return values
+ *  are sent using \c objc_msgSendSuper_stret and \c objc_msgSend_stret.
+ */
+objc_msgSend(id _Nullable self, SEL _Nonnull op, parameters)
 
+//example
+id returnValue = objc_msgSend(someObject,@selector(messageName:),parameter);
+ 
+objc_msgSend_stret   返回结构体 
+objc_msgSend_fpret   返回浮点数
+objc_msgSendSuper   给超类发消息
+```
 
+- objc_msgSend会搜索"方法列表",如果能找到与SEL的方法, 就跳转到实现代码(IMP),否则沿着继承体系继续向上查找,如果还是找不到就进入消息转发操作(message forwarding)
 
-
-
-
-
-
-
-
-
-
-
+- objc_msgSend会缓存匹配结果在"快速映射表(fast map)"里面,每个类都有这样一块缓存,
 
 
 
