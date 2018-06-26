@@ -1,4 +1,6 @@
-## UI
+## iMooc之UI拾遗
+
+![SamuelChan/20180626154542.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180626154542.png)
 
 ### 一.UITableView
 
@@ -47,7 +49,8 @@ UIView负责接收事件传递和响应,CALayer负责视图显示/渲染,体现�
 3.默认事件是沿着响应链向上传递,如果到最终到UIApplicationDelegate都没有处理事件,那么事件就不被处理
 ![SamuelChan/20180624222931.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180624222931.png)
 
-4.
+4.UIControl,UIGesture和响应链
+
 > When a control-specific event occurs, the control calls any associated action methods right away. Action methods are dispatched through the current UIApplication object, which finds an appropriate object to handle the message, following the responder chain if needed.
 
 **UIControl类的事件分发由UIApplication负责,如果UIControl不处理,那么事件响应会跟随响应者链条**
@@ -114,6 +117,7 @@ case 5: gesture.`delaysTouchesBegan ` == YES(default是NO)  + 点击testView
 
 #### 界面优化方案
 	
+![SamuelChan/20180626154235.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180626154235.png)
 
 
 #### 参考资料
