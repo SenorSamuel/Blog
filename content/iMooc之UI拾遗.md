@@ -9,8 +9,18 @@
 
 cell = [tableView dequeueReusableCellWithIdentifier:identifier];
 
-For performance reasons, a table view’s data source should generally reuse UITableViewCell objects when it assigns cells to rows in its tableView:cellForRowAtIndexPath: method. A table view maintains a queue or list of UITableViewCell objects that the data source has marked for reuse. Call this method from your data source object when asked to provide a new cell for the table view. This method dequeues an existing cell if one is available or creates a new one using the class or nib file you previously registered. If no cell is available for reuse and you did not register a class or nib file, this method returns nil.
-If you registered a class for the specified identifier and a new cell must be created, this method initializes the cell by calling its initWithStyle:reuseIdentifier: method. For nib-based cells, this method loads the cell object from the provided nib file. If an existing cell was available for reuse, this method calls the cell’s prepareForReuse method instead.
+For performance reasons, a table view’s data source should generally reuse UITableViewCell
+objects when it assigns cells to rows in its tableView:cellForRowAtIndexPath: method. A table
+view maintains a queue or list of UITableViewCell objects that the data source has marked for
+reuse. Call this method from your data source object when asked to provide a new cell for the
+table view. This method dequeues an existing cell if one is available or creates a new one using
+the class or nib file you previously registered. If no cell is available for reuse and you did not
+register a class or nib file, this method returns nil.
+
+If you registered a class for the specified identifier and a new cell must be created, this method
+initializes the cell by calling its initWithStyle:reuseIdentifier: method. For nib-based cells, this
+method loads the cell object from the provided nib file. If an existing cell was available for reuse,
+this method calls the cell’s prepareForReuse method instead.
 ```
 使用了两个NSMutableSet来管理,`_waitUsedQueue`和`_usingQueue`
 
