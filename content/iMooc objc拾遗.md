@@ -130,6 +130,13 @@ attachMethodLists(Class cls, method_list_t **addedLists, int addedCount,
     // Reallocate un-fixed method lists.
     // The new methods are PREPENDED to the method list array.
 
+    method_list_t *oldBuf[2];
+    method_list_t **oldLists;
+    ......
+    method_list_t *newBuf[2];
+    method_list_t **newLists;
+    ......
+    
     newCount = 0;
     int i;
     for (i = 0; i < addedCount; i++) {
