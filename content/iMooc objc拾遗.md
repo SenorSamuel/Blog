@@ -222,7 +222,7 @@ void objc_setAssociatedObject(id object, const void *key, id value, objc_Associa
     └── void _object_set_associative_reference(id object, void *key, id value, uintptr_t policy)
 
 static id acquireValue(id value, uintptr_t policy) {
-    // 遇见不合法policy或者assign直接返回，也就是说将其他无效policy当做assign处理
+    // 不合法policy或者assign直接返回
     switch (policy & 0xFF) {
     case OBJC_ASSOCIATION_SETTER_RETAIN:
         return ((id(*)(id, SEL))objc_msgSend)(value, SEL_retain);
@@ -390,3 +390,107 @@ void _object_remove_assocations(id object) {
 }
 
 ```
+
+
+### 0x03 扩展(Extension)
+
+- 作用: 声明私有属性和私有变量
+- 与分类的区别: 1.编译时决定 2.只能以声明的方式存在,一般是寄生于.m文件中 3.不能为系统类添加扩展
+
+### 0x04 代理
+
+### 0x05 通知
+
+- 使用`观察者模式`实现的的跨层消息传递机制
+- 传递方式为`一对多`
+
+> 如何实现通知? hint: 苹果爸爸最爱的hashmap
+
+![SamuelChan/20180705111410.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180705111410.png)
+
+### 0x06 KVO
+
+- key value observing
+- 观察者设计模式
+- Apple使用了isa-swizzling来使用kvo
+
+通过NSKeyValueObserverNotification分类来实现
+
+```objc
+//1.注册和解注册
+- (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context;
+- (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath;
+
+//2.当观察值发生变化的时候调用(setter,setValue:ForKey:)
+- (void)willChangeValueForKey:(NSString *)key;
+- (void)didChangeValueForKey:(NSString *)key;
+
+//3.接收到通知的回调
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
+
+```
+
+派生类setter方法的实现模拟/手动回调KVO
+
+```objc
+- (void) setAge:(int)theAge
+{
+    [self willChangeValueForKey:@"age"];
+    age = theAge;
+    [self didChangeValueForKey:@"age"];
+}
+
+//禁用自动回调KVO
++ (BOOL) automaticallyNotifiesObserversForKey:(NSString *)key {
+    if ([key isEqualToString:@"age"]) {
+        return NO;
+    }
+
+    return [super automaticallyNotifiesObserversForKey:key];
+}
+
+```
+
+KVO的底层实现
+
+当一个类的属性被观察的时候，系统会通过runtime动态的创建一个该类的派生类，并且会在这个类中重写基类被观察的属性的setter方法，而且系统将这个类的isa指针指向了派生类，从而实现了给监听的属性赋值时调用的是派生类的setter方法。重写的setter方法会在调用原setter方法前后，通知观察对象值得改变。
+![SamuelChan/20171019113945.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171019113945.png)
+
+![SamuelChan/20171019114109.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171019114109.png)
+
+![SamuelChan/20180705112715.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180705112715.png)
+
+
+### 0x07 KVC
+
+- key value coding
+
+```objc
+/* Given a key that identifies an attribute or to-one relationship, return the attribute value or the 
+related object. Given a key that identifies a to-many relationship, return an immutable array or an immutable set that contains all of the related objects.
+    
+The default implementation of this method does the following:
+    1. Searches the class of the receiver for an accessor method whose name matches the pattern -get<Key>, -<key>, or -is<Key>, in that order. If such a method is found it is invoked. If the type of the method's result is an object pointer type the result is simply returned. If the type of the result is one of the scalar types supported by NSNumber conversion is done and an NSNumber is returned. Otherwise, conversion is done and an NSValue is returned (new in Mac OS 10.5: results of arbitrary type are converted to NSValues, not just NSPoint, NRange, NSRect, and NSSize).
+    ......
+    5. Otherwise (no simple accessor method or set of collection access methods is found), if the receiver's class' +accessInstanceVariablesDirectly property returns YES, searches the class of the receiver for an instance variable whose name matches the pattern _<key>, _is<Key>, <key>, or is<Key>, in that order. If such an instance variable is found, the value of the instance variable in the receiver is returned, with the same sort of conversion to NSNumber or NSValue as in step 1.
+    6. Otherwise (no simple accessor method, set of collection access methods, or instance variable is found), invokes -valueForUndefinedKey: and returns the result. The default implementation of -valueForUndefinedKey: raises an NSUndefinedKeyException, but you can override it in your application.
+*/
+- (nullable id)valueForKey:(NSString *)key;
+
+/* Given a value and a key that identifies an attribute, set the value of the attribute. Given an object and a key that identifies a to-one relationship, relate the object to the receiver, unrelating the previously related object if there was one. Given a collection object and a key that identifies a to-many relationship, relate the objects contained in the collection to the receiver, unrelating previously related objects if there were any.
+
+The default implementation of this method does the following:
+    1. Searches the class of the receiver for an accessor method whose name matches the  pattern -set<Key>:. If such a method is found the type of its parameter is checked. If the parameter type is not an object pointer type but the value is nil -setNilValueForKey: is invoked. The default implementation of -setNilValueForKey: raises an NSInvalidArgumentException, but you can override it in your application. Otherwise, if the type of the method's parameter is an object pointer type the method is simply invoked with the value as the argument. If the type of the method's parameter is some other type the inverse of the NSNumber/NSValue conversion done by -valueForKey: is performed before the method is invoked.
+    2. Otherwise (no accessor method is found), if the receiver's class' +accessInstanceVariablesDirectly property returns YES, searches the class of the receiver for an instance variable whose name matches the pattern _<key>, _is<Key>, <key>, or is<Key>, in that order. If such an instance variable is found and its type is an object pointer type the value is retained and the result is set in the instance variable, after the instance variable's old value is first released. If the instance variable's type is some other type its value is set after the same sort of conversion from NSNumber or NSValue as in step 1.
+    3. Otherwise (no accessor method or instance variable is found), invokes -setValue:forUndefinedKey:. The default implementation of -setValue:forUndefinedKey: raises an NSUndefinedKeyException, but you can override it in your application.
+*/
+- (void)setValue:(nullable id)value forKey:(NSString *)key;
+
+``` 
+
+![SamuelChan/20180705124114.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180705124114.png)
+
+![SamuelChan/20180705124659.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180705124659.png)
+
+### 0x08 属性关键字
+@property 默认值: readwrite,atomic,assign
