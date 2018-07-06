@@ -5,7 +5,6 @@
   - [4.美化代码](#4%E7%BE%8E%E5%8C%96%E4%BB%A3%E7%A0%81)
   - [5.代码组织](#5%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87)
   - [6.对象之间的通讯](#6%E5%AF%B9%E8%B1%A1%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E8%AE%AF)
-  - [7.多重代理](#7%E5%A4%9A%E9%87%8D%E4%BB%A3%E7%90%86)
 
 ### 禅与Objective-C编程艺术读书笔记
 
@@ -277,59 +276,3 @@ UIViewControllerB.m想要重写UITableViewDelegate
 参考资料:http://devetc.org/code/2014/03/02/subclassing-delegates.html#fn:_cmd-arg(在相同方法中@selector(xxx) == _cmd)
 ```
 
-#### 7.多重代理
-1. 多个代理对象由一个proxy类来管理,proxy作为委托者的delegate
-2. proxy并没有实现代理回调,所以这里需要使用到运行时的相关方法
-![SamuelChan/20170704113634.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170704113634.png)
-3. 相关代码  
-
-```
-(1)设置proxy代理
-    _multipleDelegate = [MultipleDelegate new];
-    //添加要处理delegate方法的对象
-    NSArray *array = @[self, [ScrollDelegate new]];
-    _multipleDelegate.allDelegates = array;
-    self.scrollView.delegate = (id)_multipleDelegate;
-(2)防止强引用
-- (void)setDelegateTargets:(NSArray *)delegateTargets{
-    self.weakRefTargets = [NSPointerArray weakObjectsPointerArray];
-    for (id delegate in delegateTargets) {
-        [self.weakRefTargets addPointer:(__bridge void *)delegate];
-    }
-}
-(3)分发代理方法:
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector{
-    NSMethodSignature *signature = [super methodSignatureForSelector:aSelector];
-    if (!signature) {
-        for (id target in self.allDelegates) {
-            if ((signature = [target methodSignatureForSelector:aSelector])) {
-                break;
-            }
-        }
-    }
-    return signature;
-}
- 
-- (void)forwardInvocation:(NSInvocation *)anInvocation{
-    for (id target in self.allDelegates) {
-        if ([target respondsToSelector:anInvocation.selector]) {
-            [anInvocation invokeWithTarget:target];
-        }
-    }
-}
-
-由于我们调用delegate的方法时，一般会先调用[delegate responseToSelector]方法，所以，我们还需要实现这个方法：
-- (BOOL)respondsToSelector:(SEL)aSelector{
-    if ([super respondsToSelector:aSelector]) {
-        return YES;
-    }
-    for (id target in self.allDelegates) {
-        if ([target respondsToSelector:aSelector]) {
-            return YES;
-        }
-    }
-    return NO;
-}  
-@end
-```
-[多个代理资料](http://www.cocoachina.com/ios/20151208/14595.html)
