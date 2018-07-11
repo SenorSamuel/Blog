@@ -9,14 +9,10 @@
     - [When No Longer Needed, You Must Relinquish Ownership of an Object You Own](#when-no-longer-needed-you-must-relinquish-ownership-of-an-object-you-own)
     - [You Must Not Relinquish Ownership of an Object You Don’t Own](#you-must-not-relinquish-ownership-of-an-object-you-dont-own)
   - [Implementing alloc, retain, release, and dealloc](#implementing-alloc-retain-release-and-dealloc)
-    - [GNUStep implementation](#gnustep-implementation)
-    - [Apple’s Implementation of alloc, retain, release, and dealloc](#apples-implementation-of-alloc-retain-release-and-dealloc)
   - [Autorelease](#autorelease)
-    - [Implementing autorelease](#implementing-autorelease)
 - [Chapter2 ARC Rules](#chapter2-arc-rules)
   - [Ownership qualifiers](#ownership-qualifiers)
   - [Rules](#rules)
-    - [Core Foundation](#core-foundation)
   - [Property](#property)
 - [Chapter 3 ARC implementation](#chapter-3-arc-implementation)
   - [__strong](#__strong)
@@ -1229,7 +1225,7 @@ objc_object::sidetable_retain()
 
     if (spinlock_trylock(&table->slock)) {
         size_t& refcntStorage = table->refcnts[this];
-        if (! (refcntStorage & SIDE_TABLE_RC_PINNED)) { //判断是否移除
+        if (! (refcntStorage & SIDE_TABLE_RC_PINNED)) { //判断是否溢出
             refcntStorage += SIDE_TABLE_RC_ONE; //引用计数加1
         }
         spinlock_unlock(&table->slock);
