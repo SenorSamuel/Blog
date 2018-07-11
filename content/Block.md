@@ -99,9 +99,9 @@ TypeName blockName = ^returnType(parameters) {...};
 ## Chapter 5 Blocks Implementation
 
 > 总结:  
-> 当一个对象在block中被使用时(`1.3`,`1.4`,`1.5`),如果block没有被copy(栈block或者全局block)的话,那么block不会拥有该对象的ownerShip,只是拷贝了指针引用而已,该对象能否访问与block无关;只有block被copy的时候,block拷贝到了堆区,才会对使用到的对象进行内存管理;一般来说,block如果需要被正确引用('保存一段代码,在适合的时机调用'),在ARC下都避免不了被拷贝到堆区  
-> 1.3和1.5的区别在于当`__block`和`__strong`同时修饰的一个对象,`1.5`会先调用`__Block_byref_id_object_copy_131`  
-> **对象不一定存在堆区: 只是由于栈区小,堆区在无内存警告时大,一般的对象都在堆区;存在栈区的对象在`{ }`作用域除了之后就销毁了**
+> (1) 当一个对象在block中被使用时(`1.3`,`1.4`,`1.5`),如果block没有被copy(栈block或者全局block)的话,那么block不会拥有该对象的ownerShip,只是拷贝了指针引用而已,该对象能否访问与block无关;只有block被copy的时候,block拷贝到了堆区,才会对使用到的对象进行内存管理;一般来说,block如果需要被正确引用('保存一段代码,在适合的时机调用'),在ARC下都避免不了被拷贝到堆区  
+> (2) 1.3和1.5的区别在于当`__block`和`__strong`同时修饰的一个对象,`1.5`会先调用`__Block_byref_id_object_copy_131`  
+> (3) **对象不一定存在堆区: 只是由于栈区小,堆区在无内存警告时大,一般的对象都在堆区;存在栈区的对象在`{ }`作用域除了之后就销毁了**
  
 ### 1.Block的实现
 		   
@@ -209,6 +209,14 @@ int main() {
  }
 ```
 
+
+> 捕获对象时(包括__block变量和局部对象)
+
+|type|Argument|
+| --- | --- |
+| Object |__block variable|
+| BLOCK_FIELD_IS_OBJECT | BLOCK_FIELD_IS_BYREF |
+
 #### 1.3 捕获__block修饰的栈变量
 
 ```objc
@@ -253,12 +261,14 @@ static void __main_block_copy_0( struct __main_block_impl_0*dst,struct __main_bl
 }
 
 static void __main_block_dispose_0(struct __main_block_impl_0*src) {
-	_Block_object_dispose(src->val, BLOCK_FIELD_IS_BYREF); }
-	static struct __main_block_desc_0 {
-		unsigned long reserved;
-		unsigned long Block_size;
-		void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*); 
-		void (*dispose)(struct __main_block_impl_0*);
+	_Block_object_dispose(src->val, BLOCK_FIELD_IS_BYREF); 
+}
+
+static struct __main_block_desc_0 {
+	unsigned long reserved;
+	unsigned long Block_size;
+	void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*); 	void (*dispose)(struct __main_block_impl_0*);
+
 } __main_block_desc_0_DATA = {0,sizeof(struct __main_block_impl_0),__main_block_copy_0, __main_block_dispose_0};
 
 int main()
@@ -309,7 +319,8 @@ struct __main_block_impl_0 {
 	struct __main_block_desc_0* Desc;
 	id __strong array;//如果array是__weak修饰的话,那么这里就是__weak,不是__strong
 	__main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, id __strong _array, int flags=0) : array(_array) {
-	impl.isa = &_NSConcreteStackBlock; impl.Flags = flags;
+	impl.isa = &_NSConcreteStackBlock;
+	 impl.Flags = flags;
 	impl.FuncPtr = fp;
 	Desc = desc;
 } };
@@ -368,9 +379,9 @@ struct __Block_byref_obj_0 {
 };
 
 /*
-  1.跟捕获非__block对象的区别: __Block_byref_id_object_copy_131和__Block_byref_id_object_dispose_131;当obj由__strong修饰时,就调用了__Block_byref_id_object_copy_131;
+  1.跟捕获非__block对象的区别: __Block_byref_id_object_copy_131和__Block_byref_id_object_dispose_131; 用来对[[NSObject alloc] init]进行内存管理(在__block被销毁时,进行dispose,在初始化时,进行copy.)
   2.obj是一个包着[[NSObject alloc] init]的对象,内存管理由__strong修饰,
-  3.新增的两个方法用来对[[NSObject alloc] init]进行内存管理
+  3. 当block被拷贝到对上面时, 还是会调用__main_block_dispose_0和__main_block_copy_0
 */
 
 static void __Block_byref_id_object_copy_131(void *dst, void *src) {
@@ -529,6 +540,10 @@ blk();//栈block销毁,野指针
 
 ```
 
-#### 参考资料:  
+### Block の 拾遗
+
+![SamuelChan/20180711222625.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180711222625.png)
+
+### 参考资料:  
 [@weakify 与 @strongify 的实现](http://www.saitjr.com/ios/ios-libextobjc-1.html)  
 [Is the weakSelf/strongSelf dance really necessary when referencing self inside a non-retained completion called from a UIViewController?](https://stackoverflow.com/questions/21113963/is-the-weakself-strongself-dance-really-necessary-when-referencing-self-inside-a?rq=1)
