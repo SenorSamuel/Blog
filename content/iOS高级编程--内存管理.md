@@ -1,3 +1,6 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 - [Chapter1 Life Before Automatic Reference Counting](#chapter1-life-before-automatic-reference-counting)
   - [Reference Counted Memory Management Overview](#reference-counted-memory-management-overview)
     - [Exploring Memory Management Further](#exploring-memory-management-further)
@@ -12,11 +15,6 @@
     - [Implementing autorelease](#implementing-autorelease)
 - [Chapter2 ARC Rules](#chapter2-arc-rules)
   - [Ownership qualifiers](#ownership-qualifiers)
-    - [1.__strong ownership qualifier](#1__strong-ownership-qualifier)
-    - [2.__weak ownership qualifier](#2__weak-ownership-qualifier)
-    - [3.__unsafe_unretained ownership qualifier](#3__unsafe_unretained-ownership-qualifier)
-    - [4.__autoreleasing ownership qualifier](#4__autoreleasing-ownership-qualifier)
-    - [5.Returning a Result as the Argument](#5returning-a-result-as-the-argument)
   - [Rules](#rules)
     - [Core Foundation](#core-foundation)
   - [Property](#property)
@@ -25,21 +23,17 @@
   - [__weak](#__weak)
   - [__autoreleasing](#__autoreleasing)
   - [Reference Count](#reference-count)
-  - [NSObject开源release,retain,dealloc内存管理的实现](#nsobject%E5%BC%80%E6%BA%90releaseretaindealloc%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E7%8E%B0)
-  - [引用计数的储存](#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E7%9A%84%E5%82%A8%E5%AD%98)
-  - [一些概念](#%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5)
-    - [1.TaggedPointer](#1taggedpointer)
-    - [2.散列表](#2%E6%95%A3%E5%88%97%E8%A1%A8)
-    - [3.retainCount](#3retaincount)
-    - [4.retain](#4retain)
-    - [5.release](#5release)
-    - [6. alloc](#6-alloc)
-    - [7.dealloc](#7dealloc)
-    - [8.autorelease](#8autorelease)
+- [iMooc 拾遗 の 内存管理](#imooc-%E6%8B%BE%E9%81%97-%E3%81%AE-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86)
+  - [0x01 内存布局](#0x01-%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80)
+  - [0x02 内存管理方法](#0x02-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%96%B9%E6%B3%95)
+  - [循环引用](#%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8)
+  - [参考资料:](#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 >Problems:  
 1. 一个非alloc/new/copy/muteCopy返回对象的方法应该由谁管理内存?  
-2. AutoReleasePool也需要进行内存管理吗?如果要,谁来管理?
+2. AutoReleasePool也需要进行内存管理吗?如果要,如何来管理?
 
 ## Chapter1 Life Before Automatic Reference Counting
 
@@ -875,29 +869,33 @@ objc_autoreleasePoolPop(pool);
 
 `uintptr_t _objc_rootRetainCount(id obj)`:don't return reliable value all the time
 
-### NSObject开源release,retain,dealloc内存管理的实现
 
-> 1. 本书本之前讨论的内存管理是基于GNUStep或者是CFFoundation里面的内存管理部分.现在NSObject已经开源了
-> 2. [objc4-709](https://opensource.apple.com/tarballs/objc4/)
+## iMooc 拾遗 の 内存管理
 
-### 引用计数的储存
+![SamuelChan/20180708224853.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180708224853.png)
 
-有些对象如果支持使用`TaggedPointer`，苹果会直接将其指针值作为引用计数返回；否则 Runtime 会使用一张`散列表`来管理引用计数。
+### 0x01 内存布局
+![SamuelChan/20180708230355.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180708230355.png)
 
-### 一些概念
+### 0x02 内存管理方法
 
-#### 1.TaggedPointer
+#### TaggedPointer
 
-判断当前对象是否在使用 TaggedPointer 是看标志位是否为 1;id的isTaggedPointer()方法经常会在操作引用计数时用到，因为这决定了存储引用计数的策略。
+> 在2013年9月，苹果推出了iPhone5s，与此同时，iPhone5s配备了首个采用64位架构的A7双核处理器，为了节省内存和提高执行效率，苹果提出了Tagged Pointer的概念。对于64位程序，引入Tagged Pointer后，相关逻辑能减少一半的内存占用，以及3倍的访问速度提升，100倍的创建、销毁速度提升。
 
-```c++
+	苹果提出了Tagged Pointer对象。由于NSNumber、NSDate一类的变量本身的值需要占用的
+	内存大小常常不需要8个字节，拿整数来说，4个字节所能表示的有符号整数就可以达到20多
+	亿（注：2^31=2147483648，另外1位作为符号位)，对于绝大多数情况都是可以处理的。
+
+```objc
+
 #if SUPPORT_MSB_TAGGED_POINTERS
 #   define TAG_MASK (1ULL<<63)
 #else
 #   define TAG_MASK 1
 
-inline bool
-objc_object::isTaggedPointer()
+inline bool 
+objc_object::isTaggedPointer() 
 {
 #if SUPPORT_TAGGED_POINTERS
     return ((uintptr_t)this & TAG_MASK);
@@ -905,18 +903,161 @@ objc_object::isTaggedPointer()
     return false;
 #endif
 }
+
+int main(int argc, char * argv[]) {
+    @autoreleasepool {
+        NSNumber *number1 = @1;
+        NSNumber *number2 = @2;
+        NSNumber *number3 = @3;
+        NSNumber *numberFFFF = @(0xffff);
+        NSNumber *numberOverTaken = @(0xffffffffffffFFFF);
+        
+        NSLog(@"number1 pointer is %p", number1);
+        NSLog(@"number2 pointer is %p", number2);
+        NSLog(@"number3 pointer is %p", number3);
+        NSLog(@"numberFFFF pointer is %p", numberFFFF);
+        NSLog(@"numberOverTaken pointer is %p", numberOverTaken);
+
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+    }
+}
+
+> number1 pointer is 		 0xb000000000000012
+> number2 pointer is 		 0xb000000000000022
+> number3 pointer is 		 0xb000000000000032
+> numberFFFF pointer is 	 0xb0000000000ffff2
+> numberOverTaken pointer is 0x6000000342c0
+
 ```
 
-#### 2.散列表
+总结:
 
-```c++
-struct SideTable {
-    // 保证原子操作的自旋锁
-    spinlock_t slock;
-    // 引用计数的 hash 表
-    RefcountMap refcnts;
-    // weak 引用全局 hash 表
-    weak_table_t weak_table;
+- Tagged Pointer内存管理方案在存储小的对象(NSNumber和NSDate)使用
+- Tagged Pointer指针的值不再是地址了，而是真正的值。所以，实际上它不再是一个对象了，它只是一个披着对象皮的普通变量而已。所以，它的内存并不存储在堆中，也不需要malloc和free。
+- 在内存读取上有着3倍的效率，创建时比以前快106倍。
+
+[引用文章:深入理解Tagged Pointer](http://www.infoq.com/cn/articles/deep-understanding-of-tagged-pointer)
+
+#### isa 指针（NONPOINTER_ISA）
+
+> isa_t在64位架构下指针值为64位, 很少有那么多的内存的设备, 不需要64位来储存,优化方案就是 NONPOINTER_ISA
+
+```objc
+// SUPPORT_NONPOINTER_ISA的定义
+// Define SUPPORT_NONPOINTER_ISA=1 to enable extra data in the isa field.
+#if !__LP64__  ||  TARGET_OS_WIN32  ||  TARGET_IPHONE_SIMULATOR  ||  __x86_64__
+#   define SUPPORT_NONPOINTER_ISA 0
+#else
+#   define SUPPORT_NONPOINTER_ISA 1
+#endif
+
+// isa_t的具体结构
+union isa_t 
+{
+    isa_t() { }
+    isa_t(uintptr_t value) : bits(value) { }
+
+    Class cls;
+    uintptr_t bits;
+
+#if SUPPORT_NONPOINTER_ISA
+
+    // extra_rc must be the MSB-most field (so it matches carry/overflow flags)
+    // indexed must be the LSB (fixme or get rid of it)
+    // shiftcls must occupy the same bits that a real class pointer would
+    // bits + RC_ONE is equivalent to extra_rc + 1
+    // RC_HALF is the high bit of extra_rc (i.e. half of its range)
+
+    // future expansion:
+    // uintptr_t fast_rr : 1;     // no r/r overrides
+    // uintptr_t lock : 2;        // lock for atomic property, @synch
+    // uintptr_t extraBytes : 1;  // allocated with extra bytes
+
+# if __arm64__
+#   define ISA_MASK        0x00000001fffffff8ULL
+#   define ISA_MAGIC_MASK  0x000003fe00000001ULL
+#   define ISA_MAGIC_VALUE 0x000001a400000001ULL
+    struct {
+    	// 0 表示普通的 isa 指针，1 表示使用优化，存储引用计数
+        uintptr_t indexed           : 1 bit;
+        
+        // 表示该对象是否包含 associated object，如果没有，则析构时会更快
+        uintptr_t has_assoc         : 1 bit;
+        
+        // 表示该对象是否有 C++ 或 ARC 的析构函数，如果没有，则析构时更快
+        uintptr_t has_cxx_dtor      : 1 bit;
+        
+        // 类的指针
+        uintptr_t shiftcls          : 30 bit; // MACH_VM_MAX_ADDRESS 0x1a0000000
+        
+        // 固定值为 0xd2，用于在调试时分辨对象是否未完成初始化。
+        uintptr_t magic             : 9 bit;
+        
+        // 表示该对象是否有过 weak 对象，如果没有，则析构时更快
+        uintptr_t weakly_referenced : 1 bit;
+        
+        // 表示该对象是否正在析构
+        uintptr_t deallocating      : 1 bit;
+        
+        // 表示该对象的引用计数值是否过大无法存储在 isa 指针
+        uintptr_t has_sidetable_rc  : 1 bit;
+        
+        // 存储引用计数值减一后的结果
+        uintptr_t extra_rc          : 19 bit;
+
+#       define RC_ONE   (1ULL<<45)
+#       define RC_HALF  (1ULL<<18)
+    };
+
+...
+
+# else
+    // Available bits in isa field are architecture-specific.
+#   error unknown architecture
+# endif
+
+// SUPPORT_NONPOINTER_ISA
+#endif
+
+};
+
+```
+
+#### SideTable
+
+<table>
+    <tr>
+         <td> 溢出位SIDE_TABLE_RC_PINNED </td> 
+        <td colspan="4"> <div  style='text-align:center;'>SIDE_TABLE_RC(61位)</td>    
+         <td> <div  style='text-align:center;'> SIDE_TABLE_DEALLOCATING </td>    
+         <td> <div  style='text-align:center;'> SIDE_TABLE_WEAKLY_REFERENCED </td>    
+    </tr>
+        <tr>
+        <td ><div  style='text-align:center;'>0/1</td> 
+        <td> <div  style='text-align:center;'> 0/1</td> 
+         <td> <div  style='text-align:center;'> 0/1</td> 
+        <td> <div  style='text-align:center;'> ...</td> 
+	<td> <div  style='text-align:center;'> 0/1</td> 
+        <td> <div  style='text-align:center;'>0/1</td> 
+         <td> <div  style='text-align:center;'>0/1</td> 
+   </tr>
+
+</table>
+
+
+```objc
+
+typedef objc::DenseMap<DisguisedPtr<objc_object>,size_t,true> RefcountMap;
+
+/**
+ * The global weak references table. Stores object ids as keys,
+ * and weak_entry_t structs as their values.
+ */
+struct weak_table_t {
+    weak_entry_t *weak_entries;
+    size_t    num_entries;
+    uintptr_t mask;
+    uintptr_t max_hash_displacement;
 };
 
 SideTable 结构体重定了几个非常重要的变量。
@@ -927,79 +1068,179 @@ SideTable 结构体重定了几个非常重要的变量。
 #define SIDE_TABLE_RC_PINNED         (1UL<<(WORD_BITS-1))//最高位字节为0
 #define SIDE_TABLE_RC_SHIFT 2
 #define SIDE_TABLE_FLAG_MASK (SIDE_TABLE_RC_ONE-1)
+
+class SideTable {
+private:
+    // 64*128 大小的 uint8_t 静态数组作为 buffer 来保存所有的 SideTable 实例
+    static uint8_t table_buf[SIDE_TABLE_STRIPE * SIDE_TABLE_SIZE];
+
+public:
+    // 自旋锁,适用于轻量访问
+    spinlock_t slock; 	
+    // 引用计数表
+    RefcountMap refcnts;	
+    // 全局弱引用表,对象作为键，weak_entry_t作为值。weak_entry_t 中保存了所有指向该对象的 weak 指针
+    weak_table_t weak_table;	
+
+    SideTable() : slock(SPINLOCK_INITIALIZER)
+    {
+        memset(&weak_table, 0, sizeof(weak_table));
+    }
+    
+    ~SideTable() 
+    {
+        // never delete side_table in case other threads retain during exit
+        assert(0);
+    }
+
+    static SideTable *tableForPointer(const void *p) 
+    {
+#     if SIDE_TABLE_STRIPE == 1
+        return (SideTable *)table_buf;
+#     else
+	//hash算法查找Sidetable实例
+        uintptr_t a = (uintptr_t)p;
+        int index = ((a >> 4) ^ (a >> 9)) & (SIDE_TABLE_STRIPE - 1);
+        return (SideTable *)&table_buf[index * SIDE_TABLE_SIZE];
+#     endif
+    }
+
+    static void init() {
+        // use placement new instead of static ctor to avoid dtor at exit
+        for (int i = 0; i < SIDE_TABLE_STRIPE; i++) {
+            new (&table_buf[i * SIDE_TABLE_SIZE]) SideTable;
+        }
+    }
+}
+
 ```
 
-![SamuelChan/20170717173215.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170717173215.png)
+### 0x03 其他
+#### ARC
+- LLVM和runtime共同协作的结果
+- ARC中禁止调用retain/release/retainCount/dealloc
+- ARC新增weak,strong关键字
 
-#### 3.retainCount
+#### __strong,__weak, alloc
+```
+alloc:  不存在引用计数表中
+id _objc_rootAlloc(Class cls)
+{
+    return callAlloc(cls, false/*checkNil*/, true/*allocWithZone*/);
+}
++ (id)alloc {
+    return _objc_rootAlloc(self);
+}
++ (id)new {
+    return [callAlloc(self, false/*checkNil*/) init];
+}
+
+
+1. [[NSObject alloc]init]; //引用计数表中没有,编译器直接在后面插入objc_release
+2. __strong NSObject *obj = [[NSObject alloc]init]; //初始化引用计数表该对象的引用计数为 1-1 = 0(实际储存的引用计数 = 真实引用计数 - 1)
+3. __weak NSObject *obj = [[NSObject alloc]init]; //同第一步
+
+```
+
+#### retainCount
+> 实际储存的引用计数 = 真实引用计数 - 1
 
 ```objc
+- (NSUInteger)retainCount;
+└── inline uintptr_t objc_object::rootRetainCount()
+	└── uintptr_t objc_object::sidetable_retainCount()  --使用sideTable的情况下
+
 - (NSUInteger)retainCount {
     return ((id)self)->rootRetainCount();
 }
 
-inline uintptr_t
+inline uintptr_t 
 objc_object::rootRetainCount()
 {
+    assert(!UseGC);
     if (isTaggedPointer()) return (uintptr_t)this;
+
+    sidetable_lock();
+    isa_t bits = LoadExclusive(&isa.bits);
+    //indexed == 1,使用extra_rc引用计数
+    //indexed == 0,使用sideTable引用计数
+    if (bits.indexed) {
+        uintptr_t rc = 1 + bits.extra_rc;
+        if (bits.has_sidetable_rc) {
+            rc += sidetable_getExtraRC_nolock();
+        }
+        sidetable_unlock();
+        return rc;
+    }
+
+    sidetable_unlock();
     return sidetable_retainCount();
 }
+
 
 uintptr_t
 objc_object::sidetable_retainCount()
 {
-    SideTable& table = SideTables()[this];
-    size_t refcnt_result = 1;
+    SideTable *table = SideTable::tableForPointer(this);
 
-    table.lock();
-    RefcountMap::iterator it = table.refcnts.find(this);
-    if (it != table.refcnts.end()) {
+    size_t refcnt_result = 1;
+    
+    spinlock_lock(&table->slock);
+    RefcountMap::iterator it = table->refcnts.find(this);
+    if (it != table->refcnts.end()) {
         // this is valid for SIDE_TABLE_RC_PINNED too
-        refcnt_result += it->second >> SIDE_TABLE_RC_SHIFT;//右移两位
+        //  +1返回
+        refcnt_result += it->second >> SIDE_TABLE_RC_SHIFT;
     }
-    table.unlock();
+    spinlock_unlock(&table->slock);
     return refcnt_result;
 }
+
 ```
 
-#### 4.retain 
+#### retain 
 
 ```objc
+ -(id)retain;
+	└── inline id objc_object::rootRetain()
+		└── id objc_object::sidetable_retain()
+
 - (id)retain {
     return ((id)self)->rootRetain();
 }
 
-// Base retain implementation, ignoring overrides.
-// This does not check isa.fast_rr; if there is an RR override then
-// it was already called and it chose to call [super retain].
-inline id
+inline id 
 objc_object::rootRetain()
 {
+    assert(!UseGC);
+
     if (isTaggedPointer()) return (id)this;
     return sidetable_retain();
 }
+
 
 id
 objc_object::sidetable_retain()
 {
 #if SUPPORT_NONPOINTER_ISA
-    assert(!isa.nonpointer);
+    assert(!isa.indexed);
 #endif
-    SideTable& table = SideTables()[this];
+    SideTable *table = SideTable::tableForPointer(this);
 
-    table.lock();
-    size_t& refcntStorage = table.refcnts[this];
-    if (! (refcntStorage & SIDE_TABLE_RC_PINNED)) {
-    	//相当于+(1 << 2)
-        refcntStorage += SIDE_TABLE_RC_ONE;
+    if (spinlock_trylock(&table->slock)) {
+        size_t& refcntStorage = table->refcnts[this];
+        if (! (refcntStorage & SIDE_TABLE_RC_PINNED)) { //判断是否移除
+            refcntStorage += SIDE_TABLE_RC_ONE; //引用计数加1
+        }
+        spinlock_unlock(&table->slock);
+        return (id)this;
     }
-    table.unlock();
-    return (id)this;
+    return sidetable_retain_slow(table);
 }
 
 ```
 
-#### 5.release 
+#### release
 
 ```objc
 - (oneway void)release {
@@ -1013,98 +1254,299 @@ objc_object::rootRelease()
     return sidetable_release(true);
 }
 
-// rdar://20206767
-// return uintptr_t instead of bool so that the various raw-isa
-// -release paths all return zero in eax
-uintptr_t
-objc_object::sidetable_release(bool performDealloc)
+bool objc_object::sidetable_release(bool performDealloc)
 {
 #if SUPPORT_NONPOINTER_ISA
-    assert(!isa.nonpointer);
+    //一定使用sidetable操作引用计数,不放在extra_rc中
+    assert(!isa.indexed);  
 #endif
-    SideTable& table = SideTables()[this];
+    SideTable *table = SideTable::tableForPointer(this);
+
     bool do_dealloc = false;
-    table.lock();
-    RefcountMap::iterator it = table.refcnts.find(this);
-    if (it == table.refcnts.end()) {
-        do_dealloc = true;
-        table.refcnts[this] = SIDE_TABLE_DEALLOCATING;
-    } else if (it->second < SIDE_TABLE_DEALLOCATING) {
-        // 判断引用计数是否为0,如果小于SIDE_TABLE_DEALLOCATING,只有00000001或者00000000,两种情况下,引用计数都为0,所以需要将do_dealloc置为0
-        // SIDE_TABLE_WEAKLY_REFERENCED may be set. Don't change it.
-        do_dealloc = true;
-        it->second |= SIDE_TABLE_DEALLOCATING;
-    } else if (! (it->second & SIDE_TABLE_RC_PINNED)) {
-    	 // 如果符合这个条件,即:引用计数没有溢出(最高位为0),do_dealloc为0,weak_reference为0)
-        it->second -= SIDE_TABLE_RC_ONE;
+
+    if (spinlock_trylock(&table->slock)) {
+        RefcountMap::iterator it = table->refcnts.find(this);
+        if (it == table->refcnts.end()) {
+            do_dealloc = true;
+            table->refcnts[this] = SIDE_TABLE_DEALLOCATING;
+        } else if (it->second < SIDE_TABLE_DEALLOCATING) {
+            // SIDE_TABLE_WEAKLY_REFERENCED may be set. Don't change it.
+            do_dealloc = true;
+            it->second |= SIDE_TABLE_DEALLOCATING;
+        } else if (! (it->second & SIDE_TABLE_RC_PINNED)) {
+            it->second -= SIDE_TABLE_RC_ONE;
+        }
+        spinlock_unlock(&table->slock);
+        if (do_dealloc  &&  performDealloc) {
+            ((void(*)(objc_object *, SEL))objc_msgSend)(this, SEL_dealloc);
+        }
+        return do_dealloc;
     }
-    table.unlock();
-    if (do_dealloc  &&  performDealloc) {
-        ((void(*)(objc_object *, SEL))objc_msgSend)(this, SEL_dealloc);
-    }
-    return do_dealloc;
+
+    return sidetable_release_slow(table, performDealloc);
 }
 
 ```
 
-#### 6. alloc
-
+#### dealloc
 ```objc
-+alloc
-+allocWithZone:
-class_createInstance
-calloc
+- (void)dealloc;
+└── void _objc_rootDealloc(id obj);
+	└── inline void objc_object::rootDealloc()
+		└── id object_dispose(id obj)
+			└── void *objc_destructInstance(id obj) 
+				└── object_cxxDestruct
+				└── _object_remove_assocations
+				└── clearDeallocating
+
+- (void)dealloc {
+    _objc_rootDealloc(self);
+}
+
+void _objc_rootDealloc(id obj) {
+    assert(obj);
+
+    obj->rootDealloc();
+}
+
+inline void objc_object::rootDealloc() {
+    if (isTaggedPointer()) return;
+    object_dispose((id)this);
+}
+
+id object_dispose(id obj) {
+    if (!obj) return nil;
+
+    objc_destructInstance(obj);
+
+    free(obj);
+
+    return nil;
+}
+
+void *objc_destructInstance(id obj) 
+{
+    if (obj) {
+        // Read all of the flags at once for performance.
+        bool cxx = obj->hasCxxDtor();
+        bool assoc = !UseGC && obj->hasAssociatedObjects();
+        bool dealloc = !UseGC;
+
+        // This order is important.
+        if (cxx) object_cxxDestruct(obj);
+        if (assoc) _object_remove_assocations(obj);
+        if (dealloc) obj->clearDeallocating();
+    }
+
+    return obj;
+}
+
+inline void objc_object::clearDeallocating() {
+    sidetable_clearDeallocating();
+}
+
+void objc_object::sidetable_clearDeallocating() {
+
+    SideTable *table = SideTable::tableForPointer(this);
+
+    // clear any weak table items
+    // clear extra retain count and deallocating bit
+    // (fixme warn or abort if extra retain count == 0 ?)
+    spinlock_lock(&table->slock);
+    RefcountMap::iterator it = table->refcnts.find(this);
+    if (it != table->refcnts.end()) {
+        if (it->second & SIDE_TABLE_WEAKLY_REFERENCED) {
+            //如果有弱引用的话,清除所有弱引用指针变量
+            weak_clear_no_lock(&table->weak_table, (id)this);
+        }
+        //将对象从引用计数表中擦除
+        table->refcnts.erase(it);
+    }
+    spinlock_unlock(&table->slock);
+}
+
+
 ```
 
-#### 7.dealloc
+#### __weak
+> 两次哈希查找
 
-1. objc_release.
-2. dealloc is called because retain count becomes zero.
-3. _objc_rootDealloc.
-4. object_dispose.
-5. objc_destructInstance
-6. objc_clear_deallocating:
-	1. From the weak table, get an entry of which the key is the object to be discarded.
-	2. Set nil to all the __weak ownership qualified variables in the entry.
-	3. Remove the entry from the table.
-	4. For the object to be disposed of, remove its `key` from the **`reference table`**
+```objc
+id __weak obj1 = obj;   <===>  id obj1; objc_initWeak(&obj1,obj);
 
-#### 8.autorelease
+调用栈
+id objc_initWeak(id *addr, id val);
+└── id objc_storeWeak(id *location, id newObj);
+	└── id  weak_register_no_lock(weak_table_t *weak_table, id referent_id, id *referrer_id);
 
-参考资料:  
-[黑幕背后的Autorelease](http://blog.sunnyxx.com/2014/10/15/behind-autorelease/)
+id objc_initWeak(id *addr, id val)
+{
+    *addr = 0;
+    if (!val) return nil;
+    return objc_storeWeak(addr, val);
+}
 
-- Autorelease对象什么时候释放？
+id objc_storeWeak(id *location, id newObj) {
+    id oldObj;
+    SideTable *oldTable;
+    SideTable *newTable;
+    spinlock_t *lock1;
+#if SIDE_TABLE_STRIPE > 1
+    spinlock_t *lock2;
+#endif
+
+    // Acquire locks for old and new values.
+    // Order by lock address to prevent lock ordering problems. 
+    // Retry if the old value changes underneath us.
+ retry:
+    oldObj = *location;
+    
+    oldTable = SideTable::tableForPointer(oldObj);
+    newTable = SideTable::tableForPointer(newObj);
+    
+    lock1 = &newTable->slock;
+#if SIDE_TABLE_STRIPE > 1
+    lock2 = &oldTable->slock;
+    if (lock1 > lock2) {
+        spinlock_t *temp = lock1;
+        lock1 = lock2;
+        lock2 = temp;
+    }
+    if (lock1 != lock2) spinlock_lock(lock2);
+#endif
+    spinlock_lock(lock1);
+
+    if (*location != oldObj) {
+        spinlock_unlock(lock1);
+#if SIDE_TABLE_STRIPE > 1
+        if (lock1 != lock2) spinlock_unlock(lock2);
+#endif
+        goto retry;
+    }
+
+    weak_unregister_no_lock(&oldTable->weak_table, oldObj, location);
+    
+    //添加weak指针到weak表中
+    newObj = weak_register_no_lock(&newTable->weak_table, newObj, location);
+    
+    // weak_register_no_lock returns nil if weak store should be rejected
+    // Set is-weakly-referenced bit in refcount table.
+    if (newObj  &&  !newObj->isTaggedPointer()) {
+    
+     	//设置弱引用标志位
+        newObj->setWeaklyReferenced_nolock();
+    }
+
+    // Do not set *location anywhere else. That would introduce a race.
+    *location = newObj;
+    
+    spinlock_unlock(lock1);
+#if SIDE_TABLE_STRIPE > 1
+    if (lock1 != lock2) spinlock_unlock(lock2);
+#endif
+
+    return newObj;
+}
+
+
+id  weak_register_no_lock(weak_table_t *weak_table, id referent_id, id *referrer_id)
+{
+    objc_object *referent = (objc_object *)referent_id;
+    objc_object **referrer = (objc_object **)referrer_id;
+
+    if (!referent  ||  referent->isTaggedPointer()) return referent_id;
+
+    // ensure that the referenced object is viable
+    ......
+    
+    // now remember it and where it is being stored
+    weak_entry_t *entry;
+    if ((entry = weak_entry_for_referent(weak_table, referent))) {
+    
+    //如果已经能找得到weak_table的话,那就直接添加到entry
+        append_referrer(entry, referrer);
+    } 
+    else {
+    	//否则,创建一个长度为4的空数组,
+        weak_entry_t new_entry;
+        new_entry.referent = referent;
+        new_entry.out_of_line = 0;
+        new_entry.inline_referrers[0] = referrer;
+        for (size_t i = 1; i < WEAK_INLINE_COUNT; i++) {
+            new_entry.inline_referrers[i] = nil;
+        }
+        
+        weak_grow_maybe(weak_table);
+        weak_entry_insert(weak_table, &new_entry);
+    }
+
+    // Do not set *referrer. objc_storeWeak() requires that the 
+    // value not change.
+
+    return referent_id;
+}
+
+```
+
+#### autoreleasePool
+编译器会将@autoreleasePool改写成:
+
+```objc
+	void *ctx = objc_autoreleasePoolPush();
+	
+	{}中代码
+	
+	objc_autoreleasePoolPop(ctx);
+```
+**特点** :
+> 1.  双向链表  
+> 2.  线程一一对应
+
+![SamuelChan/20180710172646.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180710172646.png)
+
+
+1. Autorelease对象什么时候释放？
 在没有手加Autorelease Pool的情况下，Autorelease对象是在当前的runloop迭代结束时释放的，而它能够释放的原因是系统在每个runloop迭代中都加入了自动释放池Push和Pop
-- AutoreleasePoolPage:是一个C++实现的类,
-![SamuelChan/20170717194057.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170717194057.png)
- - 	AutoreleasePool并没有单独的结构，而是由若干个AutoreleasePoolPage以[双向链表](http://www.cnblogs.com/skywang12345/p/3561803.html#a31)的形式组合而成（分别对应结构中的parent指针和child指针）
+2. AutoreleasePoolPage:是一个C++实现的类,
+ - AutoreleasePool并没有单独的结构，而是由若干个AutoreleasePoolPage以[双向链表](http://www.cnblogs.com/skywang12345/p/3561803.html#a31)的形式组合而成（分别对应结构中的parent指针和child指针）
  -  AutoreleasePool是按线程一一对应的（结构中的thread指针指向当前线程）
  -  AutoreleasePoolPage每个对象会开辟4096字节内存（也就是虚拟内存一页的大小），除了上面的实例变量所占空间，剩下的空间全部用来储存autorelease对象的地址
  -  上面的id *next指针作为游标指向栈顶最新add进来的autorelease对象的下一个位置
  -  一个AutoreleasePoolPage的空间被占满时，会新建一个AutoreleasePoolPage对象，连接链表，后来的autorelease对象在新的page加入
-- AutoreleasePoolPage快要满的时候:也就是next指针马上指向栈顶，这时就要执行上面说的操作，建立下一页page对象，与这一页链表连接完成后，新page的next指针被初始化在栈底（begin的位置），然后继续向栈顶添加新对象。
+ ![SamuelChan/20170717194057.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170717194057.png)
 
+3. AutoreleasePoolPage快要满的时候:也就是next指针马上指向栈顶，这时就要执行上面说的操作，建立下一页page对象，与这一页链表连接完成后，新page的next指针被初始化在栈底（begin的位置），然后继续向栈顶添加新对象。
 ![SamuelChan/20170717194341.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170717194341.png)
 
-- 释放时刻:根据哨兵位置进行pop释放池,每当进行一次objc_autoreleasePoolPush调用时，runtime向当前的AutoreleasePoolPage中add进一个哨兵对象，值为0（也就是个nil）,对个
+4. 释放时刻:根据哨兵位置进行pop释放池,每当进行一次objc_autoreleasePoolPush调用时，runtime向当前的AutoreleasePoolPage中add进一个哨兵对象，值为0（也就是个nil）,对个
 ![SamuelChan/20170717194612.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170717194612.png)
 
-```objc
-void *context = objc_autoreleasePoolPush();
-// {}中的代码
-objc_autoreleasePoolPop(context);
-```
+5. 使用容器的block版本的枚举器时，内部会自动添加一个AutoreleasePool,普通for/for in中没有  
 
-- 使用容器的block版本的枚举器时，内部会自动添加一个AutoreleasePool,普通for/for in中没有  
 ```objc
  [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+ 
     // 这里被一个局部@autoreleasepool包围着
+    
 }];
 ```
 
-参考资料:  
-1.[Objective-C 引用计数原理](http://yulingtianxia.com/blog/2015/12/06/The-Principle-of-Refenrence-Counting/),其中部分提到的是旧的版本,最新的obj4版本已经改了   
-2.[iOS进阶——iOS（Objective-C）内存管理·二
-](http://zhoulingyu.com/2017/02/15/Advanced-iOS-Study-objc-Memory-2/)
+### 循环引用
+
+__weak
+
+__block(MRC)
+
+![SamuelChan/20180710180037.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180710180037.png)
+
+
+
+
+### 参考资料:  
+[Objective-C 引用计数原理](http://yulingtianxia.com/blog/2015/12/06/The-Principle-of-Refenrence-Counting/)
+
+[黑幕背后的Autorelease](http://blog.sunnyxx.com/2014/10/15/behind-autorelease/)
+
+[objc4-709](https://opensource.apple.com/tarballs/objc4/)
+
  
