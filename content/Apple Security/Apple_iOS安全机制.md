@@ -6,7 +6,7 @@
 
 ...to be continued
 
-## 苹果数据加密机制v
+## 苹果数据加密机制
 
 iOS整个磁盘是全盘加密的,且相关的key(EMF Key,DKey,BAG1 Key)存放在**可擦除分区**
 
