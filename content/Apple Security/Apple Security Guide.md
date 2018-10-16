@@ -137,15 +137,52 @@ iOS设备在`闪存`和`主系统内存`都有DMA通道,DMA通道内置专用的
 
 ### 0x03 Keychain data protection
 
+- 什么时候keychain的数据会被销毁 : 比如系统还原的时候,备份的时候会备份吗?
+- 钥匙串储存在哪里
+- 安全性怎么保障
+- 钥匙串的item与添加时的touchId,faceId有关系?
+
+1. KeyChain储存在文件系统中,用SQLite数据库来实现的
+
+2. 每个KeyChain item使用两个的 AES-256-GCM key 来加密: meta-data key 和 secret key 均保存在Secure Enclave处理器中
+    - meta-data key 用来加密 meta-data (除了kSecValue的所有属性)
+    - secret key 加密 kSecValueData
+
+3. Keychain运行在 `securityd daemon`
+
+4. “Keychain-access-groups,” “application-identifier,” and “application-group” entitlements.
 
 
+
+
+### 0x04 KeyBag 密钥包
+
+> `密钥包`储存和管理`文件`和`钥匙串`相关数据保护类型的密钥(被加密过后的**class Key**)
+
+iOS有以下几种密钥包
+
+1. User KeyBag : 用户相关的 class Keys
+    - User KeyBag 是一个 class D(No Protection class)二进制 .plist 文件,文件内容被 Effaceable Storage 的 key 保护(每次修改 passcode ,这个 key 都会重新生成)
+    - User KeyBag 由 AppleKeyStore(kernel extension)来管理
+    - 只有密钥包的所有 class Keys 都被解封装,设备才会解锁
+
+2. Device KeyBag : 设备相关数据的 class Keys
+    - 由于 iOS 设备是单用户,所以 Device KeyBag 和 User KeyBag 是同一个
+
+3. BackUp KeyBag : 在电脑上使用iTunes备份手机时创建
+    - KeyBag使用一串新的key来加密备份数据
+    - non-migratory Keychain items依然还是使用 UID-derived key 封装,在其他设备不能恢复
+    - 其他Keychain item只有在设置了备份密码之后,才可以迁移到新的设备上.
+
+4. Escrow KeyBag : 用于 iTunes 同步和 MDM
+    - One-time Unlock Tokens
+ 
+5. iCloud Backup KeyBag : 所有的 class Keys 都是 class B(Protected Unless Open Data Protection class)
+    - iCloud需要在后台备份
+    - 苹果为每一个iCloud用户生成一对公私钥,上传 iCloud Backup KeyBag 的时候,使用公钥加密
 
 ## iCloud
 - iCloud会备份keychain数据吗
-
-## keychain
-- 什么时候keychain的数据会被销毁 : 比如系统还原的时候,备份的时候会备份吗?
-
 ## 专用名词
 
 `Secure Enclave` : 安全隔区
@@ -179,13 +216,17 @@ flash memory和磁盘是什么关系
 
 - 在安全隔区生成密钥:kSecAttrTokenIDSecureEnclave
 
+- 钥匙串
+  - Keychain-access_group多个app可以共享钥匙串
+  - 创建SecItem的时候设置访问权限
+
+
+
 1.数据储存加密
 
-passCode用来干嘛? 加密"密钥包”是怎么做的
+passCode用来干嘛? 
 touchId,faceId: 储存的是固定数据还是模式匹配? 如果是模式匹配就不能用来加密
 iCloud机制(Guide比较浅显,找资料): masterKey漏洞 → 木马机,主要是由iCloud同步造成的;本地储存还是安全的
-fileSystem Key : 数据加密/验证
-perFile Key: 数据加密/验证
 关注廉价机型安全: 5c(32位系统),缺v乏硬件层面上,防止暴力破解的芯片
 2.数据传输加密
 
