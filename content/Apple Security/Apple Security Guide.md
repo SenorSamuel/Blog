@@ -32,6 +32,80 @@
 
 ## 一.系统安全性
 
+### #0x00 安全启动链 (Secure Boot Chain)
+
+> 安全启动链包括了：`引导加载程序`,`内核`,`内核扩展项`,`基带固件`, 确保硬件不被篡改
+
+![SamuelChan/20181017201825.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20181017201825.png)
+
+开机之后,`应用程序处理器`立即执行`Boot ROM`中的代码. 其中包括 Apple 根 CA 公钥, 用来验证 `引导加载程序`是否经过 Apple 签名
+
+这是信任链中的第一步， 信任链中的每个步骤 都确保下一步骤获得 Apple 的签名。 `引导加载程序` 完成任务后，会验证和运行 `内核`, 直到安全启动链全部验证成功
+
+如果 `Boot ROM` 加载 `引导加载程序` 失败,则进入 **DFU Mode**
+
+如果 `引导加载程序` 加载 `内核` 失败, 则进入** Recovery Mode**
+
+### #0x01 系统软件验证 (System Software Authorization)
+
+> 这个机制用来阻止设备降级, Secure Enclave(安全隔区)也能会使用这个机制
+
+#### OTA update (Over The Air): 增量更新
+
+#### Over USB update (using iTunes): 全量下载iOS
+
+![SamuelChan/20181017202951.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20181017202951.png)
+
+步骤如下:
+
+- 设备发送加密的一串设备信息(iBoot, the kernel, and OS image),nonce,ECID给 server
+- server 找到设备信息对应的版本之后,将ECID加入到设备信息中,然后签名
+  - 客户端用苹果的公钥验证更新是否来自苹果官方
+  - 启动时`安全启动链`使用ECID验证签名是否正确并用于这台设备的
+
+### 0x02 安全隔区
+
+安全隔区是一个协处理器,包含了一个硬件随机数生成器
+
+安全隔区提供 **数据保护** 的密钥的`管理` 和 `维护`;安全隔区还负责处理来自触控 ID 和面容 ID 传感器的指纹和面容数据，
+
+安全隔区也有自己的安全启动链
+
+设备启动时,安全隔区的Boot ROM会生成一个key,用来保护安全隔区的内存
+
+保存到文件系统的数据,会被安全隔区使用 **UID** 和 **反重放计数器** 生成的密钥加密
+
+#### 密码
+
+必须使用密码的情况
+
+- 设备刚刚开机或重新启动。
+- 设备未解锁的时间超过 48 小时。
+- 在过去 156 个小时 (六天半) 内未使用密码解锁设备， 且在过去 4 小时内未使用 面容 ID 解锁设备。
+- 设备收到了远程锁定命令。
+- 尝试五次后未能成功匹配。
+- 在关机 / 使用 SOS 紧急联络后。
+
+#### TouchId
+
+只有当主屏幕按钮周围的电容金属环检测到手指触摸时，指纹传感器才会启动，从而触发先进的成像阵列来扫描手指，并将扫描结果发送至安全隔区。
+
+TouchId传感器会与安全隔区预置的共享密钥进行协商,生成一个会话密钥,它会使用 AES-CCM 来传输加密的TouchId扫描结果
+
+TouchId扫描结果会在**安全隔区**被处理,生成的节点图以一种只能由安全隔区读取的加密格式进行储存，不包含任何身份信息并且绝不会发送给 Apple 或备份至 iCloud 或 iTunes。
+
+#### FaceID
+
+FaceId触发: 您的双眼睁开且注视着设备来确认注意力和解锁 意图
+
+一旦确认存在注意着设备的脸部，原深感摄像头会投影并读取 30000 多个红外点以绘制脸部的深度图和 2D 红外图像。此数据被用来创建一个 2D 图像和深度图序列，经过数字签名后发送到安全隔区。
+
+FaceID数据，其中包括脸部的数学表达式，经过加密且仅可被安全隔区使用。 此数据绝对不会离开设备，不会发送给 Apple， 也不会包括在设备备份中。 在日常操作中，以下FaceID数据会存储和加密，仅供安全隔区使用 :
+
+- 注册时，计算出的您脸部的数学表达式。
+
+- 在某些解锁尝试过程中计算出的脸部数学表达式， 如果FaceID 认为这些表达式有助于扩增日后匹配。
+
 ## 二.加密和数据保护（Encryption and Data Protection）
 
 > “设置” 中的 “抹掉所有内容和设置” 选项会清除可擦除储存空间上的所有密钥， 备份可以备份储存空间上的所有密钥吗?
@@ -145,13 +219,77 @@ iOS设备在`闪存`和`主系统内存`都有DMA通道,DMA通道内置专用的
 1. KeyChain储存在文件系统中,用SQLite数据库来实现的
 
 2. 每个KeyChain item使用两个的 AES-256-GCM key 来加密: meta-data key 和 secret key 均保存在Secure Enclave处理器中
-    - meta-data key 用来加密 meta-data (除了kSecValue的所有属性)
+    - meta-data key 用来加密 meta-data (除了kSecValue)
     - secret key 加密 kSecValueData
 
-3. Keychain运行在 `securityd daemon`
+3. Keychain的组成
+    - 加密的数据
+        - Version number
+        - ACL data
+        - KeychainItem的数据保护级别class
+        - protection class key (per-item key)
+        - per-item 加密的钥匙串所有属性
+    - 所有属性的SHA-1 hashes,用于快速查询
 
-4. “Keychain-access-groups,” “application-identifier,” and “application-group” entitlements.
+4. Keychain运行在 `securityd daemon`
 
+5. “Keychain-access-groups,” “application-identifier,” and “application-group” entitlements.
+
+6. Keychain ACL控制 : 访问钥匙串需要Touch ID,Face ID,输入 passcode. ACL 是在 Secure Enclave 中进行的
+
+7. Keychain data保护级别类似 File data protection
+
+Availability | File Data Protection | Keychain Data Protection
+---------|----------|---------
+ When unlocked | NSFileProtectionComplete | kSecAttrAccessibleWhenUnlocked
+ While locked | NSFileProtectionCompleteUnlessOpen | N/A
+ After first unlock | NSFileProtectionCompleteUntilFirstUserAuthentication | kSecAttrAccessibleAfterFirstUnlock
+ Always | NSFileProtectionNone | kSecAttrAccessibleAlways
+ Passcode enabled | N/A | kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly
+
+- `kSecAttrAccessibleAfterFirstUnlock` 可以用于后台刷新
+- `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`与`kSecAttrAccessibleWhenUnlocked`功能一样,但是使用`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`时,设备必须设置了passcode; 如果 passcode 被移除或者是重置,这些keychain项将无法访问
+  - 不会被同步到iCloud keychain
+  - 不会被备份
+  - 不会被包含在escrow keybag中
+- Other Keychain classes have a “This device only” counterpart, which is always protected with the UID when being copied from the device during a backup, rendering it useless if restored to a different device.
+    ```objc
+    typedef NS_ENUM(NSInteger, UICKeyChainStoreAccessibility) {
+        UICKeyChainStoreAccessibilityWhenUnlocked = 1,
+        UICKeyChainStoreAccessibilityAfterFirstUnlock,
+        UICKeyChainStoreAccessibilityAlways,
+        UICKeyChainStoreAccessibilityWhenPasscodeSetThisDeviceOnly
+        __OSX_AVAILABLE_STARTING(__MAC_10_10, __IPHONE_8_0),
+        UICKeyChainStoreAccessibilityWhenUnlockedThisDeviceOnly,
+        UICKeyChainStoreAccessibilityAfterFirstUnlockThisDeviceOnly,
+        UICKeyChainStoreAccessibilityAlwaysThisDeviceOnly,
+    }
+    ```
+
+Item |  Accessible|
+---------|----------|
+ Wi-Fi passwords | After first unlock |
+ Mail accounts | After first unlock |
+ Exchange accounts | After first unlock |
+ VPN passwords | After first unlock |
+ Exchange accounts | After first unlock |
+ LDAP, CalDAV, CardDAV | After first unlock |
+ Social network account tokens | After first unlock |
+ Handoff advertisement encryption keys | After first unlock |
+ iCloud token | After first unlock |
+ Home sharing password | When unlocked |
+ Find My iPhone token | Always |
+ Voicemail | Always |
+ iTunes backup | When unlocked, non-migratory |
+ Safari passwords | When unlocked |
+ Safari bookmarks | When unlocked |
+ VPN certificates | Always, non-migratory |
+ Bluetooth keys | Always, non-migratory |
+ Apple Push Notification service (APNs) token | Always, non-migratory |
+ iCloud certificates and private key | Always, non-migratory |
+ iMessage keys | Always, non-migratory |
+ Certificates and private keys installed by a configuration profile | Always, non-migratory |
+ SIM PIN | Always, non-migratory |
 
 
 
@@ -172,7 +310,7 @@ iOS有以下几种密钥包
 3. BackUp KeyBag : 在电脑上使用iTunes备份手机时创建
     - KeyBag使用一串新的key来加密备份数据
     - non-migratory Keychain items依然还是使用 UID-derived key 封装,在其他设备不能恢复
-    - 其他Keychain item只有在设置了备份密码之后,才可以迁移到新的设备上.
+    - Keychain item只有在设置了 backup password 之后,才可以迁移到新的设备上.
 
 4. Escrow KeyBag : 用于 iTunes 同步和 MDM
     - One-time Unlock Tokens
@@ -181,27 +319,98 @@ iOS有以下几种密钥包
     - iCloud需要在后台备份
     - 苹果为每一个iCloud用户生成一对公私钥,上传 iCloud Backup KeyBag 的时候,使用公钥加密
 
-## iCloud
-- iCloud会备份keychain数据吗
+## 应用安全
+
+### # 0x00 应用代码签名
+
+使用Apple颁发的证书（开发者计划）来签名应用代码
+
+### # 0x01 运行时进程安全性
+
+所有第三方应用均已经过 “沙盒化”(**以非权限用户"mobile”的身份运行**)， 因此它们在访问其他应用储存的文件或对设备进行更改时会受到限制。系统文件和资源也会与用户的应用保持隔离。
+
+### # 0x02 应用中的数据保护
+
+`Data Protection`适用于文件和数据库 API， 包括 NSFileManager、 CoreData、 NSData 和 SQLite。
+
+用户安装的应用若没有选择加入某个特定数据保护类， 则默认接受 “首次用户认证前保护”。
+
+## 通信安全
+
+### #0x00 iCloud
+
+每个文件都被分成 chunks, 并由 iCloud 使用 AES-128 以及从利用 SHA-256 的每个 chunk 内容派生的密钥进行加密。 密钥和文件的 meta data 由 Apple 储存在用户的 iCloud 帐户中。 文件的加密 chunks 通过第三方的存储服务 (例如 S3 和 Google 云平台) 进行储存， 不带任何用户识别信息。
+
+#### iCloud Drive
+
+iCloud Drive 使用了 account-based keys 来保护存放在 iCloud 的文档
+
+加密 chunks 的密钥使用 record keys 封装, 然后再使用用户的 iCloud Drive Service Key 来封装
+
+要访问 iCloud Drive 的 文件, 用户必须先登录上 iCloud , 并且同时拥有iCloud Drive key
+
+#### CloudKit
+
+`CloudKit` 是 Apple 提供给开发者用来储存 key-value 数据, structured 数据, asset 到 iCloud 中，支持公共数据库和私有数据库
+
+![SamuelChan/20181017155104.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20181017155104.png)
+
+#### CloudKit end-to-end 加密
+
+Apple Page Cash,Health data,User keywords,Siri 使用 CloudKit Service Key 进行 CloudKit 端对端加密, 该密钥受 iCloud 钥匙串同步的保护。对于这些 CloudKit 容器， 密钥层次结构植根于 iCloud 钥匙串， 因此享有 iCloud 钥匙串的安全性特性 : 密钥仅可在用户受信任的设备上使用， Apple 或任何第三方都无法使用。
+
+#### iCloud 备份
+
+
+### # 0x01 iCloud Keychain
+
+> 隐私，安全，易用，可恢复
+
+#### iCloud syncing
+
+当用户第一次打开 iCloud KeyChain, 设备会创建：
+
+- syncing identity
+  - a privete key
+  - a public key
+- circle of trust(信任圈)
+
+syncing identity的公钥放置在信任圈中， 然后该信任圈已签名两次 : 第一次由同步 身份的私钥签署， 第二次由来自用户 iCloud 帐户密码的非对称椭圆密钥 (使用 P-256) 签名。 随信任圈一起储存的还有参数 (随机盐密钥和迭代次数)， 用于创建基于用户 iCloud 密码的密钥。
+
+已签名的同步信任圈放置在用户的 iCloud 密钥值存储区域。 如果不知道用户的 iCloud 密码， 就无法对其进行读取 ; 如果没有信任圈成员 syncing identity 的私钥， 就无法对其进行有效地修改。
+
+当用户在其他设备上启用 iCloud 钥匙串时， 新设备会注意到该用户之前在 iCloud 中建立过同步信任圈， 但本设备不是该信任圈的成员。 该设备将创建其`syncing identity`密钥对， 然后创建应用程序申请单以请求加入该信任圈。 该申请单包括设备的`syncing identity`公钥， 系统将要求用户使用其 iCloud 密码进行认证。 椭圆密钥生成参数通过 iCloud 取回， 并生成用于签名应用程序申请单的密钥。 最终， 应用程序申请单将放置在 iCloud 中。
+
+当第一台设备接收到应用程序申请单时，它会显示一则通知， 让用户确认新设备正在请求加入同步信任圈。 该用户输入其 iCloud 密码， 应用程序申请单通过匹配的私钥签名进行验证。 这样即确认发出请求加入信任圈的人在发出请求时输入了用户的 iCloud 密码。
+
+用户批准将新设备添加至信任圈后，第一台设备将新成员的公钥添加至同步信任圈，使用其同步身份和来自用户 iCloud 密码的密钥再次签名。新的同步信任圈放置在 iCloud 中，该信任圈的新成员同样进行了签名。
+
+现在，签名信任圈有两个成员，并且每个成员拥有另一个成员的公钥。它们现在开始通过 iCloud 键值储存交换各个钥匙串项或视情况将其储存在 CloudKit 中。如果两个信任圈 成员拥有相同的项目，修改日期最近的项目将被同步。如果另一个成员拥有该项目并且修改日期相同，这些项目将被跳过。 每个同步的项目都会加密，因此只有用户信任圈内的设 备才能解密。任何其他设备或 Apple 均无法解密。
+
+但是，整个钥匙串不会进行同步。某些项目仅限于特定的设备 (例如 VPN 身份)，它们不应该离开设备。仅具有 kSecAttrSynchronizable 属性的项目会被同步。 Apple 已经为 Safari 浏览器用户数据 (包括用户名、 密码和信用卡号)、无线局域网密码以及 HomeKit 加密密钥设置了该属性。
+
+另外，在默认情况下，第三方应用添加的钥匙串项不会进行同步。将项目添加至钥匙串时，开发者必须设置 kSecAttrSynchronizable。
+
+#### iCloud recovery
+
+#### Escrow security
+
+### 0x02 iMessages
+
 ## 专用名词
 
 `Secure Enclave` : 安全隔区
 
 `APFS: Apple File System format` 所有兼容的设备升级到iOS 10.3、tvOS 10.2和watchOS 3.2，会将HFS+文件系统转换为APFS。[15]有测试表明APFS不支持32位的设备，例如iPhone 5[16]。
 
-
 ## 问题
 
 Secure Enclave 和application processor的关系是什么?
 
-flash memory和磁盘是什么关系
-
-
-
 ## 借鉴的点
 
-- app降级: 借鉴系统判断降级的方法(通过抓包可以抓到)
-- 生成文件的时候设置权限
+- app降级: 借鉴系统判断降级的方法(通过抓包可以抓到app store老版本的安装包)
+- 生成文件的时候设置权限,适用于`NSFileManager`、 `CoreData`、 `NSData` 和 `SQLite`,尽可能的使用classes A and B.
   
     ```objc
     NSString *filePath = [NSString stringWithFormat:@"%@/Documents/test.plist",NSHomeDirectory()];
@@ -217,20 +426,15 @@ flash memory和磁盘是什么关系
 - 在安全隔区生成密钥:kSecAttrTokenIDSecureEnclave
 
 - 钥匙串
+  - 使用钥匙串来储存机密信息,应用生成私钥的item属性应该为non-migratory
   - Keychain-access_group多个app可以共享钥匙串
-  - 创建SecItem的时候设置访问权限
+  - ACL
+  - 设置keychain items的级别 + this device only (kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly)
+  - kSecAccessControlTouchIDCurrentSet : 该钥匙串项只能通过当前的TouchId来访问,如果TouchId被销毁/更改,那么这个钥匙串项就不能访问
 
+- iCloud KeyChain 同步机制
 
-
-1.数据储存加密
-
-passCode用来干嘛? 
-touchId,faceId: 储存的是固定数据还是模式匹配? 如果是模式匹配就不能用来加密
-iCloud机制(Guide比较浅显,找资料): masterKey漏洞 → 木马机,主要是由iCloud同步造成的;本地储存还是安全的
-关注廉价机型安全: 5c(32位系统),缺v乏硬件层面上,防止暴力破解的芯片
-2.数据传输加密
-
-3.结合API文档看，考虑怎样通过api给app提供尽可能安全的存储。
+...to be continued
 
 ## iPhone XS Max 特殊安全方式
 
@@ -258,3 +462,15 @@ A12硬件和arm64e(arm8.3)保护的iOS 12,苹果iPhone XS等机型中,采用Poin
  [A10](https://zh.wikipedia.org/wiki/Apple_A10_Fusion) | iPhone 7和iPhone 7 Plus | CPU性能提升了40%，在图形运算提升了50%
  [A11](https://zh.wikipedia.org/wiki/Apple_A11_Bionic) | iPhone 8、iPhone 8 Plus及iPhone X |  “仿生”（Bionic）;CPU部分高性能核心和节电核心的性能分别提升25%及70%，GPU性能较前代提升30%
  [A12](https://zh.wikipedia.org/wiki/Apple_A12_Bionic) | iPhone XS、iPhone XS Max和iPhone XR | CPU处理性能较上一代A11 Bionic提升最高约15%，节能最高达50%。
+
+
+## 参考资料
+
+[iOS Security Part 1 - Secure Boot](http://sebastienduc.blogspot.com/2016/03/ios-security-part-1-secure-boot.html?view=magazine)
+
+[How the Secure Enclave & Touch ID Work - Apple iOS Security - Part 1 of 6](https://www.youtube.com/watch?v=vTNm85H49x8)
+
+[Apple iOS application development guidance](https://www.ncsc.gov.uk/guidance/apple-ios-application-development-guidance-0#3)
+
+[iOS 10: How to Use Secure Enclave and Touch ID to Protect your Keys](https://www.linkedin.com/pulse/ios-10-how-use-secure-enclave-touch-id-protect-your-keys-satyam-tyagi)
+
