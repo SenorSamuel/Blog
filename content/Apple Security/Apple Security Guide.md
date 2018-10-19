@@ -382,6 +382,8 @@ iOS有以下几种密钥包
 
 每个文件都被分成 chunks, 并由 iCloud 使用 AES-128 以及从利用 SHA-256 的每个 chunk 内容派生的密钥进行加密。 密钥和文件的 meta data 由 Apple 储存在用户的 iCloud 帐户中。 文件的加密 chunks 通过第三方的存储服务 (例如 S3 和 Google 云平台) 进行储存， 不带任何用户识别信息。
 
+![iCloud](https://help.apple.com/xcode/mac/current/en.lproj/Art/ca_enable_icloud.png)
+
 #### iCloud Drive
 
 iCloud Drive 使用了 account-based keys 来保护存放在 iCloud 的文档
