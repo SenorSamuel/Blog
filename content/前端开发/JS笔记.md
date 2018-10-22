@@ -80,7 +80,7 @@ getAverage(365, 27);
 // Output: 196
 
 
-//返回值
+//返回值g
 const getSubTotal = (itemCount) => {
   return itemCount * 7.5;
 };
@@ -741,6 +741,34 @@ fetch('https://api-to-call.com/endpoint',{
 
 **<font size = 5>ES8: async and await</font size>**
 ![SamuelChan/20180822165222.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180822165222.png)
+
+```js
+Promise.prototype.then():then() 方法返回一个  Promise 。它最多需要有两个参数：Promise 的成功和失败情况的回调函数。
+//语法
+p.then(onFulfilled, onRejected);
+
+p.then(function(value) {
+   // fulfillment
+  }, function(reason) {
+  // rejection
+});
+###############
+let p1 = new Promise(function(resolve, reject) {
+//  resolve("Success!");
+  // or
+  reject ("Error!");
+});
+
+p1.then(function(value) {
+  console.log(value); // Success!
+}, function(reason) {
+  console.log(reason); // Error!
+});
+
+
+```
+
+
 
 
 ### HTML DOM
