@@ -1,9 +1,8 @@
-## JS笔记
+# JS笔记
 
-### 变量
+## 变量
 
 ```js
-
 //const vs let
 const var = 'string';
 let var = 'string';
@@ -26,10 +25,11 @@ console.log(earlyYears,laterYears);//Output: 21 100
 
 ```
 
-### 选择分支
+## 选择分支
+
 js中用于选择判断的数据都可以判断为true/false
 
-#### 1.以下情况被认为是false
+### 1.以下情况被认为是false
 
 - false
 - 0 and -0
@@ -38,16 +38,17 @@ js中用于选择判断的数据都可以判断为true/false
 - undefined
 - NaN (Not a Number)
 
-#### 2.`!`用于先判断`false`
+### 2.`!`用于先判断`false`
 
-#### 3.相等 (三个等)
+### 3.相等 (三个等)
+
 ```js
 To check if two things equal each other, we write === (three = signs in a row).
 
 To check if two things do not equal each other, we write !== (an exclamation with two = signs in a row).
 ```
 
-### 函数
+## 函数
 
 Math.random() [0,1)之间的数
 
@@ -63,50 +64,45 @@ const pressPowerButton = () => {
     calculatorIsOn = true;
   }
 };
-
 pressPowerButton();
 // Output: Calculator turning on.
 pressPowerButton();
 // Output: Calculator turning off.
 
-
-
-//多参数
+//1.多参数
 const getAverage = (numberOne, numberTwo) => {
   const average = (numberOne + numberTwo) / 2 ;
   console.log(average);
 };
-getAverage(365, 27);
-// Output: 196
-
-
-//返回值g
+getAverage(365, 27);// Output: 196
+//2.返回值
 const getSubTotal = (itemCount) => {
   return itemCount * 7.5;
 };
-
-
-//使用关键字声明
+//3.使用关键字声明
 function square (number) {
-  return number * number; 
+  return number * number;
 }
-console.log(square(5));
-// Output: 25.
-
-
-//函数表达式(匿名函数,分号结尾)
+console.log(square(5));// Output: 25.
+//4.函数表达式(匿名函数,分号结尾)
 const square = function (number) {
   return number * number;
 };
-console.log(square(5));
-// Output: 25.
+console.log(square(5));// Output: 25.
 
-//arrrow Function can be optimazing
-const volumeOfSphere = diameter =>  (1/6) * Math.PI * diameter * diameter * diameter;
+//5.箭头函数
+//a.只有一个参数,参数的括号可以省略
+const getSubTotal = itemCount => {
+  return itemCount * 7.5;
+};
+//b.只有一个参数,返回值只有一句,花括号可以省略
+const getSubTotal = itemCount => itemCount * 7.5;
+//c.没有参数时,括号不能省略
+const getSubTotal = () => itemCount * 7.5;
 
 ```
 
-小程序
+> 示例代码
 
 ```js
 const getUserChoice = (userInput) => {
