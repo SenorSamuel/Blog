@@ -50,9 +50,10 @@ To check if two things do not equal each other, we write !== (an exclamation wit
 
 ## 函数
 
-Math.random() [0,1)之间的数
-
 ```js
+
+//[0,1)之间的数
+Math.random() 
 
 let calculatorIsOn = false;
 const pressPowerButton = () => {
@@ -100,6 +101,22 @@ const getSubTotal = itemCount => itemCount * 7.5;
 //c.没有参数时,括号不能省略
 const getSubTotal = () => itemCount * 7.5;
 
+//6.定时函数: 15s之后退出
+const defaultWaitForAppSwitch = step =>
+  new Promise(resolve => {
+    var s = 15;
+    console.info(
+      "You have " + s + " seconds to switch to " + step.appName + " app ..."
+    );
+    var interval = setInterval(() => {
+      if (--s) {
+        console.log(s + " ...");
+      } else {
+        clearInterval(interval);
+        resolve();
+      }
+    }, 1000);
+  });
 ```
 
 > 示例代码
@@ -197,11 +214,11 @@ console.log(colorOfSky()); // blue
 
 ```js
 
-//赋值
+//1.赋值
 let bucketList = ['Rappel into a cave', 'Take a falconry class', 'Learn to juggle'];
 console.log(bucketList);
 
-//从零开始
+//2.从零开始
 let newYearsResolutions = ['Rappel into a cave', 'Take a falconry class', 'Learn to juggle'];
 console.log(newYearsResolutions[0]);
 
@@ -531,28 +548,28 @@ npm run build
 - 命名空间冲突**(importantly, prevent pollution of the global namespace and potential naming collisions, by cautiously selecting variables and behavior we load into a program.)**
 
 ```js
-//1.export一个模块
-
-let Airplane = {};
-
-Airplane.myAirplane = "StarJet";
+//1.1 module.export
+//menu.js
+let Menu = {};
+Menu.myAirplane = "StarJet";
+Menu.name = "sdfsdfsdfsfsfsdf";
+Menu.function = (age) => age+3;
+Menu.specialty = "Spicy";
+console.log(Menu);             //{ myAirplane: 'StarJet',name: 'sdfsdfsdfsfsfsdf',function: [Function] }
+console.log(Menu.function(27));//30
 
 module.exports = Airplane;
 
-
-//2.import模块使用require()
-
+//1.2 require()导入module
 const Menu = require('./menu.js');
-
 function placeOrder() {
   console.log('My order is: ' + Menu.specialty);
 }
-
 placeOrder();
 
-
-//3.ES6语法的export和import
-##################################
+//2.ES6语法 export && import
+//export default
+//xxxxxxx.js
 let Airplane = {
   availableAirplanes : [{
     name:'AeroJet',
@@ -563,10 +580,20 @@ let Airplane = {
   }]
 };
 
+
+//a. export default每个文件只能到处一个module
 export default Airplane;//allowing us to export one module per file.
 
-###
+export default async transport => {
+  const eth = new Eth(transport);
+  const result = await eth.getAppConfiguration();
+  return result;
+};
+//b. export default输出一个叫做default的变量，然后系统允许你为它取任意名字。所以可以为import的模块起任何变量名，且不需要用大括号包含
+import any from "./xxxxxxx.js"
 
+
+3. export && import
 let specialty = '';
 //JavaScript, every function is in fact a function object.这就是为什么用";"来结束?
 function isVegetarian() {
@@ -574,24 +601,19 @@ function isVegetarian() {
 function isLowSodium() {
 }; 
 
-//1.export
+//a. export
 export { specialty, isVegetarian };
-//2.export as
+//b. export as
 export { specialty as chefsSpecial, isVegetarian as isVeg, isLowSodium };
-//3.export name
+//c. export name
 export let specialty = '';
 
+import { specialty, isVegetarian } from './menu';
 
 ##################################
 //import隐藏后缀
 import Menu from './menu';
 import Airplane from './airplane';
-
-###
-
-import { specialty, isVegetarian } from './menu';
-
-
 ```
 
 ### HTTP Request
@@ -958,7 +980,25 @@ screen.availHeight - 可用的屏幕高度
 ```
 
 
-### 参考资料
+## JS调试
+
+1. Google Chrome
+	- 打开Chrome开发者工具；
+	- 点击进入Sources标签页，在页面的左侧就能看到JS代码的目录；
+	- 找到需要设置断点的源文件，在需要中断的哪行代码左侧单击鼠标左键，就可以设置断点，如果你的代码是uglify过的，则需导入相应的source-map来映射源码。
+	- 刷新页面（如果设置断点的位置是一个事件处理函数，则直接触发这个事件即可），代码运行到断点处的时候，程序就会挂起，这时候用鼠标hover就可以查看当前各个变量的数值，并以此判断程序是否正常运行了。
+
+2. VSCode
+
+	![SamuelChan/20181023142116.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20181023142116.png)
+	>其中最重要的配置项就是“Program”字段，这个字段定义了整个应用的入口，开启调试器的时候会从这个入口启动应用。
+	![SamuelChan/20181023142138.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20181023142138.png)
+	
+	
+**存在依赖的时候怎么办?**
+	
+
+## 参考资料
 
 [让node支持es模块化(export、import)的方法](https://www.cnblogs.com/cag2050/p/7567248.html)
 
