@@ -1,6 +1,6 @@
 ## iMooc之UI拾遗
 
-![SamuelChan/20180626154542.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180626154542.png)
+![SamuelChan/20180626154542.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180626154542.png)
 
 ### 一.UITableView
 
@@ -32,10 +32,10 @@ this method calls the cell’s prepareForReuse method instead.
 > 多线程修改数据源如何保证数据源同步
 
 - 并发访问 →→数据拷贝 : 可能会造成内存开销
-![SamuelChan/20180624212558.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180624212558.png)
+![SamuelChan/20180624212558.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180624212558.png)
 
 - 串行访问 → 数据很多的情况下,会非常耗时
-![SamuelChan/20180624212917.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180624212917.png)
+![SamuelChan/20180624212917.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180624212917.png)
 
 ### 二. 事件传递&&视图响应
 1. CALayer和UIView关系: 
@@ -51,13 +51,13 @@ UIView负责接收事件传递和响应,CALayer负责视图显示/渲染,体现�
 
 - (BOOL)pointInside(CGPoint)point withEvent:(UIEvent *)event;
 ```
-![SamuelChan/20180624215851.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180624215851.png)
+![SamuelChan/20180624215851.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180624215851.png)
 
-![SamuelChan/20180624220426.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180624220426.png)
+![SamuelChan/20180624220426.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180624220426.png)
 
 
 3.默认事件是沿着响应链向上传递,如果到最终到UIApplicationDelegate都没有处理事件,那么事件就不被处理
-![SamuelChan/20180624222931.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180624222931.png)
+![SamuelChan/20180624222931.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180624222931.png)
 
 4.UIControl,UIGesture和响应链
 
@@ -71,7 +71,7 @@ UIView负责接收事件传递和响应,CALayer负责视图显示/渲染,体现�
 
 **手势识别是需要一点时间的。在手势还是Possible 状态的时候，事件传递给了响应链的第一个响应对象（baseView 或者 testView）**
 
-![SamuelChan/20180625143948.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180625143948.png)
+![SamuelChan/20180625143948.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180625143948.png)
 
 case 1: 点击BaseView : 
 >  base view touchs Began				
@@ -103,31 +103,31 @@ case 5: gesture.`delaysTouchesBegan ` == YES(default是NO)  + 点击testView
 
 ### 三.图像显示原理
 
-![SamuelChan/20180625223604.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180625223604.png)
+![SamuelChan/20180625223604.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180625223604.png)
 
 #### 卡顿 && 掉帧
 - iOS设备的帧率大概是60FPS, 1/60 = 16.7 ms
 - 如果CPU和GPU在16.7ms内没有准备好下一帧画面,在Vsync信号到来时,该帧就会被丢弃
 
-![SamuelChan/20180625223817.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180625223817.png)
+![SamuelChan/20180625223817.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180625223817.png)
 
 #### 绘制原理 && 异步绘制
-![SamuelChan/20180625225300.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180625225300.png)
+![SamuelChan/20180625225300.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180625225300.png)
 
 系统绘制
-![SamuelChan/20180625225537.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180625225537.png)
+![SamuelChan/20180625225537.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180625225537.png)
 
 异步绘制
 [layer.delegate displayLayer:] : 代理负责生成bitmap,并提交到layer.contents中
-![SamuelChan/20180625230018.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180625230018.png)
+![SamuelChan/20180625230018.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180625230018.png)
 
 #### 离屏渲染
 
-![SamuelChan/20180625232041.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180625232041.png)
+![SamuelChan/20180625232041.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180625232041.png)
 
 #### 界面优化方案
 	
-![SamuelChan/20180626154235.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180626154235.png)
+![SamuelChan/20180626154235.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180626154235.png)
 
 
 #### 参考资料

@@ -1,5 +1,5 @@
 ## iMooc objc拾遗
-![SamuelChan/20180704110550.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180704110550.png)
+![SamuelChan/20180704110550.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180704110550.png)
 
 ### 0x01 分类 category
 
@@ -11,7 +11,7 @@
 
 - 原理 [runtime源码 704](https://opensource.apple.com/tarballs/objc4/)
 
-![SamuelChan/20180704121921.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180704121921.png)
+![SamuelChan/20180704121921.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180704121921.png)
 
 ```objc
 struct category_t {
@@ -198,7 +198,7 @@ attachMethodLists(Class cls, method_list_t **addedLists, int addedCount,
 - `ObjcAssociationMap`
 - `ObjcAssociation`
 
-![SamuelChan/20180704163622.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180704163622.png)
+![SamuelChan/20180704163622.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180704163622.png)
 
 ```objc
 // class AssociationsManager manages a lock / hash table singleton pair.
@@ -413,7 +413,7 @@ void _object_remove_assocations(id object) {
 
 > 如何实现通知? hint: 苹果爸爸最爱的hashmap
 
-![SamuelChan/20180705111410.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180705111410.png)
+![SamuelChan/20180705111410.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180705111410.png)
 
 ### 0x06 KVO
 
@@ -461,11 +461,11 @@ void _object_remove_assocations(id object) {
 KVO的底层实现
 
 当一个类的属性被观察的时候，系统会通过runtime动态的创建一个该类的派生类，并且会在这个类中重写基类被观察的属性的setter方法，而且系统将这个类的isa指针指向了派生类，从而实现了给监听的属性赋值时调用的是派生类的setter方法。重写的setter方法会在调用原setter方法前后，通知观察对象值得改变。
-![SamuelChan/20171019113945.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171019113945.png)
+![SamuelChan/20171019113945.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171019113945.png)
 
-![SamuelChan/20171019114109.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171019114109.png)
+![SamuelChan/20171019114109.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171019114109.png)
 
-![SamuelChan/20180705112715.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180705112715.png)
+![SamuelChan/20180705112715.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180705112715.png)
 
 
 ### 0x07 KVC
@@ -495,9 +495,9 @@ The default implementation of this method does the following:
 
 ``` 
 
-![SamuelChan/20180705124114.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180705124114.png)
+![SamuelChan/20180705124114.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180705124114.png)
 
-![SamuelChan/20180705124659.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180705124659.png)
+![SamuelChan/20180705124659.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180705124659.png)
 
 ### 0x08 属性关键字
 @property 默认值: readwrite,atomic,assign

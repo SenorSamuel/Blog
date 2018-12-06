@@ -187,7 +187,7 @@ NSString * const ZOCFooDidBecomeBarNotification = @"ZOCFooDidBecomeBarNotificati
 - (instancetype)initWithFeedParser:(id<ZOCFeedParserProtocol>)feedParser;
 
 ```
-![SamuelChan/20170630192229.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170630192229.png)
+![SamuelChan/20170630192229.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170630192229.png)
 
 #### 4.美化代码
 ```

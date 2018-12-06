@@ -77,7 +77,7 @@ typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
 - 一种办法就是将这个 Timer 分别加入这两个 Mode。
 - 还有一种方式，就是将 Timer 加入到顶层的 RunLoop 的 “commonModeItems” 中。”commonModeItems” 被 RunLoop 自动更新到所有具有”Common”属性的 Mode 里去。
 
-![SamuelChan/20171226220120.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171226220120.png)
+![SamuelChan/20171226220120.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171226220120.png)
 
 ### 0x02 Runloop实现的功能
 

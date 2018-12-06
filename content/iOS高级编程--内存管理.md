@@ -38,7 +38,7 @@
 1. Memory Management(means Reference Counting in OC) : a programmer allocates a memory area when the program needs it and frees it when the program no longer needs it.  
 2. Reference Counting: invented by George E. Collins in 1960
 3. With Reference Counting,you don't need to remember the value of the reference counter itself or what refers to the object  
-![SamuelChan/20170706152431.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170706152431.png)
+![SamuelChan/20170706152431.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170706152431.png)
 
 #### Exploring Memory Management Further
 
@@ -55,7 +55,7 @@
 | Relinquish it                   | release                          |
 | Dispose of it                   | dealloc                          |
 > these method(alloc, retain, release, and dealloc) are not provided by the Objective-C language itself.They are features of the Foundation Framework as part of Cocoa Framework
-![SamuelChan/20170706154549.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170706154549.png)
+![SamuelChan/20170706154549.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170706154549.png)
 
 #### You Have Ownership of Any Objects You Create
 
@@ -128,7 +128,7 @@ id obj = [NSMutableArray array];
   return obj;
 }
 ```
-![SamuelChan/20170706173000.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170706173000.png)
+![SamuelChan/20170706173000.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170706173000.png)
 
 #### You Must Not Relinquish Ownership of an Object You Don’t Own
 
@@ -175,7 +175,7 @@ struct obj_layout {
 ```
 
 2.The retain Method
-![SamuelChan/20170707105639.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170707105639.png)
+![SamuelChan/20170707105639.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170707105639.png)
 
 ```objc
 - (NSUInteger) retainCount {
@@ -295,8 +295,8 @@ Apple implementation:
 - By iterating through the hash table entries, memory blocks for each object are reachable.(useful for debugging,LLDB and Instruments)
 
 
-![SamuelChan/20170707113104.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170707113104.png)
-![SamuelChan/20170707113946.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170707113946.png)
+![SamuelChan/20170707113104.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170707113104.png)
+![SamuelChan/20170707113946.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170707113946.png)
 
 ### Autorelease
 
@@ -327,7 +327,7 @@ id obj = [[NSObject alloc] init];
 [pool drain];//will do [obj release]
 ```
 
-![SamuelChan/20170707141849.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170707141849.png)  
+![SamuelChan/20170707141849.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170707141849.png)  
 
 No need to explicitly use the NSAutoreleasePool object in `the main Runloop`  
 
@@ -336,7 +336,7 @@ No need to explicitly use the NSAutoreleasePool object in `the main Runloop`
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
 ```
-![SamuelChan/20170707142124.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170707142124.png)  
+![SamuelChan/20170707142124.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170707142124.png)  
 
 
 #### Implementing autorelease
@@ -392,7 +392,7 @@ ARC related:
 - LLVM version  >= 3.0  
 - Objective-C runtime library: objc4 493.9 or later
 - ARC enabled: 1.Enabled ARC in build Setting 2.部分MRC:Build phases→Compile Sources→ -fno-objc-arc 3. Build phases→Compile Sources→部分ARC:-fobjc-arc   
-![SamuelChan/20170717103437.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170717103437.png)
+![SamuelChan/20170717103437.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170717103437.png)
 
 
 
@@ -463,7 +463,7 @@ id __autoreleasing obj2 = nil;
 
 > When a variable has a reference to an object and the object is discarded, the weak reference also disappears automatically, which means that the variable is assigned to <mark>nil</mark>.
 
-![SamuelChan/20170711111007.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170711111007.png)
+![SamuelChan/20170711111007.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170711111007.png)
 
 ```objc
 id __weak obj = [[NSObject alloc] init];//wrong,
@@ -506,8 +506,8 @@ FYI:
 
 #### 4.__autoreleasing ownership qualifier
 
-![SamuelChan/20170711144133.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170711144133.png)
-![SamuelChan/20170711144249.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170711144249.png)
+![SamuelChan/20170711144133.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170711144133.png)
+![SamuelChan/20170711144249.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170711144249.png)
 
 - ①When an object is returned from a method, the compiler checks if the method begins with alloc/new/copy/mutableCopy, and if not, the returned object is automatically registered to the autorelease pool
 
@@ -732,7 +732,7 @@ This source code is converted as follows. It calls objc_autoreleaseReturnValue f
 }
 ```
 
-![SamuelChan/20170713155559.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170713155559.png)
+![SamuelChan/20170713155559.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170713155559.png)
 
 
 ### __weak
@@ -868,10 +868,10 @@ objc_autoreleasePoolPop(pool);
 
 ## iMooc 拾遗 の 内存管理
 
-![SamuelChan/20180708224853.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180708224853.png)
+![SamuelChan/20180708224853.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180708224853.png)
 
 ### 0x01 内存布局
-![SamuelChan/20180708230355.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180708230355.png)
+![SamuelChan/20180708230355.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180708230355.png)
 
 ### 0x02 内存管理方法
 
@@ -1498,7 +1498,7 @@ id  weak_register_no_lock(weak_table_t *weak_table, id referent_id, id *referrer
 > 1.  双向链表  
 > 2.  线程一一对应
 
-![SamuelChan/20180710172646.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180710172646.png)
+![SamuelChan/20180710172646.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180710172646.png)
 
 
 1. Autorelease对象什么时候释放？
@@ -1509,13 +1509,13 @@ id  weak_register_no_lock(weak_table_t *weak_table, id referent_id, id *referrer
  -  AutoreleasePoolPage每个对象会开辟4096字节内存（也就是虚拟内存一页的大小），除了上面的实例变量所占空间，剩下的空间全部用来储存autorelease对象的地址
  -  上面的id *next指针作为游标指向栈顶最新add进来的autorelease对象的下一个位置
  -  一个AutoreleasePoolPage的空间被占满时，会新建一个AutoreleasePoolPage对象，连接链表，后来的autorelease对象在新的page加入
- ![SamuelChan/20170717194057.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170717194057.png)
+ ![SamuelChan/20170717194057.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170717194057.png)
 
 3. AutoreleasePoolPage快要满的时候:也就是next指针马上指向栈顶，这时就要执行上面说的操作，建立下一页page对象，与这一页链表连接完成后，新page的next指针被初始化在栈底（begin的位置），然后继续向栈顶添加新对象。
-![SamuelChan/20170717194341.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170717194341.png)
+![SamuelChan/20170717194341.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170717194341.png)
 
 4. 释放时刻:根据哨兵位置进行pop释放池,每当进行一次objc_autoreleasePoolPush调用时，runtime向当前的AutoreleasePoolPage中add进一个哨兵对象，值为0（也就是个nil）,对个
-![SamuelChan/20170717194612.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170717194612.png)
+![SamuelChan/20170717194612.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170717194612.png)
 
 5. 使用容器的block版本的枚举器时，内部会自动添加一个AutoreleasePool,普通for/for in中没有  
 
@@ -1533,7 +1533,7 @@ __weak
 
 __block(MRC)
 
-![SamuelChan/20180710180037.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180710180037.png)
+![SamuelChan/20180710180037.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180710180037.png)
 
 
 

@@ -286,7 +286,7 @@ int main()
 }
 
 ```
-![SamuelChan/20170824163740.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170824163740.png)
+![SamuelChan/20170824163740.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170824163740.png)
 
 #### 1.4 捕获对象的实现(没__block修饰)
 
@@ -411,7 +411,7 @@ __Block_byref_obj_0 obj = { 0,
 - _NSConcreteGlobalBlock   
 - _NSConcreteMallocBlock
 
-![SamuelChan/20170824164632.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170824164632.png)
+![SamuelChan/20170824164632.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170824164632.png)
 
 #### 2.1 _NSConcreteGlobalBlock
 
@@ -425,9 +425,9 @@ _NSConcreteGlobalBlock:储存在数据区,全局只有一个满足两个条件�
 
 #### 2.3 _NSConcreteMallocBlock
 
-![SamuelChan/20170824180051.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170824180051.png)
+![SamuelChan/20170824180051.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170824180051.png)
 
-![SamuelChan/20170824180111.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170824180111.png)
+![SamuelChan/20170824180111.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170824180111.png)
 
 1.在ARC下,大部分情况下面,编译器都会自动copy block到堆区:函数的返回参数
 
@@ -474,12 +474,12 @@ blk();//栈block销毁,野指针
 
 #### 2.4 __block变量的内存分析
 
-![SamuelChan/20170828162555.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170828162555.png)
+![SamuelChan/20170828162555.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170828162555.png)
 (1) 当一个Block被拷贝到堆区时,被Block使用到的__block变量会被拷贝到堆区中, 原栈区 __block变量的属性变量 __forwarding将会指向堆区的拷贝后的 __block变量(保证在block内和block外访问的__block都是同一个变量)  
 (2) __block被多个Block(拷贝到堆区)引用时, __block(同一个对象)的引用计数+1
-![SamuelChan/20170828171220.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170828171220.png)
+![SamuelChan/20170828171220.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170828171220.png)
 
-![SamuelChan/20170828171727.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170828171727.png)
+![SamuelChan/20170828171727.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170828171727.png)
 
 #### 2.5 三种block与copy的关系 
 
@@ -489,7 +489,7 @@ blk();//栈block销毁,野指针
 3. Block被__strong修饰  
 4. Block作为方法参数(usingBlock,GCD)
 
-![SamuelChan/20170828161255.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170828161255.png)
+![SamuelChan/20170828161255.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170828161255.png)
 
 ### 3.循环引用问题
 
@@ -542,7 +542,7 @@ blk();//栈block销毁,野指针
 
 ### Block の 拾遗
 
-![SamuelChan/20180711222625.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180711222625.png)
+![SamuelChan/20180711222625.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180711222625.png)
 
 ### 参考资料:  
 [@weakify 与 @strongify 的实现](http://www.saitjr.com/ios/ios-libextobjc-1.html)  

@@ -43,12 +43,12 @@ automaticallyAdjustsScrollViewInsets与Top/Buttom Layout Guide在某种程度上
 > Indicates the highest vertical extent for your onscreen content, for use with Auto Layout constraints.
 
 topLayoutGuide代表着被导航栏/状态栏遮挡的内容区域,一般用于autoLayout
-![SamuelChan/20171030103536.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171030103536.png?imageMogr2/auto-orient/thumbnail/600x/blur/1x0/quality/75|imageslim)
+![SamuelChan/20171030103536.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171030103536.png?imageMogr2/auto-orient/thumbnail/600x/blur/1x0/quality/75|imageslim)
 
 Navigation从parent请求insets
-![SamuelChan/20171030103610.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171030103610.png)
+![SamuelChan/20171030103610.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171030103610.png)
 然后我们的VC再从Navigation处获得：
-![SamuelChan/20171030103639.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171030103639.png)
+![SamuelChan/20171030103639.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171030103639.png)
 
 注意点:
 - 在viewDidLayoutSubviews中访问该值
@@ -85,7 +85,7 @@ Navigation从parent请求insets
 ---
 基于约束的auto layout, 使我们搭建能够动态响应内部和外部变化的用户界面. Auto Layout为每一个view都定义了margin. margin指的是控件显示内容部分的边缘和控件边缘的距离.
 可以用layoutMargins或者layoutMarginsGuide属性获得view的margin,margin是视图内部的一部分.layoutMargins允许获取或者设置UIEdgeInsets结构的margin. layoutMarginsGuide则获取到只读的UILayoutGuide对象.
-![SamuelChan/20171030114616.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171030114616.png)
+![SamuelChan/20171030114616.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171030114616.png)
 
 iOS11新增:
 1.directionalLayoutMargins
@@ -105,7 +105,8 @@ viewController.viewRespectsSystemMinimumLayoutMargins = NO.
 ### 安全区相关safeLayoutGuide,safeAreaInsets:
 ---
 **(1)安全区域的概念:系统自动调整tableView内容偏移量，是根据安全区域来调整的。安全区域是iOS 11新提出的，**
-![SamuelChan/20171024154934.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171024154934.png)
+
+![SamuelChan/20171024154934.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171024154934.png)
 
 安全区域帮助我们将view放置在整个屏幕的可视的部分。即使把navigationbar设置为透明的，系统也认为安全区域是从navigationbar的bottom开始，保证不被系统的状态栏、或导航栏覆盖。可以使用additionalSafeAreaInsets去扩展安全区域使它包括自定义的content在界面上。每个view都可以改变安全区域嵌入的大小，Controller也可以。
 
@@ -117,14 +118,11 @@ safeAreaInsets属性反映了一个view距离该view的安全区域的边距。�
 横屏的安全区:橫向时的 Safe Area 左右两侧都内缩44pt；Layout Margins 通常左右再內缩15pt。
 `view.safeAreaInsets = {32, 44, 53, 44}`
 
-![SamuelChan/20171030145145.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171030145145.png?imageMogr2/auto-orient/thumbnail/500x/blur/1x0/quality/75|imageslim) ![SamuelChan/20171030145349.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171030145349.png?imageMogr2/auto-orient/thumbnail/600x/blur/1x0/quality/75|imageslim)
+![SamuelChan/20171030145145.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171030145145.png)
 
+![SamuelChan/20171030145349.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171030145349.png)
 
-
-
-
-
-![SamuelChan/20171031110215.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171031110215.png?imageMogr2/thumbnail/!75p)
+![SamuelChan/20171031110215.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171031110215.png)
 
 **(2)viewSafeAreaInsetsDidChange的调用顺序**
 lifecycle:
@@ -176,7 +174,7 @@ tableview.adjustedContentInset: {84, 0, 60, 0}
 
 **(4)additionalSafeAreaInsets**
 红蓝safeAreaInsets的safeAreaInsets:{44,0,0,0};
-![SamuelChan/20171027184003.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171027184003.png?imageMogr2/thumbnail/!65p)
+![SamuelChan/20171027184003.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171027184003.png?imageMogr2/thumbnail/!65p)
 在一个控制器中，安全区域并不是固定不变的，可以通过 ViewController 的 additionalSafeAreaInsets 方法来修改页面的安全区域，如果此时将安全区域上延 11 个点。
 那么它们的 safeAreaInsets 都会变为 {33, 0, 0, 0}。
 
@@ -214,7 +212,7 @@ tableview.adjustedContentInset: {84, 0, 60, 0}
 ```
 
 2. 官方布局建议:元素一般都需要在安全区内,除了长列表除外,如下图
-![SamuelChan/20171030162053.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20171030162053.png?imageMogr2/auto-orient/thumbnail/500x/blur/1x0/quality/75|imageslim
+![SamuelChan/20171030162053.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20171030162053.png?imageMogr2/auto-orient/thumbnail/500x/blur/1x0/quality/75|imageslim
 )
 
 3. HomeIndicator自动隐藏的适配

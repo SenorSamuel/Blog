@@ -93,7 +93,7 @@ typedef NS_OPTIONS(NSUInteger, EOCPermittedDirection) {
 	EOCPermittedDirectionRight = 1 << 3,
 };
 ```
-![SamuelChan/20180615113652.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180615113652.png)
+![SamuelChan/20180615113652.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180615113652.png)
 
 ---
 ### Chapter2 对象,消息,运行期

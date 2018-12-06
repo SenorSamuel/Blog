@@ -1,14 +1,14 @@
 ## iMooc之Runtime拾遗
 
-![SamuelChan/20180705220224.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180705220224.png)
+![SamuelChan/20180705220224.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180705220224.png)
 
 ### 0x01 数据结构
 
-![SamuelChan/20180706113024.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180706113024.png)
+![SamuelChan/20180706113024.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180706113024.png)
 
 ### 0x02 类对象和元类对象
 
-![SamuelChan/20180706114710.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180706114710.png)
+![SamuelChan/20180706114710.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180706114710.png)
 
 ### 0x03 消息传递
 
@@ -39,11 +39,11 @@ objc_msgSendSuper(super,,@selector(class))
 
 ```
 
-![SamuelChan/20180706122456.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180706122456.png)
+![SamuelChan/20180706122456.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180706122456.png)
 
 ### 0x04 方法缓存
 
-![SamuelChan/20180706121043.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20180706121043.png)
+![SamuelChan/20180706121043.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180706121043.png)
 
 如果在缓存中找不到方法,那么就会在`当前类`查找
 
@@ -51,7 +51,7 @@ objc_msgSendSuper(super,,@selector(class))
 - 对于`没有排序好的列表`,采用`一般遍历`算法查找方法所对应的执行函数IMP
 
 ### 0x05 消息转发
-![SamuelChan/20170704113634.png](http://ormqbgzmy.bkt.clouddn.com/SamuelChan/20170704113634.png)
+![SamuelChan/20170704113634.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20170704113634.png)
 
 ```objc
 
