@@ -1,4 +1,4 @@
-# 1Password White Paper
+# 1Password安全工作原理
 
 > 1Password 是一款密码管理工具，支持Windows, Mac, iOS, Android, Linux, Safari Extension, Chrome Extension, Command Line。 在 Mac 上, 你只需要在输入密码时使用 `Command + \` 就可以完成密码填充，通过 1Password paper 我们可以了解到它的安全机制（尽管有白皮书很多内容都还没有公开）
 
