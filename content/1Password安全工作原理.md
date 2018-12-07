@@ -97,9 +97,9 @@ MUK 和 SRP-x的生成过程类似，差别只在于 Salt 和 Version，详细�
     {
       "accountKeyFormat" : "A3",
       "accountKeyUuid" : "GWM4R8",
-      "sessionID" : "TRYYDRPO2FDWRITHY7BETQZPN4"， "status" : "ok",
+      "sessionID" : "TRYYDRPO2FDWRITHY7BETQZPN4", "status" : "ok",
       "userAuth" : {
-        "alg" : "PBES2g-HS256"， "iterations" : 100000,
+        "alg" : "PBES2g-HS256", "iterations" : 100000,
         "method" : "SRPg-4096",
         "salt" : "WSwigQtQpxqYAri592W1lg"
         }
