@@ -1,6 +1,6 @@
 # 1Password安全工作原理
 
-> 1Password 是一款密码管理工具，支持Windows, Mac, iOS, Android, Linux, Safari Extension, Chrome Extension, Command Line。 在 Mac 上, 你只需要在输入密码时使用 `Command + \` 就可以完成密码填充，通过 1Password paper 我们可以了解到它的安全机制（尽管有白皮书很多内容都还没有公开）
+> 1Password 是一款密码管理工具，支持Windows, Mac, iOS, Android, Linux, Safari Extension, Chrome Extension, Command Line。 在 Mac 上, 你只需要在输入密码时使用 `Command + \` 就可以完成密码填充，通过 1Password WhitePaper 我们可以了解到它的安全机制（尽管有白皮书很多内容都还没有公开）
 
 ## 白皮书
 
@@ -24,17 +24,17 @@
 
 即解锁 1Password 的主密码，使用1Password的用户只需要记住这个密码就可以管理它的所有密码.
 
-1Password不会在本地储存 Master Password，**只会**运行时保存在内存中
+1Password 不会在本地储存 Master Password，**只会**运行时保存在内存中
 
 #### Secret Key
 
 Secret Key(也叫Account Key)分为三部分:
 
-- `Version`固定为:`A3`
-- `AccountID`: 随机但是不私密
-- `Secret`部分为26个随机并且私密的，这部分的熵为128位(31^26 = 2^128)
+- `Version` : 固定为:`A3`
+- `AccountID` : 随机但是不私密
+- `Secret` : 部分为26个随机并且私密的，这部分的熵为128位(31^26 = 2^128)
 
-Secret Key在本地生成，保存在本地，**不会**上传到服务器
+Secret Key在本地生成，保存在本地(如果是 Mac，保存在钥匙串中)，**不会**上传到服务器
 
 Version| Account ID | Secret
 ---------|----------|---------
@@ -44,7 +44,7 @@ Version| Account ID | Secret
 
 ![MUK 与 SRP-x](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20181204195342.png)
 
-MUK 和 SRP-x的生成过程类似，差别只在于 Salt 和 Version，详细的过程步骤如下图
+MUK 和 SRP-x的生成过程类似，差别只在于使用不同的 Salt 和 Version，详细的过程步骤如下图
 
 ```json
  Key Derivation
@@ -55,15 +55,16 @@ MUK 和 SRP-x的生成过程类似，差别只在于 Salt 和 Version，详细�
 5∶ 𝑠 ← HKDF(𝑠， version， 𝑒， 32) //16为的Salt → 32位
 6∶ k𝑚 ← PBKDF2(𝑝， 𝑠， 100000)
 7∶ k𝐴 ← HKDF(k𝐴 ， version， 𝐼 ， ‖k𝑚 ‖) //version: MUK:PBES2g-HS256 SRP-x: SRPg-4096
-8∶ k𝑚←k𝑚⊕k𝐴
-9∶ k𝑚 ← JWKify(k𝑚)
+8∶ k𝑚 ← k𝑚 ⊕ k𝐴
+9∶ k𝑚 ← JWKify(k𝑚) //256 bits
 ```
 
 #### 账户初始化
 
 - 注册: 客户端生成多个密钥，将一些信息上传到Server，1Password 没有能力获取你的明文私钥，都是加密的。
+
     ```json
-    1. Generate SecretKey𝜉 ⤴️
+    1. Generate SecretKey 𝜉 ⤴️
     2. Compute MUK
         (a) Generate encryption key salt𝜉 ⤴️
         (b) Derive MUK from encryption salt，Master
@@ -83,7 +84,7 @@ MUK 和 SRP-x的生成过程类似，差别只在于 Salt 和 Version，详细�
         (a) Generate device UUID𝜉 ⤴️
         (b) Operating system(if available) ⤴️
         (c) User agent(if applicable) ⤴️
-        (d) Hostname(ifavailable) ⤴️
+        (d) Hostname(if available) ⤴️
     6. Construct SRP verifier
         (a) Generate authentication salt𝜉 ⤴️
         (b) Derive SRP-𝑥 from Master Password，SecretKey，and authentication salt 🔑
@@ -92,20 +93,22 @@ MUK 和 SRP-x的生成过程类似，差别只在于 Salt 和 Version，详细�
     ```
 
 - 如果已经注册，新增 setUp 设备
+
     ```json
     1. 客户端email address 和 device UUID，服务器会将注册过程上传的信息(2SKD的参数)下发
     {
-      "accountKeyFormat" : "A3"，
-      "accountKeyUuid" : "GWM4R8"，
-      "sessionID" : "TRYYDRPO2FDWRITHY7BETQZPN4"， "status" : "ok"，
+      "accountKeyFormat" : "A3",
+      "accountKeyUuid" : "GWM4R8",
+      "sessionID" : "TRYYDRPO2FDWRITHY7BETQZPN4", "status" : "ok",
       "userAuth" : {
-        "alg" : "PBES2g-HS256"， "iterations" : 100000，
-        "method" : "SRPg-4096"，
+        "alg" : "PBES2g-HS256", "iterations" : 100000,
+        "method" : "SRPg-4096",
         "salt" : "WSwigQtQpxqYAri592W1lg"
         }
     }
 
-    2. 客户端根据这些参数，结合新增设备输入的 SecretKey，Master Password等信息来生成 SRP-x 来进行与服务器的校验
+
+    2. 客户端根据这些参数，结合新增设备输入的 SecretKey，Master Password等信息生成 SRP-x 来进行与服务器的校验。
     ```
 
 - 验证:1Password 使用 SRP 来密钥交换和身份验证
@@ -145,14 +148,15 @@ MUK 和 SRP-x的生成过程类似，差别只在于 Salt 和 Version，详细�
 每个账户可以有多个 Keyset， 其中第一个 Keyset 称为 Primary Keyset，每个 Keyset 可以有多个 Valut (保险库).
 
 创建账户时会生成 `RSA公私钥对` 和 `AES symmetric Key`( _如果是Primary Keyset的话，我们将这个 AES key 叫做 Master key_ )
+  - `MUK` 加密 `AES MP key`
+  - Primary Keyset 的 `AES MP key` 加密 `RSA-Private`
+  - `RSA-Public`加密 Keyset2，Keyset3 的 `AES symmetric Key`
 
-- 创建新的Valut时
-    - 会同时生成一个256bit的 `Vault Key`，存放在`vault access table`中， 对 item 进行 AES-GCM 加密
-    - item 分为 overview 和 detail 两部分，分别存放在`vaults table`和`items table`中， overview 用来查询，detail 保存真正的密码，这两部分分别使用`Vault Key`加密
-- `MUK` 加密 `AES MP key`
-- Primary Keyset 的 `AES MP key` 加密 `RSA-Private`
-- `RSA-Public`加密 Keyset2，Keyset3 的 `AES symmetric Key`
-- `RSA-Public` 加密 `Vault Key`
+创建新的Valut时
+
+  - 会同时生成一个256bit的 `Vault Key`，存放在`vault access table`中， 对 item 进行 AES-GCM 加密
+  - item 分为 meta、password(overview 和 detail) 两部分，分别存放在`vaults table`和`items table`中，分别使用`Vault Key`加密
+  - `RSA-Public` 加密 `Vault Key`
 
 一个Keyset格式(Keyset的格式是 JWK,RFC7517)
 
@@ -197,8 +201,8 @@ MUK 和 SRP-x的生成过程类似，差别只在于 Salt 和 Version，详细�
 
 用户A 可以将一个 vault 共享给 用户B 的过程:
 
-- A 创建一个vault，vault 中的 item 被 vault key加密
-- A 将 vault 共享给 B: 使用 B 的 publickey 来加密
+- A 创建一个vault，vault 中的 item 被 vault key加密 → vault Item(🔐)
+- A 将 vault 共享给 B: 使用 B 的 publickey 来加密 vaultKey → vaultKey(🔐)
 - 1Password 通知 B 有共享的库: B 将 vaultKey(🔐) 和 vault Item(🔐) 下载下来，这样只有 B 可以用自己的 privateKey 来解密使用这个 vault
 
 #### Revoke
@@ -206,8 +210,8 @@ MUK 和 SRP-x的生成过程类似，差别只在于 Salt 和 Version，详细�
 Team/Family 的管理员可以 revoke 某个用户对共享 vault 的访问权限， 1Password 会做两件事情:
 
 - 新增的 vault item 将不会再发送给 revoke 掉的用户
-- 1Password 会通知客户端**删除**本地储存的vault item
-- 如果用户一直没有联网，这部分vault item不会被删除，可以参考论坛上面的回答: [What happens if a users access is revoked but offline access to a vault is active?](https://discussions.agilebits.com/discussion/comment/456723#Comment_456723)
+- 1Password 会通知客户端**删除**本地储存的 vault item
+- 如果用户一直没有联网，这部分 vault item 不会被删除，可以参考论坛上面的回答: [What happens if a users access is revoked but offline access to a vault is active?](https://discussions.agilebits.com/discussion/comment/456723#Comment_456723)
 
 #### Recovering from lost password
 
@@ -225,7 +229,7 @@ Recovery Group 会生成一个 keyset(`privateKeyR`/`publicKeyR`)， 每一个 R
 6. 当 Carol 忘记自己的密码，无法登录，她请求 Recovery 账户，Bob 需要同意该请求
 7. Carol 生成一对新的公私钥对(`pk𝐶`，`sk𝐶`)，并将`pk𝐶`上传到服务器
 8. 服务器将 `pk𝐶` 和 `𝑅𝑣` 一起回传给 Bob
-9. Bob使用自己的私钥 解锁 `sk𝑅`，然后再用 `sk𝑅` 来解锁出 `k𝑣`， 使用最新的`pk𝐶`来加密 `k𝑣` 传给 Carol
+9. Bob使用自己的私钥 解锁得到 `sk𝑅`，然后再用 `sk𝑅` 来解锁出 `k𝑣`， 使用最新的`pk𝐶`来加密 `k𝑣` 传给 Carol
 10. Carol可以使用自己的私钥 `sk𝐶` 来解密出得到 `k𝑣`，恢复成功
 
 ### 0x03 多账号管理
@@ -238,7 +242,6 @@ Recovery Group 会生成一个 keyset(`privateKeyR`/`publicKeyR`)， 每一个 R
 一个终端可以有多个账号，我们可以只使用一个 Master password 就可以解锁使用多个账号(主账户解锁其他的账户)。如果主账户被删除了，那么下一个账户就变成主账户
 
 在Mac上面，主账户进行 2SKD 生成 MUK，MUK 解锁主账户的 Primary Keyset，得到 **Master Password**，MP 会用于解锁`次账户`的 accout data(包括了 MUK和 SRP-x)
-
 
 ### 动手尝试
 
@@ -475,12 +478,11 @@ vault detail{"fields": [{"type": "T", "name": "username", "value": "user"}, {"ty
 
 ## 总结
 
-1Password 使用了 Master Password 和 Secret Key，经过 2SKD 运算，生成 MUK 和 SRP-x，用于加密数据、协商sessionKey、身份校验，1Password 没有保存你的 Master Password 或 Secret Key，如果你的 1Password 是个人账户，且忘记了密码，那么你的密码将无法找回。
+1Password 使用了 Master Password 和 Secret Key，经过 2SKD 运算，生成 MUK 和 SRP-x，用于加密数据、协商 sessionKey、身份校验，1Password 没有保存你的 Master Password 或 Secret Key，如果你的 1Password 是个人账户，且忘记了密码，那么你的密码将无法找回。
 
-白皮书很多地方没有详细描述，但是在官网论坛上的问题都是非常详细的回答，经得起考验。对于现在的 iOS 系统，一般使用 keyChain 来做密码管理就已经足够了，iCloud keyChain 放在贵州不太放心，所以我一般都是关闭 iCloud keyChain。
+白皮书很多地方没有详细描述，但是在官网论坛上的问题都是非常详细的回答，经得起考验。对于现在的 iOS 系统，一般使用 keyChain 来做密码管理就已经足够了，iCloud keyChain 没有研究过，不清楚它的工作流程，但是我知道没有被封掉的应该就不是 `点对点加密`
 
 ## 参考资料
-
 
 [1Password - Full Trip from Unlock to Encryption](https://darthnull.org/security/2018/11/12/1pass-roundtrip/)
 
