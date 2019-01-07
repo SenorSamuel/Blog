@@ -53,7 +53,19 @@
 		67D29C5B20E0AC73003C3A91 /* TestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D29C5A20E0AC73003C3A91 /* TestView.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		63FD0BF721E3675E00112528 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 674182C41EF2C76E0004B18E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 63FD0BDE21E3675C00112528;
+			remoteInfo = DataEncodingDemo;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		63FD0BDF21E3675C00112528 /* DataEncodingDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DataEncodingDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		63FD0BF621E3675E00112528 /* DataEncodingDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataEncodingDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		67224E4A20EF28C100369ACE /* 消息转发和动态添加方法.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "消息转发和动态添加方法.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		67224E4C20EF28C100369ACE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		67224E4D20EF28C100369ACE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -133,6 +145,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		63FD0BDC21E3675C00112528 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63FD0BF321E3675E00112528 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		67224E4720EF28C100369ACE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -222,6 +248,8 @@
 				67D29C2320DFDE5F003C3A91 /* 3.2事件传递和响应链.app */,
 				67D29C4020E0A0DF003C3A91 /* 3.3 UIControl和手势识别和事件传递.app */,
 				67224E4A20EF28C100369ACE /* 消息转发和动态添加方法.app */,
+				63FD0BDF21E3675C00112528 /* DataEncodingDemo.app */,
+				63FD0BF621E3675E00112528 /* DataEncodingDemoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -335,6 +363,41 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		63FD0BDE21E3675C00112528 /* DataEncodingDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63FD0C0121E3675E00112528 /* Build configuration list for PBXNativeTarget "DataEncodingDemo" */;
+			buildPhases = (
+				63FD0BDB21E3675C00112528 /* Sources */,
+				63FD0BDC21E3675C00112528 /* Frameworks */,
+				63FD0BDD21E3675C00112528 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DataEncodingDemo;
+			productName = DataEncodingDemo;
+			productReference = 63FD0BDF21E3675C00112528 /* DataEncodingDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		63FD0BF521E3675E00112528 /* DataEncodingDemoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63FD0C0221E3675E00112528 /* Build configuration list for PBXNativeTarget "DataEncodingDemoUITests" */;
+			buildPhases = (
+				63FD0BF221E3675E00112528 /* Sources */,
+				63FD0BF321E3675E00112528 /* Frameworks */,
+				63FD0BF421E3675E00112528 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				63FD0BF821E3675E00112528 /* PBXTargetDependency */,
+			);
+			name = DataEncodingDemoUITests;
+			productName = DataEncodingDemoUITests;
+			productReference = 63FD0BF621E3675E00112528 /* DataEncodingDemoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		67224E4920EF28C100369ACE /* 消息转发和动态添加方法 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 67224E5F20EF28C600369ACE /* Build configuration list for PBXNativeTarget "消息转发和动态添加方法" */;
@@ -446,6 +509,17 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = SamuelChan;
 				TargetAttributes = {
+					63FD0BDE21E3675C00112528 = {
+						CreatedOnToolsVersion = 10.0;
+						DevelopmentTeam = U4TFFP6YD3;
+						ProvisioningStyle = Automatic;
+					};
+					63FD0BF521E3675E00112528 = {
+						CreatedOnToolsVersion = 10.0;
+						DevelopmentTeam = U4TFFP6YD3;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 63FD0BDE21E3675C00112528;
+					};
 					67224E4920EF28C100369ACE = {
 						CreatedOnToolsVersion = 9.4;
 						DevelopmentTeam = UVBZH3TFDP;
@@ -497,11 +571,27 @@
 				67D29C2220DFDE5F003C3A91 /* 3.2事件传递和响应链 */,
 				67D29C3F20E0A0DF003C3A91 /* 3.3 UIControl和手势识别和事件传递 */,
 				67224E4920EF28C100369ACE /* 消息转发和动态添加方法 */,
+				63FD0BDE21E3675C00112528 /* DataEncodingDemo */,
+				63FD0BF521E3675E00112528 /* DataEncodingDemoUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		63FD0BDD21E3675C00112528 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63FD0BF421E3675E00112528 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		67224E4820EF28C100369ACE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -565,6 +655,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		63FD0BDB21E3675C00112528 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63FD0BF221E3675E00112528 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		67224E4620EF28C100369ACE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -634,6 +738,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		63FD0BF821E3675E00112528 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 63FD0BDE21E3675C00112528 /* DataEncodingDemo */;
+			targetProxy = 63FD0BF721E3675E00112528 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		67224E5220EF28C100369ACE /* Main.storyboard */ = {
@@ -735,6 +847,124 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		63FD0BFD21E3675E00112528 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U4TFFP6YD3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = DataEncodingDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.SenorSamuel.DataEncodingDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		63FD0BFE21E3675E00112528 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U4TFFP6YD3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = DataEncodingDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.SenorSamuel.DataEncodingDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		63FD0BFF21E3675E00112528 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U4TFFP6YD3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = DataEncodingDemoUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.SenorSamuel.DataEncodingDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DataEncodingDemo;
+			};
+			name = Debug;
+		};
+		63FD0C0021E3675E00112528 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U4TFFP6YD3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = DataEncodingDemoUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.SenorSamuel.DataEncodingDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DataEncodingDemo;
+			};
+			name = Release;
+		};
 		67224E5D20EF28C600369ACE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1104,6 +1334,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		63FD0C0121E3675E00112528 /* Build configuration list for PBXNativeTarget "DataEncodingDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63FD0BFD21E3675E00112528 /* Debug */,
+				63FD0BFE21E3675E00112528 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		63FD0C0221E3675E00112528 /* Build configuration list for PBXNativeTarget "DataEncodingDemoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63FD0BFF21E3675E00112528 /* Debug */,
+				63FD0C0021E3675E00112528 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		67224E5F20EF28C600369ACE /* Build configuration list for PBXNativeTarget "消息转发和动态添加方法" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
