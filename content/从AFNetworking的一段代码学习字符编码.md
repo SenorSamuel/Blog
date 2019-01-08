@@ -415,7 +415,7 @@ Base64 将6比特编码成一个字符， 3字节长度的数据经过Base64编�
 15	|P	|31	|f	|47	|v	|63	|/
 
 
-![](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20190107143546.png)
+![](https://raw.githubusercontent.com/SenorSamuel/picRepo/master/20190107191408.png)
 
 ### iOS 中 Base64的Api
 
