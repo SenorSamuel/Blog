@@ -76,15 +76,7 @@ MUK 和 SRP-x的生成过程类似，差别只在于使用不同的 Salt 和 Ver
         (d) Generate keyset UUID𝜉 ⤴️
         (e) Include keyset format ⤴️
     4. User information
-        (a) Given name ⤴️
-        (b) Family name ⤴️
-        (c) Image avatar ⤴️
-        (d) Email ⤴️
-    5. Device information ⤴️
-        (a) Generate device UUID𝜉 ⤴️
-        (b) Operating system(if available) ⤴️
-        (c) User agent(if applicable) ⤴️
-        (d) Hostname(if available) ⤴️
+    5. Device information
     6. Construct SRP verifier
         (a) Generate authentication salt𝜉 ⤴️
         (b) Derive SRP-𝑥 from Master Password，SecretKey，and authentication salt 🔑
@@ -232,7 +224,7 @@ Recovery Group 会生成一个 keyset(`privateKeyR`/`publicKeyR`)， 每一个 R
 9. Bob使用自己的私钥 解锁得到 `sk𝑅`，然后再用 `sk𝑅` 来解锁出 `k𝑣`， 使用最新的`pk𝐶`来加密 `k𝑣` 传给 Carol
 10. Carol可以使用自己的私钥 `sk𝐶` 来解密出得到 `k𝑣`，恢复成功
 
-### 0x03 多账号管理
+### 0x02 多账号管理
 
 > 多账号管理 Windows 和 Mac 的做法是不一样的，这里只关注 **Mac**， Windows 的多账号管理可以参考[1Password - Unlocking Windows Clients
 ](https://darthnull.org/security/2018/11/09/1pass-emk/)
