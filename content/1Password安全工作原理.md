@@ -219,7 +219,9 @@ Recovery Group 会生成一个 keyset(`privateKeyR`/`publicKeyR`)， 每一个 R
 
 恢复的过程就是 **Recovery Group 的成员利用手中的 privateKeyR 解锁获得 vaultKey，然后用新的 publicKey 重新加密的过程**
 
-![](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20181205180516.png)
+![](https://raw.githubusercontent.com/SenorSamuel/picRepo/master/20190108161414.png)
+
+![](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20190108161512.png)
 
 1. Bob: Recovery Group的一员；  S: 1Password server；  Carol: 忘记密码的家伙
 2. Bob 使用自己的公钥 `pk𝐵` 来加密 Recovery Group 的私钥 `sk𝑅`
