@@ -235,7 +235,7 @@ Recovery Group 会生成一个 keyset(`privateKeyR`/`publicKeyR`)， 每一个 R
 
 在Mac上面，主账户进行 2SKD 生成 MUK，MUK 解锁主账户的 Primary Keyset，得到 **Master Password**，MP 会用于解锁`次账户`的 accout data(包括了 MUK和 SRP-x)
 
-### 动手尝试
+## 动手尝试
 
 Client | Vaults | Secret Key| Master Password|
 ---------|----------|---------|----------|
@@ -467,6 +467,42 @@ emtWAWnDWLper7mim91A==
 
 vault detail{"fields": [{"type": "T", "name": "username", "value": "user"}, {"type": "P", "name": "password", "value": "password"}]}
 ```
+
+## Web端的加密实现
+
+1. Memory (and type) safe languages
+
+    [来源自官方论坛](https://discussions.agilebits.com/discussion/95161/security-of-client-implementations): "Our JavaScript, where needed, is written in TypeScript. This gives us far far better type safety than native JS would. It's still possible to shoot yourself in the foot, but you have to go out of your way to do so."
+
+2. SRP
+    - SRP-x 在 github 上面有 go 的实现开源
+    - In the browser we use the JSBN library to convert the 32-byte resulting keyinto a BigNum for use with Secure Remote Password
+
+3.  [来源自官方论坛](https://discussions.agilebits.com/discussion/95161/security-of-client-implementations): when we introduced OPVault, we needed an authenticated encryption mode that would work for all of our platforms, and so we needed to build our own Encrypt-then-MAC construction. We also tend to not use key wrapping standards, and just encrypt keys the same way we encrypt everything else. It's a bit more expensive in space and time, but we avoid potential errors by pretty much saying "this is how we encrypt stuff". If AES-256-GCM is overkill for some things, so be it.
+
+4. WebCrypto: Setting New Standards.
+1Password is the first and only password manager to use WebCrypto, the next generation standard from the W3C.
+
+    [WebCrypto链接](https://dvcs.w3.org/hg/webcrypto-api/raw-file/tip/spec/Overview.html#Crypto-method-getRandomValues)
+    - `getRandomValues()` : generateKey as an RSA-OAEP padded RSA key, with a modulus length
+of 2048 bits and a public exponent of 65537.
+
+
+5. Crypto Browser
+
+    1. Use the most recent Transport Layer Security version
+    2. Don’t support weak cipher suites(so avoiding many downgrade attacks)
+    3. Use of safe JavaScript constructions.
+    4. Use HTTP Strict Transport Security(so avoiding HTTPS
+    to HTTP downgrade attacks)
+    5. Pin Certificates(not yet implemented)
+
+    Running security tools within a browser environment brings its own per- ils, irrespective of whether it is delivered over the web. These perils include:
+    1. The browser itself is a hostile environment, running processes and content that are neither under your control nor ours.
+    Sandboxing within the browser provides the first line of defense. Struc- turing our in-browser code to expose only what needs to be exposed is another. Over the past decade, browsers have made enormous im- provements in their security and in their isolation of processes, but it still remains a tough environment.
+    2. JavaScript,thelanguageusedwithinthebrowser,offersusverylim- ited ability to clear data from memory. Secrets that we would like the client to forget may remain in memory longer than useful.
+    3. We have a strictly limited ability to use security features of the op- erating system when operating within the browser. See Locally ex- posed Secret Keys for how this limits the tools available for protect- ing Secret Keys when stored locally.
+    4. Thereisapaucityofefficientcryptographicfunctionsavailabletorun in JavaScript. As a consequence, the WebCrypto facilities available in the browsers that we support impose a limit on the cryptographic methods we can use. For example, our reliance on PBKDF2 instead of a memory hard KDF such as Argon2 is a consequence of this.
 
 ## 总结
 
