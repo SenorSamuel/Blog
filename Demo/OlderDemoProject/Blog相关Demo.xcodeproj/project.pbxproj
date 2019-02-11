@@ -51,6 +51,21 @@
 		67D29C5220E0A0E1003C3A91 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D29C5120E0A0E1003C3A91 /* main.m */; };
 		67D29C5820E0AC6A003C3A91 /* BaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D29C5720E0AC6A003C3A91 /* BaseView.m */; };
 		67D29C5B20E0AC73003C3A91 /* TestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D29C5A20E0AC73003C3A91 /* TestView.m */; };
+		7E2237C72211C477004298DC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2237C62211C477004298DC /* AppDelegate.m */; };
+		7E2237CA2211C477004298DC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2237C92211C477004298DC /* ViewController.m */; };
+		7E2237CD2211C477004298DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E2237CB2211C477004298DC /* Main.storyboard */; };
+		7E2237CF2211C478004298DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E2237CE2211C478004298DC /* Assets.xcassets */; };
+		7E2237D22211C478004298DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E2237D02211C478004298DC /* LaunchScreen.storyboard */; };
+		7E2237D52211C478004298DC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2237D42211C478004298DC /* main.m */; };
+		7E2237DB2211C4F8004298DC /* KkboxApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2237DA2211C4F8004298DC /* KkboxApiClient.m */; };
+		7E2237E52211D7AA004298DC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2237E42211D7AA004298DC /* AppDelegate.m */; };
+		7E2237E82211D7AA004298DC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2237E72211D7AA004298DC /* ViewController.m */; };
+		7E2237EB2211D7AA004298DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E2237E92211D7AA004298DC /* Main.storyboard */; };
+		7E2237ED2211D7AB004298DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E2237EC2211D7AB004298DC /* Assets.xcassets */; };
+		7E2237F02211D7AB004298DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E2237EE2211D7AB004298DC /* LaunchScreen.storyboard */; };
+		7E2237F32211D7AB004298DC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2237F22211D7AB004298DC /* main.m */; };
+		7E2237FE2211D7EF004298DC /* PhoneSimpleFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2237FA2211D7EF004298DC /* PhoneSimpleFactory.m */; };
+		7E2237FF2211D7EF004298DC /* Phone.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2237FB2211D7EF004298DC /* Phone.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,6 +157,33 @@
 		67D29C5720E0AC6A003C3A91 /* BaseView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseView.m; sourceTree = "<group>"; };
 		67D29C5920E0AC73003C3A91 /* TestView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestView.h; sourceTree = "<group>"; };
 		67D29C5A20E0AC73003C3A91 /* TestView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestView.m; sourceTree = "<group>"; };
+		7E2237C32211C477004298DC /* kkbox-MultiThread&Network-Task.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kkbox-MultiThread&Network-Task.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E2237C52211C477004298DC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		7E2237C62211C477004298DC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7E2237C82211C477004298DC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		7E2237C92211C477004298DC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		7E2237CC2211C477004298DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		7E2237CE2211C478004298DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7E2237D12211C478004298DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7E2237D32211C478004298DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E2237D42211C478004298DC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7E2237D92211C4F8004298DC /* KkboxApiClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KkboxApiClient.h; sourceTree = "<group>"; };
+		7E2237DA2211C4F8004298DC /* KkboxApiClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KkboxApiClient.m; sourceTree = "<group>"; };
+		7E2237E12211D7AA004298DC /* DesignPatternDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DesignPatternDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E2237E32211D7AA004298DC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		7E2237E42211D7AA004298DC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7E2237E62211D7AA004298DC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		7E2237E72211D7AA004298DC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		7E2237EA2211D7AA004298DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		7E2237EC2211D7AB004298DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7E2237EF2211D7AB004298DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7E2237F12211D7AB004298DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E2237F22211D7AB004298DC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7E2237F92211D7EF004298DC /* Phone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Phone.h; sourceTree = "<group>"; };
+		7E2237FA2211D7EF004298DC /* PhoneSimpleFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneSimpleFactory.m; sourceTree = "<group>"; };
+		7E2237FB2211D7EF004298DC /* Phone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Phone.m; sourceTree = "<group>"; };
+		7E2237FC2211D7EF004298DC /* PhoneSimpleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneSimpleFactory.h; sourceTree = "<group>"; };
+		7E2237FD2211D7EF004298DC /* PhoneProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +243,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7E2237C02211C477004298DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E2237DE2211D7AA004298DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -235,6 +291,8 @@
 				67D29C2420DFDE5F003C3A91 /* 3.2事件传递和响应链 */,
 				67D29C4120E0A0DF003C3A91 /* 3.3 UIControl和手势识别和事件传递 */,
 				67224E4B20EF28C100369ACE /* 消息转发和动态添加方法 */,
+				7E2237C42211C477004298DC /* kkbox-MultiThread&Network-Task */,
+				7E2237E22211D7AA004298DC /* DesignPatternDemo */,
 				674182CD1EF2C76E0004B18E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -250,6 +308,8 @@
 				67224E4A20EF28C100369ACE /* 消息转发和动态添加方法.app */,
 				63FD0BDF21E3675C00112528 /* DataEncodingDemo.app */,
 				63FD0BF621E3675E00112528 /* DataEncodingDemoUITests.xctest */,
+				7E2237C32211C477004298DC /* kkbox-MultiThread&Network-Task.app */,
+				7E2237E12211D7AA004298DC /* DesignPatternDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -358,6 +418,69 @@
 				67D29C5120E0A0E1003C3A91 /* main.m */,
 			);
 			path = "3.3 UIControl和手势识别和事件传递";
+			sourceTree = "<group>";
+		};
+		7E2237C42211C477004298DC /* kkbox-MultiThread&Network-Task */ = {
+			isa = PBXGroup;
+			children = (
+				7E2237DC2211C511004298DC /* resources */,
+				7E2237C52211C477004298DC /* AppDelegate.h */,
+				7E2237C62211C477004298DC /* AppDelegate.m */,
+				7E2237C82211C477004298DC /* ViewController.h */,
+				7E2237C92211C477004298DC /* ViewController.m */,
+				7E2237D92211C4F8004298DC /* KkboxApiClient.h */,
+				7E2237DA2211C4F8004298DC /* KkboxApiClient.m */,
+				7E2237D32211C478004298DC /* Info.plist */,
+			);
+			path = "kkbox-MultiThread&Network-Task";
+			sourceTree = "<group>";
+		};
+		7E2237DC2211C511004298DC /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				7E2237CB2211C477004298DC /* Main.storyboard */,
+				7E2237CE2211C478004298DC /* Assets.xcassets */,
+				7E2237D02211C478004298DC /* LaunchScreen.storyboard */,
+				7E2237D42211C478004298DC /* main.m */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		7E2237E22211D7AA004298DC /* DesignPatternDemo */ = {
+			isa = PBXGroup;
+			children = (
+				7E2237F82211D7EF004298DC /* SimpleFactory(简单工厂模式) */,
+				7E2237F72211D7BD004298DC /* resources */,
+				7E2237E32211D7AA004298DC /* AppDelegate.h */,
+				7E2237E42211D7AA004298DC /* AppDelegate.m */,
+				7E2237E62211D7AA004298DC /* ViewController.h */,
+				7E2237E72211D7AA004298DC /* ViewController.m */,
+				7E2237F12211D7AB004298DC /* Info.plist */,
+				7E2237F22211D7AB004298DC /* main.m */,
+			);
+			path = DesignPatternDemo;
+			sourceTree = "<group>";
+		};
+		7E2237F72211D7BD004298DC /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				7E2237E92211D7AA004298DC /* Main.storyboard */,
+				7E2237EE2211D7AB004298DC /* LaunchScreen.storyboard */,
+				7E2237EC2211D7AB004298DC /* Assets.xcassets */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		7E2237F82211D7EF004298DC /* SimpleFactory(简单工厂模式) */ = {
+			isa = PBXGroup;
+			children = (
+				7E2237F92211D7EF004298DC /* Phone.h */,
+				7E2237FB2211D7EF004298DC /* Phone.m */,
+				7E2237FC2211D7EF004298DC /* PhoneSimpleFactory.h */,
+				7E2237FA2211D7EF004298DC /* PhoneSimpleFactory.m */,
+				7E2237FD2211D7EF004298DC /* PhoneProtocol.h */,
+			);
+			path = "SimpleFactory(简单工厂模式)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -500,6 +623,40 @@
 			productReference = 67D29C4020E0A0DF003C3A91 /* 3.3 UIControl和手势识别和事件传递.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7E2237C22211C477004298DC /* kkbox-MultiThread&Network-Task */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7E2237D82211C478004298DC /* Build configuration list for PBXNativeTarget "kkbox-MultiThread&Network-Task" */;
+			buildPhases = (
+				7E2237BF2211C477004298DC /* Sources */,
+				7E2237C02211C477004298DC /* Frameworks */,
+				7E2237C12211C477004298DC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "kkbox-MultiThread&Network-Task";
+			productName = "kkbox-MultiThread&Network-Task";
+			productReference = 7E2237C32211C477004298DC /* kkbox-MultiThread&Network-Task.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7E2237E02211D7AA004298DC /* DesignPatternDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7E2237F42211D7AB004298DC /* Build configuration list for PBXNativeTarget "DesignPatternDemo" */;
+			buildPhases = (
+				7E2237DD2211D7AA004298DC /* Sources */,
+				7E2237DE2211D7AA004298DC /* Frameworks */,
+				7E2237DF2211D7AA004298DC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DesignPatternDemo;
+			productName = DesignPatternDemo;
+			productReference = 7E2237E12211D7AA004298DC /* DesignPatternDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -527,7 +684,7 @@
 					};
 					674182CB1EF2C76E0004B18E = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = KBC9TS2WKP;
+						DevelopmentTeam = 879N9L7XRZ;
 						ProvisioningStyle = Automatic;
 					};
 					674182E91EF2C7910004B18E = {
@@ -548,6 +705,16 @@
 					67D29C3F20E0A0DF003C3A91 = {
 						CreatedOnToolsVersion = 9.4;
 						DevelopmentTeam = UVBZH3TFDP;
+						ProvisioningStyle = Automatic;
+					};
+					7E2237C22211C477004298DC = {
+						CreatedOnToolsVersion = 10.1;
+						DevelopmentTeam = U4TFFP6YD3;
+						ProvisioningStyle = Automatic;
+					};
+					7E2237E02211D7AA004298DC = {
+						CreatedOnToolsVersion = 10.1;
+						DevelopmentTeam = 879N9L7XRZ;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -573,6 +740,8 @@
 				67224E4920EF28C100369ACE /* 消息转发和动态添加方法 */,
 				63FD0BDE21E3675C00112528 /* DataEncodingDemo */,
 				63FD0BF521E3675E00112528 /* DataEncodingDemoUITests */,
+				7E2237C22211C477004298DC /* kkbox-MultiThread&Network-Task */,
+				7E2237E02211D7AA004298DC /* DesignPatternDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -649,6 +818,26 @@
 				67D29C4F20E0A0E1003C3A91 /* LaunchScreen.storyboard in Resources */,
 				67D29C4C20E0A0E1003C3A91 /* Assets.xcassets in Resources */,
 				67D29C4A20E0A0DF003C3A91 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E2237C12211C477004298DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E2237D22211C478004298DC /* LaunchScreen.storyboard in Resources */,
+				7E2237CF2211C478004298DC /* Assets.xcassets in Resources */,
+				7E2237CD2211C477004298DC /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E2237DF2211D7AA004298DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E2237F02211D7AB004298DC /* LaunchScreen.storyboard in Resources */,
+				7E2237ED2211D7AB004298DC /* Assets.xcassets in Resources */,
+				7E2237EB2211D7AA004298DC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -734,6 +923,29 @@
 				67D29C5B20E0AC73003C3A91 /* TestView.m in Sources */,
 				67D29C4420E0A0DF003C3A91 /* AppDelegate.m in Sources */,
 				67D29C5820E0AC6A003C3A91 /* BaseView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E2237BF2211C477004298DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E2237CA2211C477004298DC /* ViewController.m in Sources */,
+				7E2237D52211C478004298DC /* main.m in Sources */,
+				7E2237C72211C477004298DC /* AppDelegate.m in Sources */,
+				7E2237DB2211C4F8004298DC /* KkboxApiClient.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E2237DD2211D7AA004298DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E2237E82211D7AA004298DC /* ViewController.m in Sources */,
+				7E2237FF2211D7EF004298DC /* Phone.m in Sources */,
+				7E2237F32211D7AB004298DC /* main.m in Sources */,
+				7E2237E52211D7AA004298DC /* AppDelegate.m in Sources */,
+				7E2237FE2211D7EF004298DC /* PhoneSimpleFactory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -840,6 +1052,38 @@
 			isa = PBXVariantGroup;
 			children = (
 				67D29C4E20E0A0E1003C3A91 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		7E2237CB2211C477004298DC /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7E2237CC2211C477004298DC /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		7E2237D02211C478004298DC /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7E2237D12211C478004298DC /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		7E2237E92211D7AA004298DC /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7E2237EA2211D7AA004298DC /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		7E2237EE2211D7AB004298DC /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7E2237EF2211D7AB004298DC /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1117,7 +1361,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = KBC9TS2WKP;
+				DEVELOPMENT_TEAM = 879N9L7XRZ;
 				INFOPLIST_FILE = "Blog相关Demo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.samuelchan.notes.Blog--Demo";
@@ -1129,7 +1373,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = KBC9TS2WKP;
+				DEVELOPMENT_TEAM = 879N9L7XRZ;
 				INFOPLIST_FILE = "Blog相关Demo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.samuelchan.notes.Blog--Demo";
@@ -1331,6 +1575,124 @@
 			};
 			name = Release;
 		};
+		7E2237D62211C478004298DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U4TFFP6YD3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "kkbox-MultiThread&Network-Task/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.samuelchan.kkbox-MultiThread-Network-Task";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7E2237D72211C478004298DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U4TFFP6YD3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "kkbox-MultiThread&Network-Task/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.samuelchan.kkbox-MultiThread-Network-Task";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7E2237F52211D7AB004298DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 879N9L7XRZ;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = DesignPatternDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.samuelchan.DesignPatternDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7E2237F62211D7AB004298DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 879N9L7XRZ;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = DesignPatternDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.samuelchan.DesignPatternDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1411,6 +1773,24 @@
 			buildConfigurations = (
 				67D29C5420E0A0E1003C3A91 /* Debug */,
 				67D29C5520E0A0E1003C3A91 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7E2237D82211C478004298DC /* Build configuration list for PBXNativeTarget "kkbox-MultiThread&Network-Task" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E2237D62211C478004298DC /* Debug */,
+				7E2237D72211C478004298DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7E2237F42211D7AB004298DC /* Build configuration list for PBXNativeTarget "DesignPatternDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E2237F52211D7AB004298DC /* Debug */,
+				7E2237F62211D7AB004298DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
