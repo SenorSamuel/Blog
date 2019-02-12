@@ -108,28 +108,28 @@
     
     //不考虑NSJsonReadingOptions
     //1.不带参数的打印
-    id obj1 = [NSJSONSerialization JSONObjectWithData:_dataWithNoParam options:kNilOptions error:nil];
-    NSLog(@"obj_dataWithNoParam = %@",obj1);
+    id obj_dataWithNoParam = [NSJSONSerialization JSONObjectWithData:_dataWithNoParam options:kNilOptions error:nil];
+    NSLog(@"obj_dataWithNoParam = %@",obj_dataWithNoParam);
     //2.NSJSONWritingPrettyPrinted = (1UL << 0),
-    id obj2 = [NSJSONSerialization JSONObjectWithData:_dataWithWritingPrettyPrinted options:kNilOptions error:nil];
-    NSLog(@"_dataWithWritingPrettyPrinted = %@",obj2);
+    id obj_dataWithWritingPrettyPrinted = [NSJSONSerialization JSONObjectWithData:_dataWithWritingPrettyPrinted options:kNilOptions error:nil];
+    NSLog(@"obj_dataWithWritingPrettyPrinted = %@",obj_dataWithWritingPrettyPrinted);
     //3.NSJSONWritingSortedKeys API_AVAILABLE(macos(10.13), ios(11.0), watchos(4.0), tvos(11.0)) = (1UL << 1)
-    id obj3 = [NSJSONSerialization JSONObjectWithData:_dataWithWritingSortedKeys options:kNilOptions error:nil];
-    NSLog(@"_dataWithWritingSortedKeys = %@",obj3);
+    id obj_dataWithWritingSortedKeys = [NSJSONSerialization JSONObjectWithData:_dataWithWritingSortedKeys options:kNilOptions error:nil];
+    NSLog(@"obj_dataWithWritingSortedKeys = %@",obj_dataWithWritingSortedKeys);
     
     //===========================================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     //NSJSONReadingMutableContainers: NSDictionary 和 NSArray 都是mutable的
-    id obj4 = [NSJSONSerialization JSONObjectWithData:_dataWithNoParam options:NSJSONReadingMutableContainers error:nil];
-    NSLog(@"obj_dataWithNoParam_NSJSONReadingMutableContainers = %@",obj4);
+    id obj_dataWithNoParam_NSJSONReadingMutableContainers = [NSJSONSerialization JSONObjectWithData:_dataWithNoParam options:NSJSONReadingMutableContainers error:nil];
+    NSLog(@"obj_dataWithNoParam_NSJSONReadingMutableContainers = %@",obj_dataWithNoParam_NSJSONReadingMutableContainers);
     
     //NSJSONReadingMutableLeaves: NSString类型的 value 会变成 mutable
-    id obj5 = [NSJSONSerialization JSONObjectWithData:_dataWithNoParam options:NSJSONReadingMutableLeaves error:nil];
-    NSLog(@"obj_dataWithNoParam_NSJSONReadingMutableLeaves = %@",obj5);
+    id obj_dataWithNoParam_NSJSONReadingMutableLeaves = [NSJSONSerialization JSONObjectWithData:_dataWithNoParam options:NSJSONReadingMutableLeaves error:nil];
+    NSLog(@"obj_dataWithNoParam_NSJSONReadingMutableLeaves = %@",obj_dataWithNoParam_NSJSONReadingMutableLeaves);
     
     //NSJSONReadingAllowFragments:https://stackoverflow.com/questions/16961025/nsjsonserialization-nsjsonreadingallowfragments-reading
     NSData *fragmentData = [@"\"Samuel\"" dataUsingEncoding:NSUTF8StringEncoding];
-    id obj6 = [NSJSONSerialization JSONObjectWithData:fragmentData options:NSJSONReadingAllowFragments error:nil];
-    NSLog(@"obj_dataWithNoParam_NSJSONReadingAllowFragments = %@",obj6);
+    id obj_dataWithNoParam_NSJSONReadingAllowFragments = [NSJSONSerialization JSONObjectWithData:fragmentData options:NSJSONReadingAllowFragments error:nil];
+    NSLog(@"obj_dataWithNoParam_NSJSONReadingAllowFragments = %@",obj_dataWithNoParam_NSJSONReadingAllowFragments);
 
 }
 
