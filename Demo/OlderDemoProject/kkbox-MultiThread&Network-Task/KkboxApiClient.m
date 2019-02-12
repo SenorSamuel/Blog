@@ -86,7 +86,7 @@
     
     NSURLSessionTask *task = [self.session dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (callback) {
-            //data → json
+            //data → image
             UIImage *image = [UIImage imageWithData:data];
             if (!image) {
                 NSError *error = [NSError errorWithDomain:@"http://httpbin.org/image/png" code:-666666 userInfo:@{NSLocalizedDescriptionKey:@"图片下载错误"}];

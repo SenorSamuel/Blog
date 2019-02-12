@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6345D4DA2212672B00DE4BA3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6345D4D92212672B00DE4BA3 /* AppDelegate.m */; };
+		6345D4DD2212672B00DE4BA3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6345D4DC2212672B00DE4BA3 /* ViewController.m */; };
+		6345D4E02212672B00DE4BA3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6345D4DE2212672B00DE4BA3 /* Main.storyboard */; };
+		6345D4E22212673100DE4BA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6345D4E12212673100DE4BA3 /* Assets.xcassets */; };
+		6345D4E52212673100DE4BA3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6345D4E32212673100DE4BA3 /* LaunchScreen.storyboard */; };
+		6345D4E82212673100DE4BA3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6345D4E72212673100DE4BA3 /* main.m */; };
 		67224E4E20EF28C100369ACE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 67224E4D20EF28C100369ACE /* AppDelegate.m */; };
 		67224E5120EF28C100369ACE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67224E5020EF28C100369ACE /* ViewController.m */; };
 		67224E5420EF28C100369ACE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67224E5220EF28C100369ACE /* Main.storyboard */; };
@@ -79,6 +85,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6345D4D62212672B00DE4BA3 /* Network-NSJSONSerialization.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Network-NSJSONSerialization.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6345D4D82212672B00DE4BA3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		6345D4D92212672B00DE4BA3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		6345D4DB2212672B00DE4BA3 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		6345D4DC2212672B00DE4BA3 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		6345D4DF2212672B00DE4BA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6345D4E12212673100DE4BA3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6345D4E42212673100DE4BA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6345D4E62212673100DE4BA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6345D4E72212673100DE4BA3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		63FD0BDF21E3675C00112528 /* DataEncodingDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DataEncodingDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63FD0BF621E3675E00112528 /* DataEncodingDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataEncodingDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		67224E4A20EF28C100369ACE /* 消息转发和动态添加方法.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "消息转发和动态添加方法.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,6 +203,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6345D4D32212672B00DE4BA3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		63FD0BDC21E3675C00112528 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -260,6 +283,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6345D4D72212672B00DE4BA3 /* Network-NSJSONSerialization */ = {
+			isa = PBXGroup;
+			children = (
+				6345D4ED221267A500DE4BA3 /* resources */,
+				6345D4D82212672B00DE4BA3 /* AppDelegate.h */,
+				6345D4D92212672B00DE4BA3 /* AppDelegate.m */,
+				6345D4DB2212672B00DE4BA3 /* ViewController.h */,
+				6345D4DC2212672B00DE4BA3 /* ViewController.m */,
+			);
+			path = "Network-NSJSONSerialization";
+			sourceTree = "<group>";
+		};
+		6345D4ED221267A500DE4BA3 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				6345D4E72212673100DE4BA3 /* main.m */,
+				6345D4E32212673100DE4BA3 /* LaunchScreen.storyboard */,
+				6345D4E62212673100DE4BA3 /* Info.plist */,
+				6345D4DE2212672B00DE4BA3 /* Main.storyboard */,
+				6345D4E12212673100DE4BA3 /* Assets.xcassets */,
+			);
+			name = resources;
+			sourceTree = "<group>";
+		};
 		67224E4B20EF28C100369ACE /* 消息转发和动态添加方法 */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,6 +340,7 @@
 				67224E4B20EF28C100369ACE /* 消息转发和动态添加方法 */,
 				7E2237C42211C477004298DC /* kkbox-MultiThread&Network-Task */,
 				7E2237E22211D7AA004298DC /* DesignPatternDemo */,
+				6345D4D72212672B00DE4BA3 /* Network-NSJSONSerialization */,
 				674182CD1EF2C76E0004B18E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -310,6 +358,7 @@
 				63FD0BF621E3675E00112528 /* DataEncodingDemoUITests.xctest */,
 				7E2237C32211C477004298DC /* kkbox-MultiThread&Network-Task.app */,
 				7E2237E12211D7AA004298DC /* DesignPatternDemo.app */,
+				6345D4D62212672B00DE4BA3 /* Network-NSJSONSerialization.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -486,6 +535,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6345D4D52212672B00DE4BA3 /* Network-NSJSONSerialization */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6345D4EB2212673100DE4BA3 /* Build configuration list for PBXNativeTarget "Network-NSJSONSerialization" */;
+			buildPhases = (
+				6345D4D22212672B00DE4BA3 /* Sources */,
+				6345D4D32212672B00DE4BA3 /* Frameworks */,
+				6345D4D42212672B00DE4BA3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Network-NSJSONSerialization";
+			productName = "Network-NSJSONSerialization";
+			productReference = 6345D4D62212672B00DE4BA3 /* Network-NSJSONSerialization.app */;
+			productType = "com.apple.product-type.application";
+		};
 		63FD0BDE21E3675C00112528 /* DataEncodingDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 63FD0C0121E3675E00112528 /* Build configuration list for PBXNativeTarget "DataEncodingDemo" */;
@@ -666,6 +732,11 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = SamuelChan;
 				TargetAttributes = {
+					6345D4D52212672B00DE4BA3 = {
+						CreatedOnToolsVersion = 10.0;
+						DevelopmentTeam = 879N9L7XRZ;
+						ProvisioningStyle = Automatic;
+					};
 					63FD0BDE21E3675C00112528 = {
 						CreatedOnToolsVersion = 10.0;
 						DevelopmentTeam = U4TFFP6YD3;
@@ -742,11 +813,22 @@
 				63FD0BF521E3675E00112528 /* DataEncodingDemoUITests */,
 				7E2237C22211C477004298DC /* kkbox-MultiThread&Network-Task */,
 				7E2237E02211D7AA004298DC /* DesignPatternDemo */,
+				6345D4D52212672B00DE4BA3 /* Network-NSJSONSerialization */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6345D4D42212672B00DE4BA3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6345D4E52212673100DE4BA3 /* LaunchScreen.storyboard in Resources */,
+				6345D4E22212673100DE4BA3 /* Assets.xcassets in Resources */,
+				6345D4E02212672B00DE4BA3 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		63FD0BDD21E3675C00112528 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -844,6 +926,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6345D4D22212672B00DE4BA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6345D4DD2212672B00DE4BA3 /* ViewController.m in Sources */,
+				6345D4E82212673100DE4BA3 /* main.m in Sources */,
+				6345D4DA2212672B00DE4BA3 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		63FD0BDB21E3675C00112528 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -960,6 +1052,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		6345D4DE2212672B00DE4BA3 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6345D4DF2212672B00DE4BA3 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		6345D4E32212673100DE4BA3 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6345D4E42212673100DE4BA3 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		67224E5220EF28C100369ACE /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1091,6 +1199,65 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6345D4E92212673100DE4BA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 879N9L7XRZ;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Network-NSJSONSerialization/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.SenorSamuel.Network-NSJSONSerialization";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6345D4EA2212673100DE4BA3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 879N9L7XRZ;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Network-NSJSONSerialization/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.SenorSamuel.Network-NSJSONSerialization";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		63FD0BFD21E3675E00112528 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1696,6 +1863,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6345D4EB2212673100DE4BA3 /* Build configuration list for PBXNativeTarget "Network-NSJSONSerialization" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6345D4E92212673100DE4BA3 /* Debug */,
+				6345D4EA2212673100DE4BA3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		63FD0C0121E3675E00112528 /* Build configuration list for PBXNativeTarget "DataEncodingDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
