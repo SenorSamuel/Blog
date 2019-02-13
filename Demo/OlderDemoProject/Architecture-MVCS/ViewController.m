@@ -8,14 +8,18 @@
 
 #import "ViewController.h"
 #import "ToDoItem.h"
+#import "ToDoStore.h"
+
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (strong, nonatomic) UITableView *tableView;
 
-@property (strong, nonatomic) NSMutableArray<ToDoItem *> *items;
+//@property (strong, nonatomic) NSMutableArray<ToDoItem *> *items;
 
 @property (weak, nonatomic) IBOutlet UIButton *addButton;
+
+@property (nonatomic,strong) ToDoStore *store;
 
 @end
 
@@ -30,22 +34,69 @@
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
     [self.addButton addTarget:self action:@selector(addButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
     
+    //Notification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(todoItemsDidChange:) name:@"TodoItemDidChangedNotification" object:nil];
+}
+
+
+- (void)updateAddButtonState{
+    
+    [self.addButton setEnabled: (self.store.count <= 10) ];
+
+}
+
+- (void)updateTableViewWithIdx:(NSInteger)idx action:(ToDoStoreAction)action {
+    
+    switch (action) {
+        case ToDoStoreActionAdd:
+        {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:idx inSection:0];
+            [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+            break;
+        case ToDoStoreActionRemove:
+        {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:idx inSection:0];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+            break;
+        case ToDoStoreActionReload:
+            [self.tableView reloadData];
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma mark - Notification
+- (void)todoItemsDidChange:(NSNotification *)notice{
+    
+    NSDictionary *userInfoDict = notice.userInfo;
+    
+    NSInteger idx = [userInfoDict[@"idx"] integerValue];
+    ToDoStoreAction action = [userInfoDict[@"action"] integerValue];
+    
+    if (userInfoDict) {
+        //1.更新 tableView
+        [self updateTableViewWithIdx:idx action:action];
+        //2.更新按钮
+        [self updateAddButtonState];
+    }
 }
 
 #pragma mark - Action
 - (void)addButtonDidClick{
 
-    NSInteger count = self.items.count;
+    NSInteger count = self.store.count;
     
     ToDoItem *item = [[ToDoItem alloc]initWithTitle:[NSString stringWithFormat:@"ToDo item %ld",count + 1]];
-    [self.items addObject:item];
+    [self.store append:item];
     
-    [self.tableView reloadData];
-    
-    if (self.items.count >= 10) {
-        [self.addButton setEnabled:NO];
-    }
-    
+//    [self.tableView reloadData];
+//
+//    if (self.items.count >= 10) {
+//        [self.addButton setEnabled:NO];
+//    }
 }
 
 
@@ -56,14 +107,14 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.items.count;
+    return self.store.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
     
-    cell.textLabel.text = self.items[indexPath.row].title;
+    cell.textLabel.text = [self.store itemAtIndex:indexPath.row].title;
     
     return cell;
 }
@@ -77,13 +128,13 @@
     
     UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Delete" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         // 用户确认删除，从 `items` 中移除该事项
-        [self.items removeObjectAtIndex:indexPath.row];
-        // 从 table view 中移除对应行
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        // 维护 addButton 状态
-        if (self.items.count < 10) {
-            [self.addButton setEnabled:YES];
-        }
+        [self.store removeAtIndex:indexPath.row];
+//        // 从 table view 中移除对应行
+//        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//        // 维护 addButton 状态
+//        if (self.items.count < 10) {
+//            [self.addButton setEnabled:YES];
+//        }
         
         completionHandler(YES);
     }];
@@ -102,11 +153,18 @@
     return _tableView;
 }
 
--(NSMutableArray<ToDoItem *> *)items{
-    if (_items == nil) {
-        _items = [NSMutableArray array];
+//-(NSMutableArray<ToDoItem *> *)items{
+//    if (_items == nil) {
+//        _items = [NSMutableArray array];
+//    }
+//    return _items;
+//}
+
+-(ToDoStore *)store{
+    if (_store == nil) {
+        _store = [ToDoStore store];
     }
-    return _items;
+    return _store;
 }
 
 @end

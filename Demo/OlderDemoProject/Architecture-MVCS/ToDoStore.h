@@ -23,6 +23,8 @@ typedef NS_ENUM(NSUInteger, ToDoStoreAction) {
 - (void)append:(ToDoItem *)item;
 
 - (void)remove:(ToDoItem *)item;
+- (void)removeAtIndex:(NSInteger)index;
+
 
 - (NSInteger)count;
 

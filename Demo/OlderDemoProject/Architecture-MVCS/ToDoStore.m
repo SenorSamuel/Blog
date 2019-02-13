@@ -38,6 +38,13 @@
     }
 }
 
+- (void)removeAtIndex:(NSInteger )index{
+    
+    NSParameterAssert(index > (self.items.count - 1));
+    
+    [self.items removeObjectAtIndex:index];
+}
+
 - (NSInteger)count{
     return self.items.count;
 }
@@ -54,12 +61,36 @@
     NSMutableSet *originalSet = [NSMutableSet setWithArray:original];
     NSMutableSet *nowSet      = [NSMutableSet setWithArray:now];
     
+    NSInteger idx             = -1;
+    ToDoStoreAction action    = -1;
+    //只考虑 add/remove 一个 item 的情况
     if ([originalSet isSubsetOfSet:nowSet]) { //add
-        [nowSet intersectSet:originalSet];
         
+        [nowSet intersectSet:originalSet];
+        idx = [now indexOfObject:[nowSet anyObject]];
+        
+    }else if([nowSet isSubsetOfSet:originalSet]){ //remove
+
+        [originalSet intersectSet:nowSet];
+        idx = [original indexOfObject:[originalSet anyObject]];
+        
+    }else {
+
     }
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TodoItemDidChangedNotification" object:self userInfo:@{@"idx":@(idx),@"action":@(action)}];
 }
+
+#pragma mark - getter,setter
+-(void)setItems:(NSMutableArray *)items{
+    
+    id oldValue = _items;
+    _items = items;
+    if (oldValue) {
+        [self diffWithOriginal:oldValue now:_items];
+    }
+}
+
 
 //static func diff(original: [ToDoItem], now: [ToDoItem]) -> ChangeBehavior {
 //    let originalSet = Set(original)
