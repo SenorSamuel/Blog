@@ -34,5 +34,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)addButtonPressed:(UIBarButtonItem *)sender {
+}
+- (IBAction)addButtonPressed:(UIButton *)sender {
+}
 
 @end
