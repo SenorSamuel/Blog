@@ -11,7 +11,7 @@
 #import "ToDoItem.h"
 
 typedef NS_ENUM(NSUInteger, ToDoStoreAction) {
-    ToDoStoreActionAdd,
+    ToDoStoreActionAdd = 0,
     ToDoStoreActionRemove,
     ToDoStoreActionReload,
 };
@@ -24,7 +24,6 @@ typedef NS_ENUM(NSUInteger, ToDoStoreAction) {
 
 - (void)remove:(ToDoItem *)item;
 - (void)removeAtIndex:(NSInteger)index;
-
 
 - (NSInteger)count;
 

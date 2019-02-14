@@ -12,37 +12,38 @@
 
 @property (strong, nonatomic) NSMutableArray *items;
 
-
 @end
 
+
 @implementation ToDoStore
+
+@synthesize items = _items;
 
 + (instancetype)store{
     
     ToDoStore *store = [[self alloc]init];
-    if (store) {
-        store.items = [NSMutableArray array];
-    }
+
     return store;
 }
 
 - (void)append:(ToDoItem *)item{
-    
-    [self.items addObject:item];
+
+    [[self mutableArrayValueForKey:@"items"] addObject:item];
 }
 
 - (void)remove:(ToDoItem *)item{
     
     if ([self.items containsObject:item]) {
-        [self.items removeObject:item];
+        [[self mutableArrayValueForKey:@"items"] removeObject:item];
     }
 }
 
 - (void)removeAtIndex:(NSInteger )index{
     
-    NSParameterAssert(index > (self.items.count - 1));
-    
-    [self.items removeObjectAtIndex:index];
+    NSParameterAssert(index <= (self.items.count - 1));
+
+    [[self mutableArrayValueForKey:@"items"] removeObjectAtIndex:index];
+
 }
 
 - (NSInteger)count{
@@ -51,74 +52,50 @@
 
 - (ToDoItem *)itemAtIndex:(NSInteger)index{
     
-    NSParameterAssert(index > (self.items.count - 1));
+    NSParameterAssert(index <= (self.items.count - 1));
     
     return self.items[index];
 }
 
-- (void)diffWithOriginal:(NSArray *)original now:(NSArray *)now{
-    
-    NSMutableSet *originalSet = [NSMutableSet setWithArray:original];
-    NSMutableSet *nowSet      = [NSMutableSet setWithArray:now];
-    
-    NSInteger idx             = -1;
-    ToDoStoreAction action    = -1;
-    //只考虑 add/remove 一个 item 的情况
-    if ([originalSet isSubsetOfSet:nowSet]) { //add
-        
-        [nowSet intersectSet:originalSet];
-        idx = [now indexOfObject:[nowSet anyObject]];
-        
-    }else if([nowSet isSubsetOfSet:originalSet]){ //remove
 
-        [originalSet intersectSet:nowSet];
-        idx = [original indexOfObject:[originalSet anyObject]];
+#pragma mark - KVO
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    
+    NSInteger kind = [[change objectForKey:NSKeyValueChangeKindKey] integerValue];
+    NSInteger index = [[change objectForKey:NSKeyValueChangeIndexesKey] firstIndex];
+    
+    if (kind == NSKeyValueChangeInsertion) {
         
-    }else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"TodoItemDidChangedNotification" object:self userInfo:@{@"idx":@(index),@"action":@(ToDoStoreActionAdd)}];
 
+    }else if(kind == NSKeyValueChangeRemoval){
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"TodoItemDidChangedNotification" object:self userInfo:@{@"idx":@(index),@"action":@(ToDoStoreActionRemove)}];
+        
+    }else{
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"TodoItemDidChangedNotification" object:self userInfo:@{@"idx":@(NSNotFound),@"action":@(ToDoStoreActionReload)}];
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"TodoItemDidChangedNotification" object:self userInfo:@{@"idx":@(idx),@"action":@(action)}];
 }
+
+
 
 #pragma mark - getter,setter
--(void)setItems:(NSMutableArray *)items{
+
+-(NSMutableArray *)items{
     
-    id oldValue = _items;
-    _items = items;
-    if (oldValue) {
-        [self diffWithOriginal:oldValue now:_items];
+    if (!_items) {
+        _items = [NSMutableArray array];
+        [self addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     }
+    return _items;
 }
 
+-(void)dealloc{
+    
+    [self removeObserver:self forKeyPath:@"items"];
+}
 
-//static func diff(original: [ToDoItem], now: [ToDoItem]) -> ChangeBehavior {
-//    let originalSet = Set(original)
-//    let nowSet = Set(now)
-//    
-//    if originalSet.isSubset(of: nowSet) { // Appended
-//        let added = nowSet.subtracting(originalSet)
-//        let indexes = added.compactMap { now.index(of: $0) }
-//        return .add(indexes)
-//    } else if (nowSet.isSubset(of: originalSet)) { // Removed
-//        let removed = originalSet.subtracting(nowSet)
-//        let indexes = removed.compactMap { original.index(of: $0) }
-//        return .remove(indexes)
-//    } else { // Both appended and removed
-//        return .reload
-//    }
-//}
-//
-//private var items: [ToDoItem] = [] {
-//    didSet {
-//        let behavior = ToDoStore.diff(original: oldValue, now: items)
-//        NotificationCenter.default.post(
-//                                        name: .toDoStoreDidChangedNotification,
-//                                        object: self,
-//                                        typedUserInfo: [.toDoStoreDidChangedChangeBehaviorKey: behavior]
-//                                        )
-//    }
-//}
 
 
 

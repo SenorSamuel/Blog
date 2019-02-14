@@ -499,5 +499,11 @@ The default implementation of this method does the following:
 
 ![SamuelChan/20180705124659.png](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20180705124659.png)
 
+![](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20190214150024.png)
+
+![](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20190214150034.png)
+
+![](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20190214150141.png)
+
 ### 0x08 属性关键字
 @property 默认值: readwrite,atomic,assign

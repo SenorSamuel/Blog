@@ -41,8 +41,7 @@
 
 - (void)updateAddButtonState{
     
-    [self.addButton setEnabled: (self.store.count <= 10) ];
-
+    [self.addButton setEnabled: (self.store.count < 10) ];
 }
 
 - (void)updateTableViewWithIdx:(NSInteger)idx action:(ToDoStoreAction)action {
@@ -73,10 +72,11 @@
     
     NSDictionary *userInfoDict = notice.userInfo;
     
-    NSInteger idx = [userInfoDict[@"idx"] integerValue];
-    ToDoStoreAction action = [userInfoDict[@"action"] integerValue];
-    
     if (userInfoDict) {
+    
+        NSInteger idx = [userInfoDict[@"idx"] integerValue];
+        ToDoStoreAction action = [userInfoDict[@"action"] integerValue];
+
         //1.更新 tableView
         [self updateTableViewWithIdx:idx action:action];
         //2.更新按钮
