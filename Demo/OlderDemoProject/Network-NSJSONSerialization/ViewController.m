@@ -58,8 +58,6 @@
         }
     }
 }
-- (IBAction)addButtonPressed:(UIButton *)sender {
-}
 
 #pragma mark - jsonObject → data
 - (void)jsonObjectToData{

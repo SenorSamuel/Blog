@@ -65,6 +65,10 @@
 		67D29C5220E0A0E1003C3A91 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D29C5120E0A0E1003C3A91 /* main.m */; };
 		67D29C5820E0AC6A003C3A91 /* BaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D29C5720E0AC6A003C3A91 /* BaseView.m */; };
 		67D29C5B20E0AC73003C3A91 /* TestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D29C5A20E0AC73003C3A91 /* TestView.m */; };
+		7E0994882218726E00A6274D /* IPhoneFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E0994872218726E00A6274D /* IPhoneFactory.m */; };
+		7E09948D221873B100A6274D /* AndroidFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E09948C221873B100A6274D /* AndroidFactory.m */; };
+		7E0994992219B15B00A6274D /* AppleTV.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E0994982219B15B00A6274D /* AppleTV.m */; };
+		7E09949C2219B16F00A6274D /* XiaomiTV.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E09949B2219B16F00A6274D /* XiaomiTV.m */; };
 		7E2237C72211C477004298DC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2237C62211C477004298DC /* AppDelegate.m */; };
 		7E2237CA2211C477004298DC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2237C92211C477004298DC /* ViewController.m */; };
 		7E2237CD2211C477004298DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E2237CB2211C477004298DC /* Main.storyboard */; };
@@ -195,6 +199,16 @@
 		67D29C5720E0AC6A003C3A91 /* BaseView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseView.m; sourceTree = "<group>"; };
 		67D29C5920E0AC73003C3A91 /* TestView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestView.h; sourceTree = "<group>"; };
 		67D29C5A20E0AC73003C3A91 /* TestView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestView.m; sourceTree = "<group>"; };
+		7E0994852218712500A6274D /* FactoryPatternProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FactoryPatternProtocol.h; sourceTree = "<group>"; };
+		7E0994862218726E00A6274D /* IPhoneFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPhoneFactory.h; sourceTree = "<group>"; };
+		7E0994872218726E00A6274D /* IPhoneFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IPhoneFactory.m; sourceTree = "<group>"; };
+		7E09948B221873B100A6274D /* AndroidFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AndroidFactory.h; sourceTree = "<group>"; };
+		7E09948C221873B100A6274D /* AndroidFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AndroidFactory.m; sourceTree = "<group>"; };
+		7E0994902219B0EC00A6274D /* TVProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TVProtocol.h; sourceTree = "<group>"; };
+		7E0994972219B15B00A6274D /* AppleTV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppleTV.h; sourceTree = "<group>"; };
+		7E0994982219B15B00A6274D /* AppleTV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppleTV.m; sourceTree = "<group>"; };
+		7E09949A2219B16F00A6274D /* XiaomiTV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XiaomiTV.h; sourceTree = "<group>"; };
+		7E09949B2219B16F00A6274D /* XiaomiTV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XiaomiTV.m; sourceTree = "<group>"; };
 		7E2237C32211C477004298DC /* kkbox-MultiThread&Network-Task.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kkbox-MultiThread&Network-Task.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E2237C52211C477004298DC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7E2237C62211C477004298DC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -528,6 +542,42 @@
 			path = "3.3 UIControl和手势识别和事件传递";
 			sourceTree = "<group>";
 		};
+		7E0994892218732700A6274D /* Factory(工厂模式) */ = {
+			isa = PBXGroup;
+			children = (
+				7E0994852218712500A6274D /* FactoryPatternProtocol.h */,
+				7E0994862218726E00A6274D /* IPhoneFactory.h */,
+				7E0994872218726E00A6274D /* IPhoneFactory.m */,
+				7E09948B221873B100A6274D /* AndroidFactory.h */,
+				7E09948C221873B100A6274D /* AndroidFactory.m */,
+			);
+			name = "Factory(工厂模式)";
+			sourceTree = "<group>";
+		};
+		7E09948A2218733D00A6274D /* SimpleFactory(简单工厂模式) */ = {
+			isa = PBXGroup;
+			children = (
+				7E2237FD2211D7EF004298DC /* PhoneProtocol.h */,
+				7E2237F92211D7EF004298DC /* Phone.h */,
+				7E2237FB2211D7EF004298DC /* Phone.m */,
+				7E2237FC2211D7EF004298DC /* PhoneSimpleFactory.h */,
+				7E2237FA2211D7EF004298DC /* PhoneSimpleFactory.m */,
+			);
+			name = "SimpleFactory(简单工厂模式)";
+			sourceTree = "<group>";
+		};
+		7E09948F2219B04200A6274D /* AbstractFactory(抽象工厂模式) */ = {
+			isa = PBXGroup;
+			children = (
+				7E0994902219B0EC00A6274D /* TVProtocol.h */,
+				7E0994972219B15B00A6274D /* AppleTV.h */,
+				7E0994982219B15B00A6274D /* AppleTV.m */,
+				7E09949A2219B16F00A6274D /* XiaomiTV.h */,
+				7E09949B2219B16F00A6274D /* XiaomiTV.m */,
+			);
+			name = "AbstractFactory(抽象工厂模式)";
+			sourceTree = "<group>";
+		};
 		7E2237C42211C477004298DC /* kkbox-MultiThread&Network-Task */ = {
 			isa = PBXGroup;
 			children = (
@@ -557,7 +607,9 @@
 		7E2237E22211D7AA004298DC /* DesignPatternDemo */ = {
 			isa = PBXGroup;
 			children = (
-				7E2237F82211D7EF004298DC /* SimpleFactory(简单工厂模式) */,
+				7E09948A2218733D00A6274D /* SimpleFactory(简单工厂模式) */,
+				7E0994892218732700A6274D /* Factory(工厂模式) */,
+				7E09948F2219B04200A6274D /* AbstractFactory(抽象工厂模式) */,
 				7E2237F72211D7BD004298DC /* resources */,
 				7E2237E32211D7AA004298DC /* AppDelegate.h */,
 				7E2237E42211D7AA004298DC /* AppDelegate.m */,
@@ -577,18 +629,6 @@
 				7E2237EC2211D7AB004298DC /* Assets.xcassets */,
 			);
 			path = resources;
-			sourceTree = "<group>";
-		};
-		7E2237F82211D7EF004298DC /* SimpleFactory(简单工厂模式) */ = {
-			isa = PBXGroup;
-			children = (
-				7E2237F92211D7EF004298DC /* Phone.h */,
-				7E2237FB2211D7EF004298DC /* Phone.m */,
-				7E2237FC2211D7EF004298DC /* PhoneSimpleFactory.h */,
-				7E2237FA2211D7EF004298DC /* PhoneSimpleFactory.m */,
-				7E2237FD2211D7EF004298DC /* PhoneProtocol.h */,
-			);
-			path = "SimpleFactory(简单工厂模式)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1137,11 +1177,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E0994992219B15B00A6274D /* AppleTV.m in Sources */,
 				7E2237E82211D7AA004298DC /* ViewController.m in Sources */,
 				7E2237FF2211D7EF004298DC /* Phone.m in Sources */,
 				7E2237F32211D7AB004298DC /* main.m in Sources */,
 				7E2237E52211D7AA004298DC /* AppDelegate.m in Sources */,
+				7E09948D221873B100A6274D /* AndroidFactory.m in Sources */,
 				7E2237FE2211D7EF004298DC /* PhoneSimpleFactory.m in Sources */,
+				7E0994882218726E00A6274D /* IPhoneFactory.m in Sources */,
+				7E09949C2219B16F00A6274D /* XiaomiTV.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
