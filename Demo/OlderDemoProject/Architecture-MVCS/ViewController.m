@@ -36,6 +36,12 @@
     
     //Notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(todoItemsDidChange:) name:@"TodoItemDidChangedNotification" object:nil];
+    
+    NSNumber *number = [[NSNumber alloc]init];
+    NSArray *arr = [[NSArray alloc]init];
+    NSDictionary *dict = [[NSDictionary alloc]init];
+    NSString *str = [[NSString alloc] init];
+    NSData *data = [[NSData alloc]init];
 }
 
 
