@@ -114,7 +114,6 @@
 }
 
 #pragma mark - 设计一个保护NSMutableArray防止越界的方案
-
 /**
  请你设计一个方案，能够针对NSMutabledArray的容易crash的方法增加保护，如objectAtIndex、addObject等
  这道题考察的点有
@@ -123,13 +122,14 @@
  - Class Clusters(类簇)：直接针对NSMutabledArray做Method Swizzling是没用的
  - Method Swizzling实战：具体实现、触发时机、方法交换时的校验等
  */
-- (void)makeArrayMoreSafer{
+- (void)makeArrayMoreSafer {
     
     NSMutableArray *obj__NSArrayM = [NSMutableArray array];
-    [obj__NSArrayM addObjectsFromArray:@[@"a",@"b"]];
+    [obj__NSArrayM addObject:@"1"];
+    [obj__NSArrayM addObject:@"2"];
     
     //objectAtIndex
-//    [obj__NSArrayM objectAtIndex:3];
+    [obj__NSArrayM objectAtIndex:3];
     
     //addObject
     [obj__NSArrayM addObject:nil];

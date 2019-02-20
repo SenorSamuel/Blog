@@ -14,8 +14,12 @@
 
 
 +(void)load {
-    swizzleInstanceMethod(NSClassFromString(@"__NSArrayM"),@selector(addObject:),@selector(hookAddObject:));
-    swizzleInstanceMethod(NSClassFromString(@"__NSArrayM"), @selector(objectAtIndex:), @selector(hookObjectAtIndex:));
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        swizzleInstanceMethod(NSClassFromString(@"__NSArrayM"),@selector(addObject:),@selector(hookAddObject:));
+        swizzleInstanceMethod(NSClassFromString(@"__NSArrayM"), @selector(objectAtIndex:), @selector(hookObjectAtIndex:));
+    });
 }
 
 

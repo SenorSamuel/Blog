@@ -29,7 +29,6 @@
 		63FF11DF221A579100A473FF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FF11DE221A579100A473FF /* main.m */; };
 		63FF11E6221AB8CE00A473FF /* NSMutableArray+stopException.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FF11E5221AB8CE00A473FF /* NSMutableArray+stopException.m */; };
 		63FF11E9221AB92700A473FF /* NSObject+SwizzleHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FF11E8221AB92700A473FF /* NSObject+SwizzleHook.m */; };
-		63FF11EC221AC0D800A473FF /* NSArray+stopException.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FF11EB221AC0D800A473FF /* NSArray+stopException.m */; };
 		67224E4E20EF28C100369ACE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 67224E4D20EF28C100369ACE /* AppDelegate.m */; };
 		67224E5120EF28C100369ACE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67224E5020EF28C100369ACE /* ViewController.m */; };
 		67224E5420EF28C100369ACE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67224E5220EF28C100369ACE /* Main.storyboard */; };
@@ -146,8 +145,6 @@
 		63FF11E5221AB8CE00A473FF /* NSMutableArray+stopException.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+stopException.m"; sourceTree = "<group>"; };
 		63FF11E7221AB92700A473FF /* NSObject+SwizzleHook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+SwizzleHook.h"; sourceTree = "<group>"; };
 		63FF11E8221AB92700A473FF /* NSObject+SwizzleHook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SwizzleHook.m"; sourceTree = "<group>"; };
-		63FF11EA221AC0D800A473FF /* NSArray+stopException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+stopException.h"; sourceTree = "<group>"; };
-		63FF11EB221AC0D800A473FF /* NSArray+stopException.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+stopException.m"; sourceTree = "<group>"; };
 		67224E4A20EF28C100369ACE /* 消息转发和动态添加方法.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "消息转发和动态添加方法.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		67224E4C20EF28C100369ACE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		67224E4D20EF28C100369ACE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -418,8 +415,6 @@
 				63FF11D0221A577B00A473FF /* AppDelegate.m */,
 				63FF11D2221A577B00A473FF /* ViewController.h */,
 				63FF11D3221A577B00A473FF /* ViewController.m */,
-				63FF11EA221AC0D800A473FF /* NSArray+stopException.h */,
-				63FF11EB221AC0D800A473FF /* NSArray+stopException.m */,
 				63FF11E4221AB8CE00A473FF /* NSMutableArray+stopException.h */,
 				63FF11E5221AB8CE00A473FF /* NSMutableArray+stopException.m */,
 				63FF11E7221AB92700A473FF /* NSObject+SwizzleHook.h */,
@@ -1195,7 +1190,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63FF11EC221AC0D800A473FF /* NSArray+stopException.m in Sources */,
 				63FF11E9221AB92700A473FF /* NSObject+SwizzleHook.m in Sources */,
 				63FF11D4221A577B00A473FF /* ViewController.m in Sources */,
 				63FF11DF221A579100A473FF /* main.m in Sources */,
