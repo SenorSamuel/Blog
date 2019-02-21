@@ -34,57 +34,18 @@
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
     [super touchesBegan:touches withEvent:event];
-//    1.测试耗时
-//    [self headFirstDemo];
+    //1.测试耗时
+    //[self headFirstDemo];
 
-//    2.1 多线程资源掠夺
-//    self.tickets = 100;
-//    [NSThread detachNewThreadSelector:@selector(saleTitle) toTarget:self withObject:nil];
-//    [NSThread detachNewThreadSelector:@selector(saleTitle) toTarget:self withObject:nil];
-//    [NSThread detachNewThreadSelector:@selector(saleTitle) toTarget:self withObject:nil];
+//    //2.1 多线程资源掠夺
+//    [self testTitleSold];
+//    //2.2 值类型Property
+//    [self testThreadInsecureDemo1];
+//    //2.3 指针Property指向的内存区域
+//    [self testThreadInsecureDemo2];
+    //2.4 解决线程不安全
+//    [self testThreadInsecureSolutionDemo];
     
-//    2.2 值类型Property
-//    //thread A
-//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-//        for (int i = 0; i < 10000; i ++) {
-//            self.intA = self.intA + 1;
-//            NSLog(@"Thread A: %d\n", self.intA);
-//        }
-//    });
-//
-//    //thread B
-//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-//        for (int i = 0; i < 10000; i ++) {
-//            self.intA = self.intA + 1;
-//            NSLog(@"Thread B: %d\n", self.intA);
-//        }
-//    });
-
-    //2.3 指针Property指向的内存区域
-    {
-        //thread A
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            for (int i = 0; i < 100000; i ++) {
-                if (i % 2 == 0) {
-                    self.stringA = @"a very long string";
-                }
-                else {
-                    self.stringA = @"string";
-                }
-                NSLog(@"Thread A: %@\n", self.stringA);
-            }
-        });
-        
-        //thread B
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            for (int i = 0; i < 100000; i ++) {
-                if (self.stringA.length >= 10) {
-                    NSString* subStr = [self.stringA substringWithRange:NSMakeRange(0, 10)];
-                }
-                NSLog(@"Thread B: %@\n", self.stringA);
-            }
-        });
-    }
 /** GCD */
 //    1.串行队列 同步执行
 //    [self serialSync];
@@ -97,6 +58,7 @@
 //    5.gcdBarrierTest
 //    [self gcdBarrierTest];
 //    [self barrierExample01];
+//    [self testOrder];
     
 /** NSOperation */
 //1.NSInvocationOperation
@@ -142,6 +104,15 @@
     NSLog(@"over %f", CACurrentMediaTime() - start);
 }
 
+#pragma mark - 线程不安全定义:同时对变量进行读写
+#pragma mark 卖票
+- (void)testTitleSold{
+        self.tickets = 100;
+        [NSThread detachNewThreadSelector:@selector(saleTitle) toTarget:self withObject:nil];
+        [NSThread detachNewThreadSelector:@selector(saleTitle) toTarget:self withObject:nil];
+        [NSThread detachNewThreadSelector:@selector(saleTitle) toTarget:self withObject:nil];
+}
+
 - (void)saleTitle{
     
     NSTimeInterval start = CACurrentMediaTime();
@@ -151,17 +122,92 @@
         // 模拟延时
         [NSThread sleepForTimeInterval:0.5];
         
-//        @synchronized(self){
+        // @synchronized(self){
             if (self.tickets > 0) {
-                
                 self.tickets --;
                 NSLog(@"卖票成功,剩下%ld张票 %@",self.tickets,[NSThread currentThread]);
             }else{
-                NSLog(@"票卖光了 耗时:%f %", CACurrentMediaTime() - start,[NSThread currentThread]);
+                NSLog(@"票卖光了 耗时:%f %@", CACurrentMediaTime() - start,[NSThread currentThread]);
                 break;
             }
-//        }
+        //}
     }
+}
+
+#pragma mark 值类型Property
+-(void)testThreadInsecureDemo1{
+        //thread A
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            for (int i = 0; i < 10000; i ++) {
+                self.intA = self.intA + 1;
+                NSLog(@"Thread A: %d\n", self.intA);
+            }
+        });
+    
+        //thread B
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            for (int i = 0; i < 10000; i ++) {
+                self.intA = self.intA + 1;
+                NSLog(@"Thread B: %d\n", self.intA);
+            }
+        });
+}
+
+#pragma mark 指针Property指向的内存区域
+-(void)testThreadInsecureDemo2{
+    //thread A
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        for (int i = 0; i < 100000; i ++) {
+            if (i % 2 == 0) {
+                self.stringA = @"a very long string";
+            }
+            else {
+                self.stringA = @"string";
+            }
+            NSLog(@"Thread A: %@\n", self.stringA);
+        }
+    });
+    
+    //thread B
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        for (int i = 0; i < 100000; i ++) {
+            if (self.stringA.length >= 10) {
+                NSString* subStr = [self.stringA substringWithRange:NSMakeRange(0, 10)];
+            }
+            NSLog(@"Thread B: %@\n", self.stringA);
+        }
+    });
+}
+
+#pragma mark 解决线程不安全
+- (void)testThreadInsecureSolutionDemo{
+    NSLock *lock = [NSLock new];
+    //thread A
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        for (int i = 0; i < 100000; i ++) {
+            [lock lock];
+            if (i % 2 == 0) {
+                self.stringA = @"a very long string";
+            }
+            else {
+                self.stringA = @"string";
+            }
+            NSLog(@"Thread A: %@\n", self.stringA);
+            [lock unlock];
+        }
+    });
+    
+    //thread B
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        for (int i = 0; i < 100000; i ++) {
+            [lock lock];
+            if (self.stringA.length >= 10) {
+                NSString* subStr = [self.stringA substringWithRange:NSMakeRange(0, 10)];
+            }
+            NSLog(@"Thread B: %@\n", self.stringA);
+            [lock unlock];
+        }
+    });
 }
 
 #pragma mark - GCD
@@ -178,23 +224,17 @@
     // 同步执行多个任务,同步不会开线程，是在当前线程上面
     dispatch_sync(queue, ^{
         // 创建任务
-        for (int i = 0; i < 5; i++) {
-            NSLog(@"gcd i= %d, 同步执行 串行任务1 = %@", i, [NSThread currentThread]);
-        }
+        NSLog(@"gcd 同步执行 串行任务1 = %@", [NSThread currentThread]);
     });
     
     dispatch_sync(queue, ^{
         // 创建任务
-        for (int i = 0; i < 5; i++) {
-            NSLog(@"gcd i= %d, 同步执行串行任务2 = %@", i, [NSThread currentThread]);
-        }
+        NSLog(@"gcd 同步执行 串行任务2 = %@", [NSThread currentThread]);
     });
     
     dispatch_sync(queue, ^{
         // 创建任务
-        for (int i = 0; i < 5; i++) {
-            NSLog(@"gcd i= %d, 同步执行串行任务3 = %@", i, [NSThread currentThread]);
-        }
+        NSLog(@"gcd 同步执行 串行任务3 = %@", [NSThread currentThread]);
     });
 }
 
@@ -209,9 +249,7 @@
     for (NSInteger i = 0; i < 20; ++i) {
         dispatch_async(queue, ^{
             // 创建任务
-            for (int j = 0; j < 5; j++) {
-                NSLog(@"gcd j = %d, 串行任务 异步执行%ld = %@", j , i, [NSThread currentThread]);
-            }
+            NSLog(@"gcd 串行任务 异步执行%ld = %@", i, [NSThread currentThread]);
         });
     }
 }
