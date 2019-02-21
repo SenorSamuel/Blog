@@ -8,19 +8,22 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
-
+@interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
+//票数
 @property (nonatomic, assign) NSInteger tickets;//票数
-
+//NSOperationQueue
 @property (nonatomic, strong) NSOperationQueue *queue;
-
-
+//用于测试任务组
 @property (nonatomic, strong) dispatch_queue_t photoQueue;
-
+//用于测试gcd_barrier
 @property (nonatomic, strong) NSMutableArray *photoList;
-
+//用于测试线程不安全
 @property (atomic, assign)    int       intA;
 @property (atomic, strong) NSString*                 stringA;
+//模型
+@property (strong, nonatomic) NSArray *models;
+//loading
+@property (strong, nonatomic) UIActivityIndicatorView *loadingView;
 
 @end
 
@@ -29,55 +32,57 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.loadingView.center = CGPointMake(self.view.center.x, self.view.center.y);
+    [self.view addSubview:self.loadingView];
 }
 
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    
-    [super touchesBegan:touches withEvent:event];
-    //1.测试耗时
-    //[self headFirstDemo];
+#pragma mark - UITableView Datasource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return self.models.count;
+}
 
-//    //2.1 多线程资源掠夺
-//    [self testTitleSold];
-//    //2.2 值类型Property
-//    [self testThreadInsecureDemo1];
-//    //2.3 指针Property指向的内存区域
-//    [self testThreadInsecureDemo2];
-    //2.4 解决线程不安全
-//    [self testThreadInsecureSolutionDemo];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-/** GCD */
-//    1.串行队列 同步执行
-//    [self serialSync];
-//    2.串行队列 异步执行
-//    [self serialAsync];
-//    3.并行队列,异步执行
-//    [self concurrentAsnc];
-//    4.并行队列,同步执行
-//    [self concurrentSync];
-//    5.gcdBarrierTest
-//    [self gcdBarrierTest];
-//    [self barrierExample01];
-//    [self testOrder];
-    
-/** NSOperation */
-//1.NSInvocationOperation
-//    NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(invocationOperation:) object:@{@"msg": @"invocationOperation 基本使用", @"parameter": @"呵呵"}];
-//    [invocationOperation start];
+    NSDictionary *dict = self.models[section];
+    return [dict.allValues[0] count];
+}
 
-//2.加入队列
-//    NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(invocationOperation:) object:@{@"msg": @"invocationOperation 基本使用", @"parameter": @"呵呵"}];
-//    //创建队列
-//    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-//    //将操作添加到队列中
-//    [queue addOperation:invocationOperation];
-//3.NSBlockOperation
-//    [self blockOperation];
-//4.操作完成的回调
-//    [self operationComCallBack];
-//5.NSOperation最大并发数
-//    [self maxConcurrentCountTest];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *cellIdentifier = @"Cell";
     
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
+    if(cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    
+    NSDictionary *dict = self.models[indexPath.section];
+    cell.textLabel.text = dict.allValues[0][indexPath.row];
+    
+    return cell;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    
+    NSDictionary *dict = self.models[section];
+
+    return dict.allKeys[0];
+}
+
+#pragma mark - UITableView Delegate methods
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+//    if (self.loadingView.isAnimating) {
+//        return;
+//    }
+//
+//    [self.loadingView startAnimating];
+    NSDictionary *dict = self.models[indexPath.section];
+    SEL sel = NSSelectorFromString(dict.allValues[0][indexPath.row]);
+    [self performSelector:sel];
 }
 
 - (void)headFirstDemo {
@@ -105,8 +110,10 @@
 }
 
 #pragma mark - 线程不安全定义:同时对变量进行读写
-#pragma mark 卖票
+#pragma mark 1.卖票
 - (void)testTitleSold{
+//    2019-02-21 16:16:35.337284+0800 多线程[7786:1293725] 卖票成功,剩下72张票 <NSThread: 0x28271d440>{number = 4, name = (null)}
+//    2019-02-21 16:16:35.337284+0800 多线程[7786:1293724] 卖票成功,剩下72张票 <NSThread: 0x28271d400>{number = 3, name = (null)}
         self.tickets = 100;
         [NSThread detachNewThreadSelector:@selector(saleTitle) toTarget:self withObject:nil];
         [NSThread detachNewThreadSelector:@selector(saleTitle) toTarget:self withObject:nil];
@@ -128,13 +135,16 @@
                 NSLog(@"卖票成功,剩下%ld张票 %@",self.tickets,[NSThread currentThread]);
             }else{
                 NSLog(@"票卖光了 耗时:%f %@", CACurrentMediaTime() - start,[NSThread currentThread]);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.loadingView stopAnimating];
+                });
                 break;
             }
         //}
     }
 }
 
-#pragma mark 值类型Property
+#pragma mark 2.值类型Property
 -(void)testThreadInsecureDemo1{
         //thread A
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -153,7 +163,7 @@
         });
 }
 
-#pragma mark 指针Property指向的内存区域
+#pragma mark 3.指针Property指向的内存区域
 -(void)testThreadInsecureDemo2{
     //thread A
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -179,7 +189,7 @@
     });
 }
 
-#pragma mark 解决线程不安全
+#pragma mark 4.解决线程不安全
 - (void)testThreadInsecureSolutionDemo{
     NSLock *lock = [NSLock new];
     //thread A
@@ -364,7 +374,122 @@
     NSLog(@"5");
 }
 
+#pragma mark dispatch_group
+- (void)test_dispatch_groupDemo1{
+    //第一种方法:使用 dispatch_group_async 和 dispatch_group_notify
+    // 1. 调度组
+    dispatch_group_t group = dispatch_group_create();
+    
+    // 2. 队列
+    dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
+    // 将任务添加到调度组中
+    dispatch_group_async(group, queue, ^{
+        [NSThread sleepForTimeInterval:2];
+        NSLog(@"下载音乐 A");
+    });
+    
+    dispatch_group_async(group, queue, ^{
+        NSLog(@"下载音乐 B");
+    });
+    
+    dispatch_group_async(group, queue, ^{
+        NSLog(@"下载音乐 C");
+    });
+    
+    // 是异步的,等所有任务离开组就调用 dispatch_group_notify
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        NSLog(@"所有异步任务下载完成了, 在 主线程更新UI thread = %@", [NSThread currentThread]);
+    });
+}
+
+- (void)test_dispatch_groupDemo2{
+    //第二种方法更多常用:因为一般来说任务都是耗时的,所以异步请求,无论有无成功,第一种方式都是直接leave_group了
+    // 1. 调度组
+    dispatch_group_t group = dispatch_group_create();
+    // 2. 队列
+    dispatch_queue_t queue = dispatch_queue_create("com.samuel.group", DISPATCH_QUEUE_CONCURRENT);
+    
+    // 在 terminal 输入 man(manual) dispatch_group_async可以看到这个函数的详细介绍
+    // 进入组
+    dispatch_group_enter(group);
+    dispatch_async(queue, ^{
+        [NSThread sleepForTimeInterval:2];
+        NSLog(@"下载音乐 A");
+        // 离开组
+        dispatch_group_leave(group);
+    });
+    
+    dispatch_group_enter(group);
+    dispatch_async(queue, ^{
+        [NSThread sleepForTimeInterval:1];
+        NSLog(@"下载音乐 B");
+        // 离开组
+        dispatch_group_leave(group);
+    });
+    
+    dispatch_group_enter(group);
+    dispatch_async(queue, ^{
+        [NSThread sleepForTimeInterval:3];
+        NSLog(@"下载音乐 C");
+        // 离开组
+        dispatch_group_leave(group);
+    });
+    
+    // 是异步的,等所有任务离开组就调用 dispatch_group_notify
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        NSLog(@"所有异步任务下载完成了, 在 主线程更新UI thread = %@", [NSThread currentThread]);
+    });
+}
+
+#pragma mark 信号量
+
+/**
+ 创建有多少信号量 dispatch_semaphore_create(long value);
+ dispatch_semaphore_wait(dispatch_semaphore_t dsema, dispatch_time_t timeout) :  semaphore -1 < 0, 阻塞
+ dispatch_semaphore_signal(dispatch_semaphore_t dsema) : semaphore + 1 >= 0 唤醒
+ */
+- (void)test_dispatch_semaphore_create{
+    //创建信号量
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0);
+    
+    dispatch_group_t group = dispatch_group_create();
+    
+    dispatch_group_async(group, queue, ^{
+        [NSThread sleepForTimeInterval:10];
+        dispatch_semaphore_signal(semaphore);
+    });
+    
+    dispatch_group_async(group, queue, ^{
+        [NSThread sleepForTimeInterval:10];
+        dispatch_semaphore_signal(semaphore);
+    });
+    
+    dispatch_group_notify(group, queue, ^{
+        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        
+        NSLog(@"任务都完成了");
+    });
+}
+
 #pragma mark - NSOperation
+- (void)testInvocationOpetionWithStart{
+    NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(invocationOperation:) object:@{@"msg": @"invocationOperation 基本使用", @"parameter": @"呵呵"}];
+    [invocationOperation start];
+}
+
+- (void)testInvocationOpetionAddToQueen{
+    NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(invocationOperation:) object:@{@"msg": @"invocationOperation 基本使用", @"parameter": @"呵呵"}];
+    //创建队列
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    //将操作添加到队列中
+    [queue addOperation:invocationOperation];
+}
+
 - (void)invocationOperation:(NSString *)msg {
     NSLog(@"thread = %@, msg = %@", [NSThread currentThread], msg);
 }
@@ -390,7 +515,7 @@
     [queue addOperation:blockOperation];
 }
 
-- (void)operationComCallBack {
+- (void)operationCompletionBlock {
     
     NSOperationQueue *queue = [[NSOperationQueue alloc]init];
     
@@ -405,7 +530,7 @@
     [queue addOperation:operation2];
 }
 
-- (void)maxConcurrentCountTest{
+- (void)maxConcurrentCountTest {
     
     _queue = [NSOperationQueue new];
     _queue.maxConcurrentOperationCount = 2;
@@ -446,5 +571,44 @@
 }
 
 
+-(NSArray *)models{
+    
+    if (!_models) {
+        _models = @[
+      @{@"线程不安全定义:同时对变量进行读写":@[
+                @"testTitleSold",
+                @"testThreadInsecureDemo1",
+                @"testThreadInsecureDemo2",
+                @"testThreadInsecureSolutionDemo"]},
+      @{@"GCD":@[
+                @"serialSync",
+                @"serialAsync",
+                @"concurrentAsnc",
+                @"concurrentSync",
+                @"barrierExample01",
+                @"gcdBarrierTest",
+                @"testOrder",
+                @"test_dispatch_groupDemo1",
+                @"test_dispatch_groupDemo2",
+                @"test_dispatch_semaphore_create"]},
+        
+        @{@"NSOperation":@[
+                  @"testInvocationOpetionWithStart",
+                  @"testInvocationOpetionAddToQueen",
+                  @"blockOperation",
+                  @"operationCompletionBlock",
+                  @"maxConcurrentCountTest"]}];
+    }
+    return _models;
+}
+
+-(UIActivityIndicatorView *)loadingView{
+    
+    if (!_loadingView) {
+        _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _loadingView.backgroundColor = [UIColor lightGrayColor];
+    }
+    return _loadingView;
+}
 
 @end
