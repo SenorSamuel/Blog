@@ -221,10 +221,12 @@
 }
 
 #pragma mark - GCD
+//过程1. 向队列 "Summit" 任务(FIFO)
+//过程2. 队列 "Invoke" 任务( 串行Invoke/并行Invoke )
+//过程3. 任务 "Finished"
 /**
  *  串行队列 同步执行
  */
-
 - (void)serialSync {
     // 定义串行队列
     // const char *label: 队列的名称
@@ -300,6 +302,81 @@
     }
 }
 
+//死锁
+- (void)testDeadLockDemo_typical{
+    
+    NSLog(@"1");
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        NSLog(@"2");
+    });
+    NSLog(@"3");
+}
+
+//死锁
+- (void)testDeadLockDemo_another{
+    
+    dispatch_queue_t queue = dispatch_queue_create("SerialQueue",DISPATCH_QUEUE_SERIAL);
+    
+    NSLog(@"1");
+    dispatch_sync(queue, ^{
+        NSLog(@"2");
+        dispatch_sync(queue, ^{
+            NSLog(@"3");
+        });
+        NSLog(@"4");
+    });
+    NSLog(@"5");
+}
+
+//1 2 3 4 5
+-(void)testLogOrderDemo1 {
+    NSLog(@"1");
+    dispatch_queue_t global_queue = dispatch_get_global_queue(0, 0);
+    //将任务提交,并且等待任务完成
+    dispatch_sync(global_queue, ^{
+        NSLog(@"2");
+        //并行队列中的任务,在同一个线程是可以并发执行的:一个线程在多个任务中切换
+        dispatch_sync(global_queue, ^{
+            NSLog(@"3");
+        });
+        NSLog(@"4");
+    });
+    NSLog(@"5");
+}
+
+//1 2 (3) 4 (3) 5 (3)
+-(void)testLogOrderDemo2 {
+    NSLog(@"1");
+    dispatch_queue_t global_queue = dispatch_get_global_queue(0, 0);
+    //将任务提交,并且等待任务完成
+    dispatch_sync(global_queue, ^{
+        NSLog(@"2");
+        //并行队列中的任务,在同一个线程是可以并发执行的:一个线程在多个任务中切换
+        dispatch_async(global_queue, ^{
+            NSLog(@"3");
+        });
+        NSLog(@"4");
+    });
+    NSLog(@"5");
+}
+
+
+//1 2 4 (3) 5 (3)
+-(void)testLogOrderDemo3 {
+    NSLog(@"1");
+    dispatch_queue_t serial_queue = dispatch_queue_create("testLogOrderDemo3", DISPATCH_QUEUE_SERIAL);
+    //将任务提交,并且等待任务完成
+    dispatch_sync(serial_queue, ^{
+        NSLog(@"2");
+        dispatch_async(serial_queue, ^{
+            NSLog(@"3");
+        });
+        NSLog(@"4");
+    });
+    NSLog(@"5");
+}
+
+
 #pragma mark dipatch_async_barrier example01
 
 - (void)barrierExample01{
@@ -359,20 +436,6 @@
     });
 }
 
--(void)testOrder {
-    NSLog(@"1");
-    dispatch_queue_t global_queue = dispatch_get_global_queue(0, 0);
-    //将任务提交,并且等待任务完成
-    dispatch_sync(global_queue, ^{
-        NSLog(@"2");
-        //并行队列中的任务,在同一个线程是可以并发执行的:一个线程在多个任务中切换
-        dispatch_sync(global_queue, ^{
-            NSLog(@"3");
-        });
-        NSLog(@"4");
-    });
-    NSLog(@"5");
-}
 
 #pragma mark dispatch_group
 - (void)test_dispatch_groupDemo1{
@@ -576,28 +639,32 @@
     if (!_models) {
         _models = @[
       @{@"线程不安全定义:同时对变量进行读写":@[
-                @"testTitleSold",
-                @"testThreadInsecureDemo1",
-                @"testThreadInsecureDemo2",
-                @"testThreadInsecureSolutionDemo"]},
+                NSStringFromSelector(@selector(testTitleSold)),
+                NSStringFromSelector(@selector(testThreadInsecureDemo1)),
+                NSStringFromSelector(@selector(testThreadInsecureDemo2)),
+                NSStringFromSelector(@selector(testThreadInsecureSolutionDemo))]},
       @{@"GCD":@[
-                @"serialSync",
-                @"serialAsync",
-                @"concurrentAsnc",
-                @"concurrentSync",
-                @"barrierExample01",
-                @"gcdBarrierTest",
-                @"testOrder",
-                @"test_dispatch_groupDemo1",
-                @"test_dispatch_groupDemo2",
-                @"test_dispatch_semaphore_create"]},
+                NSStringFromSelector(@selector(serialSync)),
+                NSStringFromSelector(@selector(serialAsync)),
+                NSStringFromSelector(@selector(concurrentAsnc)),
+                NSStringFromSelector(@selector(concurrentSync)),
+                NSStringFromSelector(@selector(testDeadLockDemo_typical)),
+                NSStringFromSelector(@selector(testDeadLockDemo_another)),
+                NSStringFromSelector(@selector(testLogOrderDemo1)),
+                NSStringFromSelector(@selector(testLogOrderDemo2)),
+                NSStringFromSelector(@selector(testLogOrderDemo3)),
+                NSStringFromSelector(@selector(barrierExample01)),
+                NSStringFromSelector(@selector(gcdBarrierTest)),
+                NSStringFromSelector(@selector(test_dispatch_groupDemo1)),
+                NSStringFromSelector(@selector(test_dispatch_groupDemo2)),
+                NSStringFromSelector(@selector(test_dispatch_semaphore_create))]},
         
         @{@"NSOperation":@[
-                  @"testInvocationOpetionWithStart",
-                  @"testInvocationOpetionAddToQueen",
-                  @"blockOperation",
-                  @"operationCompletionBlock",
-                  @"maxConcurrentCountTest"]}];
+                  NSStringFromSelector(@selector(testInvocationOpetionWithStart)),
+                  NSStringFromSelector(@selector(testInvocationOpetionAddToQueen)),
+                  NSStringFromSelector(@selector(blockOperation)),
+                  NSStringFromSelector(@selector(operationCompletionBlock)),
+                  NSStringFromSelector(@selector(maxConcurrentCountTest))]}];
     }
     return _models;
 }
