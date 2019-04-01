@@ -9,21 +9,22 @@
 
 > 公司项目使用的是manual layout(frame) - - ,最近适配iPhone X,可真是被几个概念搞蒙圈了,查了很多资料,算是弄明白了,特地记录总结一下
 
+```objc
+@property(nonatomic,assign) UIRectEdge edgesForExtendedLayout NS_AVAILABLE_IOS(7_0); // Defaults to UIRectEdgeAll
+@property(nonatomic,assign) BOOL extendedLayoutIncludesOpaqueBars NS_AVAILABLE_IOS(7_0); // Defaults to NO, but bars are translucent by default on 7_0.  
+@property(nonatomic,assign) BOOL automaticallyAdjustsScrollViewInsets API_DEPRECATED_WITH_REPLACEMENT("Use UIScrollView's contentInsetAdjustmentBehavior instead", ios(7.0,11.0),tvos(7.0,11.0)); // Defaults to YES
+
+@property(nonatomic,readonly,strong) id<UILayoutSupport> topLayoutGuide API_DEPRECATED_WITH_REPLACEMENT("-[UIView safeAreaLayoutGuide]", ios(7.0,11.0), tvos(7.0,11.0));
+@property(nonatomic,readonly,strong) id<UILayoutSupport> bottomLayoutGuide API_DEPRECATED_WITH_REPLACEMENT("-[UIView safeAreaLayoutGuide]", ios(7.0,11.0), tvos(7.0,11.0));
+```
+
 ### edgesForExtendedLayout;translucent;extendedLayoutIncludesOpaqueBars
----
-决定的是布局(0,0)的位置
 
-以下概念一般只有在autoLayout才用的上,frame布局一般是用不上的
+[UINavigationBar 透明设置以及对 frame 的影响](https://skyline75489.github.io/post/2015-11-27_uinavigation_bar_frame_affect.html)
 
-**(1)edgesForExtendedLayout + translucent :**
-edgesForExtendedLayout默认值为UIRectEdgeAll,让rootView从(0,0)开始布局,即view 的内容会被导航栏遮挡住
-translucent(半透明)默认值为YES,设置为YES让rootView从(0,0)开始布局;设置为NO会使rootView从导航栏下面开始布局
-关系:translucent = NO,edgesForExtendedLayout无效
+![](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20190330131151.png)
 
-**(2)extendedLayoutIncludesOpaqueBars + translucent**
-关系:translucent = NO,extendedLayoutIncludesOpaqueBars可以修改rootView的布局位置
-
-**(3)automaticallyAdjustsScrollViewInsets**
+**automaticallyAdjustsScrollViewInsets**
 automaticallyAdjustsScrollViewInsets = YES(default),全屏模式下会自动修改第一个添加到 rootView 的 scrollview 的 contentInset 为(64,0,0,0)
 
 automaticallyAdjustsScrollViewInsets与Top/Buttom Layout Guide在某种程度上，是冲突的:如果vc的第一个子控件是scrollView,并且topLayoutGuide是nav下面,这种情况下就会出现scrollView顶部空白了64pt的情况
