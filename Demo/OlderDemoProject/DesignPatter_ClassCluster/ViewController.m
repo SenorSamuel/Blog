@@ -106,9 +106,9 @@
     obj_NSCFString = [NSString stringWithFormat:@"%@",@"a"];//NSTaggedPointerString *    @"a"
     obj_NSCFString = [NSString stringWithFormat:@"%@",@"ssssssssssss"];//__NSCFString *    @"ssssssssssss"
     obj_NSCFString = [[NSString alloc]initWithString:@"a"];//__NSCFConstantString *    @"a"
-    obj_NSCFString = @""; //__NSCFConstantString *    @""    0x00000001002282a8
-    obj_NSCFString = @"a";//__NSCFConstantString *    @"a"    0x0000000100228288
-    obj_NSCFString = @"abc";//__NSCFConstantString *    @"abc"    0x00000001002282c8
+    obj_NSCFString = @""; //__NSCFConstantString *      @""         0x00000001002282a8
+    obj_NSCFString = @"a";//__NSCFConstantString *      @"a"        0x0000000100228288
+    obj_NSCFString = @"abc";//__NSCFConstantString *    @"abc"      0x00000001002282c8
 
 }
 
