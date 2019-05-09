@@ -37,7 +37,7 @@ automaticallyAdjustsScrollViewInsets与Top/Buttom Layout Guide在某种程度上
 >- manual layout:一般用不上
 >- xib/sb       : 如果适配iOS8的话,可以不管safeLayoutGuide,topLayoutGuide bottomLayoutGuide依然可以使用
                  如果适配的是iOS9以前的话,大胆勾选 `safe area layout guide` :Apple told us in [WWDC 2017 Session 412](https://developer.apple.com/wwdc17/412) that Storyboards using safe areas are backwards deployable. This means you can switch to using the safe area layout guide in Interface Builder even if you still target iOS 10 and older.
->- 纯代码       : if(iOS11 available){safeLayoutGuide}else{bottomLayoutGuide,topLayoutGuide}
+>- 纯代码       : if(iOS11 available){safeLayoutGuide}else{ ,topLayoutGuide}
 
 
 以topLayoutGuide为例
