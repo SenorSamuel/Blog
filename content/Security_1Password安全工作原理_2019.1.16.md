@@ -107,8 +107,8 @@ MUK 和 SRP-x的生成过程类似，差别只在于使用不同的 Salt 和 Ver
 
     在 1Password 中的客户端与服务器之间的通信，你的密码 Master Password 永远不会(明文/被加密)被传输。_那么1Password使用了什么机制来保障身份校验和通信的安全呢?_
 
-    正是我们前面提到的 SRP 的方式，它是在 `Diffie-Hellman key exchange` 基础上进行了修改，传统的 `Diffie-Hellman key exchange` 只能保证能在不暴露任何密钥的情况，完成通信密钥的协商，但是他无法校验通信双方的身份。1Password 使用了 SRP 方式，既能保证通信密钥的协商安全性，又能验证通信双方的身份
-
+    正是我们前面提到的 SRP 的方式，它是在 `SRP` 基础上进行了修改，传统的 `SRP` 只能保证能在不暴露任何密钥的情况，完成通信密钥的协商，但是他无法校验通信双方的身份。1Password 使用了 SRP 方式，既能保证通信密钥的协商安全性，又能验证通信双方的身份
+    
     具体的做法如下:
 
     1. initial setUp: `x` 是我们前面提到32位的`SRP-x`，将它转换被BigNum，计算 `v = g^x`，发送到 Server 中

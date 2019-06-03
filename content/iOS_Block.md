@@ -20,7 +20,7 @@
     - [ 3.1 问题的发生 ](#31-%E9%97%AE%E9%A2%98%E7%9A%84%E5%8F%91%E7%94%9F)
     - [ 3.2 观点 ](#32-%E8%A7%82%E7%82%B9)
 
-##Chapter 4 Getting Started with Blocks
+## Chapter 4 Getting Started with Blocks
 
 ### Blocks Primer (Blocks入门)
 
