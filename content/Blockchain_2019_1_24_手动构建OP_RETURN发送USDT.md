@@ -100,7 +100,7 @@ Trezor 是为数不多支持 TetherUS的钱包,强如 Ledger 都还[不支持](h
 
 - 由于 Omni协议中,vout 找零必须找给发送地址,否则,这笔交易将不会被判断为是 Omni交易,只会认为是发送 `0.00000546`的普通BTC交易,所以这里增加一个 vout,将剩下的钱全部转给原 SendFrom 地址`mujE43EZckhHf6i1P2ru9UUg78VTjLwwL3`
 
-![](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20190124152334.png)
+![](https://samuel-image-hosting.oss-cn-shenzhen.aliyuncs.com/SamuelChan/20191011104248.png)
 
 步骤三:
 构建OP_RETURN:`OP_RETURN 6f6d6e6900000000800004e70000000000000682`
