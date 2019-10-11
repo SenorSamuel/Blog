@@ -497,12 +497,12 @@ of 2048 bits and a public exponent of 65537.
     to HTTP downgrade attacks)
     5. Pin Certificates(not yet implemented)
 
-    Running security tools within a browser environment brings its own per- ils, irrespective of whether it is delivered over the web. These perils include:
+    Running security tools within a browser environment brings its own perils, irrespective of whether it is delivered over the web. These perils include:
     1. The browser itself is a hostile environment, running processes and content that are neither under your control nor ours.
-    Sandboxing within the browser provides the first line of defense. Struc- turing our in-browser code to expose only what needs to be exposed is another. Over the past decade, browsers have made enormous im- provements in their security and in their isolation of processes, but it still remains a tough environment.
-    2. JavaScript,thelanguageusedwithinthebrowser,offersusverylim- ited ability to clear data from memory. Secrets that we would like the client to forget may remain in memory longer than useful.
-    3. We have a strictly limited ability to use security features of the op- erating system when operating within the browser. See Locally ex- posed Secret Keys for how this limits the tools available for protect- ing Secret Keys when stored locally.
-    4. Thereisapaucityofefficientcryptographicfunctionsavailabletorun in JavaScript. As a consequence, the WebCrypto facilities available in the browsers that we support impose a limit on the cryptographic methods we can use. For example, our reliance on PBKDF2 instead of a memory hard KDF such as Argon2 is a consequence of this.
+    Sandboxing within the browser provides the first line of defense. Structuring our in-browser code to expose only what needs to be exposed is another. Over the past decade, browsers have made enormous improvements in their security and in their isolation of processes, but it still remains a tough environment.
+    2. JavaScript,the language used within the browser,offer susvery limited ability to clear data from memory. Secrets that we would like the client to forget may remain in memory longer than useful.
+    3. We have a strictly limited ability to use security features of the operating system when operating within the browser. See Locally exposed Secret Keys for how this limits the tools available for protecting Secret Keys when stored locally.
+    4. There is apaucity of efficient cryptographic functions available to run in JavaScript. As a consequence, the WebCrypto facilities available in the browsers that we support impose a limit on the cryptographic methods we can use. For example, our reliance on PBKDF2 instead of a memory hard KDF such as Argon2 is a consequence of this.
 
 ## 总结
 

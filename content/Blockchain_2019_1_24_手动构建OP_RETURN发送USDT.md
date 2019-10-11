@@ -5,7 +5,7 @@
 - [手动构建OP_RETURN发送USDT](#手动构建op_return发送usdt)
     - [Quick Link](#quick-link)
         - [区块浏览器](#区块浏览器)
-        - [OmniLayer文档](#omnilayer文档)
+        - [OmniLayer文档](#omnilayer文档)
     - [Omni协议](#omni协议)
         - [USDT交易](#usdt交易)
         - [OP_RETURN](#op_return)
@@ -19,11 +19,11 @@
 
 ### 区块浏览器
 
-- BTC 区块浏览器: https://btc1.trezor.io
-- BTC 测试网区块浏览器: https://testnet-bitcore2.trezor.io/tx/1b8a4a35031a6571546b626d128689aec7df5a944f062f82eb61b713cd6f28ec
+- BTC 区块浏览器: https://btc1.trezor.io
+- BTC 测试网区块浏览器: https://testnet-bitcore2.trezor.io/tx/1b8a4a35031a6571546b626d128689aec7df5a944f062f82eb61b713cd6f28ec
 - Omni 区块浏览器: [Omni Explorer](https://www.omniexplorer.info)
 
-### OmniLayer文档
+### OmniLayer文档
 
 [OmniLayer/spec](https://github.com/OmniLayer/spec#transfer-coins-simple-send)
 
