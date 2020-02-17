@@ -1,7 +1,7 @@
 
-### 为什么写博客?
+### write more codes to write less code
 
- write more codes to write less code
+ 
 
 ### 目录
 |Project        | Version           | Article     |
